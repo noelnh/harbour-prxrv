@@ -10,10 +10,17 @@ CoverBackground {
             var _model = Prxrv.getCurrentModel()
             if (_model && _model.count > 0 && index < _model.count) {
                 coverIndex = index
+                coverHolder.visible = false
                 coverImage.source = _model.get(index).square128
                 coverTitle.text = _model.get(index).title
             }
         }
+    }
+
+    CoverPlaceholder {
+        id: coverHolder
+        icon.source: "../images/harbour-prxrv.png"
+        text: qsTr("Prxrv")
     }
 
     Label {
@@ -23,7 +30,7 @@ CoverBackground {
         anchors.bottomMargin: Theme.paddingLarge
         horizontalAlignment: Text.AlignHCenter
         elide: TruncationMode.Elide
-        text: qsTr("Prxrv")
+        text: ""
     }
 
     Image {
