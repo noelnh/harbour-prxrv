@@ -21,10 +21,11 @@ OTHER_FILES += qml/harbour-prxrv.qml \
     qml/pages/*.qml \
     qml/js/*.js \
     qml/fonts/fontawesome-webfont.ttf \
-    qml/images/*.svg \
+    qml/images/* \
     rpm/harbour-prxrv.yaml \
     translations/*.ts \
-    harbour-prxrv.desktop
+    harbour-prxrv.desktop \
+    harbour-prxrv.png
 
 # to disable building translations every time, comment out the
 # following CONFIG line

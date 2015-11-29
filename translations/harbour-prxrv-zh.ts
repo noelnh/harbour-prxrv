@@ -63,9 +63,21 @@
     </message>
 </context>
 <context>
-    <name>FollowingWorkPage</name>
+    <name>LatestWorkPage</name>
     <message>
         <source>New Work: Following</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Work: All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show following</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -248,6 +260,14 @@
     </message>
     <message>
         <source>asc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>illust ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>member ID</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
