@@ -10,8 +10,6 @@ Page {
     property int currentPage: 1
     property int currentIndex: -1
 
-    property bool showFollowing: true
-
 
     function addLatestWork(resp_j) {
 

@@ -18,13 +18,13 @@ function getActionType(action_type) {
 function getActionName(activity_type) {
     switch (activity_type) {
         case 'add_bookmark':
-            return qsTr("add bookmark")
+            return qsTr("add bookmark");
         case 'add_illust':
-            return qsTr("add illust")
+            return qsTr("add illust");
         case 'add_favorite':
-            return qsTr("add favorite")
+            return qsTr("add favorite");
         default:
-            return ""
+            return "";
     }
 }
 
@@ -147,8 +147,9 @@ function getDuration(time_str) {
     var time = parseInt(time_str);
     var seconds = (Date.now() / 1000 | 0) - time;
 
-    if (seconds > 60 * 2) {
-        if (seconds > 3600 * 2) {
+    if (seconds < 0) { seconds = 0; }
+    if (seconds >= 100) {
+        if (seconds >= 60 * 100) {
             if (seconds > 3600 * 24 * 2) {
                 if (seconds > 3600 * 24 * 7 * 2) {
                     if (seconds > 3600 * 24 * 30 * 2) {

@@ -12,6 +12,14 @@ Page {
 
     property int leftPadding: 25
 
+    // for cover index
+    property bool beenForward: false
+
+    function goForward() {
+        coverIndex.unshift(0)
+        beenForward = true
+    }
+
     function setProfile(resp_j) {
         if (!resp_j) return
 
@@ -161,7 +169,6 @@ Page {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            console.log('x/w: ' + authorBar.x, authorBar.width)
                             if (currentModel[currentModel.length-1] == "userWorkModel") {
                                 console.log('nav back to user work page ' + userID)
                                 pageStack.navigateBack()
@@ -209,6 +216,7 @@ Page {
                         currentModel.push("userWorkModel")
                         var _props = {"authorName": userName, "authorID": userID}
                         pageStack.push("UserWorkPage.qml", _props)
+                        goForward()
                     } else {
                         pageStack.navigateBack()
                     }
@@ -232,6 +240,7 @@ Page {
                     currentModel.push("favoriteWorkModel");
                     var _props = {"userID": userID, "userName": userName}
                     pageStack.push("FavoriteWorkPage.qml", _props)
+                    goForward()
                 }
             }
 
@@ -255,6 +264,7 @@ Page {
                     } else {
                         pageStack.push("FollowingPage.qml", {"userID": userID, "userName": userName})
                     }
+                    goForward()
                 }
             }
 
@@ -275,6 +285,7 @@ Page {
                     console.log("goto user feed page")
                     currentModel.push("feedsModel");
                     pageStack.push("FeedsPage.qml", {"userID": userID, "userName": userName})
+                    goForward()
                 }
             }
         }
@@ -316,6 +327,12 @@ Page {
             }
         }
 
+    }
+
+    onStatusChanged: {
+        if (status == PageStatus.Activating && beenForward) {
+            coverIndex.shift()
+        }
     }
 
     Component.onCompleted: {

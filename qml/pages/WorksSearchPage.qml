@@ -117,8 +117,7 @@ Page {
             MenuItem {
                 visible: fromTag
                 text: qsTr("More options")
-                onClicked: {
-                    // TODO show dialog instead of replacing
+                onClicked: { // TODO show dialog instead of replacing
                     // Replace this search result page with trends page and remove this model
                     currentModel.pop()
                     worksModelStack.pop()

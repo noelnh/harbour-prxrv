@@ -112,7 +112,6 @@ Page {
          */
         if (currentIndex >= 0) {
             Prxrv.toggleIcon(resp_j)
-            coverIndex = currentIndex
         }
 
         if (currentIndex < 0) {
@@ -493,6 +492,24 @@ Page {
                 isEmptyPage = false
             }
         }
+
+        // Cover image index
+        if (status == PageStatus.Activating) {
+            // here _navigation is PageNavigation.None,
+            // workaround is in Component.onCompleted
+            //if (_navigation == PageNavigation.Forward) {
+            //    coverIndex[coverIndex.length] = currentIndex
+            //}
+            coverIndex[0] = coverIndex[coverIndex.length - 1]
+        }
+        if (status == PageStatus.Deactivating) {
+            if (_navigation == PageNavigation.Back) {
+                coverIndex.pop()
+            } else {
+                // _navigation is PageNavigation.None
+                coverIndex[0] = 0
+            }
+        }
     }
 
     Component.onCompleted: {
@@ -515,6 +532,10 @@ Page {
         } else {
             console.error("failed to load details")
         }
+
+        // Cover image index
+        coverIndex[coverIndex.length] = currentIndex
+        coverIndex[0] = coverIndex[coverIndex.length - 1]
     }
 }
 

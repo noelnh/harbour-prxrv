@@ -25,6 +25,7 @@ Page {
             } else {
                 currentModel.push("worksSearchModel")
                 pageStack.push("WorksSearchPage.qml", { searchParams: searchParams, fromTag: '' })
+                coverIndex[0] = 0   // for tag search from DetailPage
             }
         } else {
             searchTextField.focus = true
@@ -152,4 +153,10 @@ Page {
 
     }
 
+    onStatusChanged: {
+        if (status == PageStatus.Activating) {
+            // set cover to previous DetailPage's index
+            coverIndex[0] = coverIndex[coverIndex.length - 1]
+        }
+    }
 }

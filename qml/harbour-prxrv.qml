@@ -32,9 +32,13 @@ ApplicationWindow
     // Activity
     property var illustArray: []
     property int minActivityID: 2000000000
+    property bool staccListMode: Storage.readSetting('staccListMode')
+
+    // LatestWork
+    property bool showFollowing: true
 
     // Cover
-    property int coverIndex: 0
+    property var coverIndex: [0, ]
 
     // Details
     /**

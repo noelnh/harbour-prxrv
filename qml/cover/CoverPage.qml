@@ -6,10 +6,11 @@ import "../js/prxrv.js" as Prxrv
 CoverBackground {
 
     function setCover(index) {
+        console.log(coverIndex)
         if ( index >= 0 && currentModel.length > 0) {
             var _model = Prxrv.getCurrentModel()
             if (_model && _model.count > 0 && index < _model.count) {
-                coverIndex = index
+                coverIndex[0] = index
                 coverHolder.visible = false
                 coverImage.source = _model.get(index).square128
                 coverTitle.text = _model.get(index).title
@@ -43,7 +44,7 @@ CoverBackground {
 
     onStatusChanged: {
         if (status === PageStatus.Activating) {
-            setCover(coverIndex)
+            setCover(coverIndex[0])
         }
     }
 
@@ -52,12 +53,12 @@ CoverBackground {
 
         CoverAction {
             iconSource: "image://theme/icon-cover-previous"
-            onTriggered: setCover(coverIndex - 1)
+            onTriggered: setCover(coverIndex[0] > 0 ? coverIndex[0] - 1 : 0 )
         }
 
         CoverAction {
             iconSource: "image://theme/icon-cover-next"
-            onTriggered: setCover(coverIndex + 1)
+            onTriggered: setCover(coverIndex[0] + 1)
         }
     }
 }

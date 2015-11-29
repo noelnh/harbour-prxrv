@@ -3,6 +3,7 @@ import Sailfish.Silica 1.0
 
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
+import "../js/storage.js" as Storage
 
 Page {
     id: feedsPage
@@ -178,6 +179,8 @@ Page {
                 text: qsTr("Grid View")
                 onClicked: {
                     pageStack.replace("StaccPage.qml")
+                    staccListMode = false
+                    Storage.writeSetting('staccListMode', false)
                 }
             }
             MenuItem {
