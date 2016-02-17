@@ -153,6 +153,10 @@
         <source>Show R-18 works</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Remember me</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>StaccListPage</name>

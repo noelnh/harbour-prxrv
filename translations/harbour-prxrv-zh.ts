@@ -4,10 +4,6 @@
 <context>
     <name>CoverPage</name>
     <message>
-        <source>My Cover</source>
-        <translation type="vanished">Mein Cover</translation>
-    </message>
-    <message>
         <source>Prxrv</source>
         <translation type="unfinished"></translation>
     </message>
@@ -155,6 +151,10 @@
     </message>
     <message>
         <source>Show R-18 works</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember me</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

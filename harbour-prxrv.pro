@@ -33,3 +33,6 @@ CONFIG += sailfishapp_i18n
 
 TRANSLATIONS += translations/harbour-prxrv-zh.ts
 
+DISTFILES += \
+    rpm/harbour-prxrv.changes
+
