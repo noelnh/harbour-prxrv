@@ -8,6 +8,7 @@ Page {
     id: settingsPage
 
     property bool showR18_: Storage.readSetting('showR18')
+    property bool rememberMe: Storage.readSetting('rememberMe')
 
     function saveAccount() {
         if (user['name'] != nameField.text) {
@@ -19,6 +20,9 @@ Page {
             if (!passField.text) {
                 passField.focus = true
                 return
+            }
+            if (rememberMe) {
+                Storage.writeSetting('passwd', passField.text)
             }
             Pixiv.login(nameField.text, passField.text, setToken)
         } else {
@@ -94,6 +98,15 @@ Page {
                 echoMode: TextInput.PasswordEchoOnEdit
                 label: "Password"
                 placeholderText: label
+            }
+
+            TextSwitch {
+                id: saveSwitch
+                text: qsTr("Remember me")
+                checked: rememberMe
+                onCheckedChanged: {
+                    Storage.writeSetting('rememberMe', checked)
+                }
             }
 
             SectionHeader {

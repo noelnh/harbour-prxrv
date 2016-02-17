@@ -65,7 +65,12 @@ ApplicationWindow
                 pageStack.push('SettingsPage.qml')
             } else if (!requestLock) {
                 requestLock = true
-                Pixiv.relogin(refresh_token, setToken)
+                if (Storage.readSetting('rememberMe') && user.account) {
+                    var passwd = Storage.readSetting('passwd')
+                    Pixiv.login(user.account, passwd, setToken)
+                } else {
+                    Pixiv.relogin(refresh_token, setToken)
+                }
             }
             return false
         }
