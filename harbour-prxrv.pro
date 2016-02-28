@@ -14,7 +14,11 @@ TARGET = harbour-prxrv
 
 CONFIG += sailfishapp
 
-SOURCES += src/harbour-prxrv.cpp
+CONFIG += c++11
+
+SOURCES += src/harbour-prxrv.cpp \
+    src/pxvrequest.cpp \
+    src/requestmgr.cpp
 
 OTHER_FILES += qml/harbour-prxrv.qml \
     qml/cover/CoverPage.qml \
@@ -34,5 +38,10 @@ CONFIG += sailfishapp_i18n
 TRANSLATIONS += translations/harbour-prxrv-zh.ts
 
 DISTFILES += \
-    rpm/harbour-prxrv.changes
+    rpm/harbour-prxrv.changes \
+    qml/pages/DownloadsPage.qml
+
+HEADERS += \
+    src/pxvrequest.h \
+    src/requestmgr.h
 

@@ -103,6 +103,9 @@ function getCurrentModel() {
             case 'rankingWorkModel':
                 if (debugOn) console.log('choose rankingWorkModel');
                 return rankingWorkModel;
+            case 'downloadsModel':
+                if (debugOn) console.log('choose downloadsModel');
+                return downloadsModel;
             default:
                 if (debugOn) console.log('model null !!!!!');
                 return null;

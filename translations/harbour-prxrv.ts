@@ -9,6 +9,80 @@
     </message>
 </context>
 <context>
+    <name>DetailPage</name>
+    <message>
+        <source>Open Web Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bookmark privately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove bookmark</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bookmark</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DownloadsPage</name>
+    <message>
+        <source>Recent Downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File type not supported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Url scheme not supported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid url.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown error!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloading ...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Restart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>FavoriteWorkPage</name>
     <message>
         <source>Go Home</source>
@@ -115,6 +189,14 @@
         <source>Blood type</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open Web Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RankingPage</name>
@@ -155,6 +237,57 @@
     </message>
     <message>
         <source>Remember me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Logout</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid custom filename!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid save path!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom filename, e.g. %a_%u/%i_%t
+%a: artist ID, %u: artist username,
+%n: artist name, %i: work ID, %t: title,
+%i is required.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom filename, e.g. %a_%u/%i_%t</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -329,6 +462,10 @@
     <name>harbour-prxrv</name>
     <message>
         <source>Login failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloads finished.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -57,6 +57,7 @@ Page {
                 square128: activities[i]['ref_work']['image_urls']['px_128x128'],
                 master240: activities[i]['ref_work']['image_urls']['max_240x240'],
                 master480: activities[i]['ref_work']['image_urls']['px_480mw'],
+                //large: activities[i]['ref_work']['image_urls']['large'],  // large is not available
                 authorIcon: activities[i]['ref_work']['user']['profile_image_urls']['px_50x50'],
                 authorID: activities[i]['ref_work']['user']['id'],
                 authorName: activities[i]['ref_work']['user']['name'],

@@ -6,14 +6,19 @@ import "../js/prxrv.js" as Prxrv
 CoverBackground {
 
     function setCover(index) {
-        console.log(coverIndex)
+        if (debugOn) console.log(coverIndex)
         if ( index >= 0 && currentModel.length > 0) {
             var _model = Prxrv.getCurrentModel()
             if (_model && _model.count > 0 && index < _model.count) {
                 coverIndex[0] = index
                 coverHolder.visible = false
-                coverImage.source = _model.get(index).square128
-                coverTitle.text = _model.get(index).title
+                if (currentModel[currentModel.length-1] === 'downloadsModel') {
+                    coverImage.source = _model.get(index).thumb
+                    coverTitle.text = _model.get(index).filename
+                } else {
+                    coverImage.source = _model.get(index).square128
+                    coverTitle.text = _model.get(index).title
+                }
             }
         }
     }

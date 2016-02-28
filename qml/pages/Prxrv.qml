@@ -22,6 +22,14 @@ Page {
         PullDownMenu {
             id: pullDownMenu
             MenuItem {
+                // TODO
+                text: "About"
+                onClicked: {
+                    pageStack.push("AboutPage.qml")
+                }
+                visible: false
+            }
+            MenuItem {
                 text: "Settings"
                 onClicked: {
                     pageStack.push("SettingsPage.qml")
@@ -64,6 +72,11 @@ Page {
                 label: "Profile"
                 model: ""
                 page: "ProfilePage.qml"
+            }
+            ListElement {
+                label: "Downloads"
+                model: "downloadsModel"
+                page: "DownloadsPage.qml"
             }
         }
 
@@ -108,6 +121,9 @@ Page {
 
     Component.onCompleted: {
         loginCheck()
+        requestMgr.downloadProgress.connect(updateProgress)
+        requestMgr.allImagesSaved.connect(notifyDownloadsFinished)
+        requestMgr.errorMessage.connect(showErrorMessage)
     }
 
 }

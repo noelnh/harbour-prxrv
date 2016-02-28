@@ -121,18 +121,21 @@ Page {
             title: userName
         }
 
-        PullDownMenu {
-            id: pullDownMenu
+        PushUpMenu {
             MenuItem {
                 id: openWebViewAction
-                text: "Open WebView"
+                text: qsTr("Open Web Page")
                 onClicked: {
                     var _props = {"initUrl": "http://touch.pixiv.net/member.php?id=" + userID }
                     pageStack.push('WebViewPage.qml', _props)
                 }
             }
+        }
+
+        PullDownMenu {
+            id: pullDownMenu
             MenuItem {
-                text: "Refresh"
+                text: qsTr("Refresh")
                 onClicked: {
                     console.log("refreshAction clicked")
                     if (userID) Pixiv.getUser(token, userID, setProfile)

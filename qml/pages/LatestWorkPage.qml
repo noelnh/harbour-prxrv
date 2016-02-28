@@ -28,6 +28,7 @@ Page {
                 headerText: works[i]['title'],
                 square128: works[i]['image_urls']['px_128x128'],
                 master480: works[i]['image_urls']['px_480mw'],
+                large: works[i]['image_urls']['large'],
                 authorIcon: works[i]['user']['profile_image_urls']['px_50x50'],
                 authorID: works[i]['user']['id'],
                 authorName: works[i]['user']['name'],

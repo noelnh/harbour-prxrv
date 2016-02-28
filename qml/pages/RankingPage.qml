@@ -39,6 +39,7 @@ Page {
                 headerText: works[i]['rank'] + '. ' + works[i]['work']['title'],
                 square128: works[i]['work']['image_urls']['px_128x128'],
                 master480: works[i]['work']['image_urls']['px_480mw'],
+                large: works[i]['work']['image_urls']['large'],
                 authorIcon: works[i]['work']['user']['profile_image_urls']['px_50x50'],
                 authorID: works[i]['work']['user']['id'],
                 authorName: works[i]['work']['user']['name'],

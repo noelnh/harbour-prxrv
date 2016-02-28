@@ -11,6 +11,22 @@ Page {
     property bool rememberMe: Storage.readSetting('rememberMe')
 
     function saveAccount() {
+        if ( customName !== customNameField.text ) {
+            if ( customNameField.acceptableInput ) {
+                customName = customNameField.text
+                Storage.writeSetting('customName', customName)
+            } else {
+                infoBanner.showText(qsTr('Invalid custom filename!'))
+            }
+        }
+        if ( savePath !== pathField.text ) {
+            if (pathField.acceptableInput) {
+                savePath = pathField.text
+                Storage.writeSetting('savePath', savePath)
+            } else {
+                infoBanner.showText(qsTr('Invalid save path!'))
+            }
+        }
         if (user['name'] != nameField.text) {
             clearAccount(false)
             if (!nameField.text) {
@@ -54,17 +70,17 @@ Page {
     SilicaFlickable {
         id: settingsFlickable
 
-        contentHeight: childrenRect.height
+        contentHeight: settingsColumn.height + Theme.paddingLarge
         anchors.fill: parent
 
         PullDownMenu {
             MenuItem {
-                text: "Logout"
+                text: qsTr("Logout")
                 onClicked: clearAccount(true)
             }
             MenuItem {
                 id: saveAction
-                text: "Save"
+                text: qsTr("Save")
                 onClicked: {
                     if (debugOn) console.log("saveAction clicked")
                     saveAccount()
@@ -75,20 +91,21 @@ Page {
         Column {
             id: settingsColumn
             width: parent.width
+            height: childrenRect.height
 
             PageHeader {
-                title: "Settings"
+                title: qsTr("Settings")
             }
 
             SectionHeader {
-                text: "Account"
+                text: qsTr("Account")
             }
 
             TextField {
                 id: nameField
                 width: 480
                 text: JSON.parse(Storage.readSetting("user")).name || ""
-                label: "Username"
+                label: qsTr("Username")
                 placeholderText: label
             }
 
@@ -96,7 +113,7 @@ Page {
                 id: passField
                 width: 480
                 echoMode: TextInput.PasswordEchoOnEdit
-                label: "Password"
+                label: qsTr("Password")
                 placeholderText: label
             }
 
@@ -107,6 +124,28 @@ Page {
                 onCheckedChanged: {
                     Storage.writeSetting('rememberMe', checked)
                 }
+            }
+
+            SectionHeader {
+                text: qsTr("Download")
+            }
+
+            TextField {
+                id: pathField
+                width: parent.width
+                text: savePath
+                label: qsTr("Save to")
+                placeholderText: label
+                validator: RegExpValidator { regExp: /^\/home\/nemo(\/.*|$)/ }
+            }
+
+            TextField {
+                id: customNameField
+                width: parent.width
+                text: customName
+                label: qsTr("Custom filename, e.g. %a_%u/%i_%t\n%a: artist ID, %u: artist username,\n%n: artist name, %i: work ID, %t: title,\n%i is required.")
+                placeholderText: qsTr("Custom filename, e.g. %a_%u/%i_%t")
+                validator: RegExpValidator { regExp: /.*%[ti].*/ }
             }
 
             SectionHeader {
@@ -121,6 +160,7 @@ Page {
                     Storage.writeSetting('showR18', checked)
                 }
             }
+
         }
 
     }

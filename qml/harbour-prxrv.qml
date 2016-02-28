@@ -8,15 +8,14 @@ import "js/storage.js" as Storage
 
 ApplicationWindow
 {
-    // Test
-    property bool debugOn: true
-    property bool testOn: false
-
     // Storage
+    property bool debugOn: Storage.readSetting('debugOn') || true
     property var user: JSON.parse(Storage.readSetting('user') || '{}')
     property string token: Storage.readSetting('token')
     property int expireOn: parseInt(Storage.readSetting('expireOn')) || 0
     property bool showR18: Storage.readSetting('showR18')
+    property string savePath: Storage.readSetting('savePath') || "/home/nemo/Pictures"
+    property string customName: Storage.readSetting('customName') || '%i'
 
     // String list of models
     property var currentModel: []
@@ -53,6 +52,8 @@ ApplicationWindow
     ListModel { id: latestWorkModel }
 
     ListModel { id: rankingWorkModel }
+
+    ListModel { id: downloadsModel }
 
     function loginCheck() {
         if (debugOn) console.log("login check")
@@ -100,11 +101,30 @@ ApplicationWindow
         expireOn = seconds + 3590 | 0
     }
 
+    // Update download progress
+    function updateProgress(filename, received, total) {
+        for (var i = 0; i < downloadsModel.count; i++) {
+            if (downloadsModel.get(i).filename === filename) {
+                //if (received === total) { }
+                downloadsModel.get(i).finished = ~~(received * 100 / total)
+                break
+            }
+        }
+    }
+    // Downloads notification
+    function notifyDownloadsFinished() {
+        infoBanner.showText(qsTr("Downloads finished."))
+    }
+    // Show error message
+    function showErrorMessage(msg) {
+        infoBanner.showText(msg)
+    }
+
     // Info banner
     Rectangle {
         id: infoBanner
         y: Theme.paddingSmall
-        z: 1
+        z: 0
         width: parent.width
 
         height: infoLabel.height + 2 * Theme.paddingMedium

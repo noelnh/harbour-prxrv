@@ -52,6 +52,7 @@ Page {
                 headerText: favWorks[i]['work']['title'],
                 square128: favWorks[i]['work']['image_urls']['px_128x128'],
                 master480: favWorks[i]['work']['image_urls']['px_480mw'],
+                large: favWorks[i]['work']['image_urls']['large'],
                 authorIcon: favWorks[i]['work']['user']['profile_image_urls']['px_50x50'],
                 authorID: favWorks[i]['work']['user']['id'],
                 authorName: favWorks[i]['work']['user']['name'],
@@ -167,7 +168,6 @@ Page {
         onAtYEndChanged: {
             if (debugOn) console.log('at y end changed')
             if (gridView.atYEnd) {
-                console.log('gridView at end')
                 if ( !requestLock && favoriteWorkModel.count < totalWork - hiddenWork
                         && favoriteWorkModel.count > 0 && loginCheck() ) {
                     requestLock = true
@@ -186,11 +186,10 @@ Page {
     onStatusChanged: {
         if (status == PageStatus.Deactivating) {
             if (_navigation == PageNavigation.Back) {
-                console.log('navigated back')
                 if (currentModel[currentModel.length-1] == 'favoriteWorkModel' && worksModelStack.length) {
                     worksModelStack.pop()
                     var _popModel = currentModel.pop()
-                    console.log('pop model' + _popModel)
+                    if (debugOn) console.log('pop model' + _popModel)
                 }
             }
         }

@@ -11,6 +11,7 @@ Page {
     property string authorID: ''
 
     property var work: {}
+    property int pageCount: 1
 
     property int currentIndex: -1
     property int favoriteID: 0
@@ -119,14 +120,21 @@ Page {
                 'headerText': resp[0]['title'],
                 'title': resp[0]['title'],
                 'master480': resp[0]['image_urls']['px_480mw'],
+                'large': resp[0]['image_urls']['large'],
+                'square128': resp[0]['image_urls']['px_128x128'],
                 'authorIcon': resp[0]['user']['profile_image_urls']['px_50x50'],
                 'authorName': resp[0]['user']['name']
             }
         }
 
+        if (!work.large) {
+            work.large = resp[0]['image_urls']['large']
+        }
+
         if (resp[0]['is_manga']) {
+            pageCount = resp[0]['page_count']
             var p0 = work.master480
-            for (var i = 0; i < resp[0]['page_count']; i++) {
+            for (var i = 0; i < pageCount; i++) {
                 var pn = '_p' + i + '_'
                 slideModel.append( { imgUrl: p0.replace('_p0_', pn) } )
             }
@@ -193,35 +201,76 @@ Page {
             title: work.headerText
         }
 
-        PullDownMenu {
-            id: pullDownMenu
+        PushUpMenu {
+            id: pushUpMenu
             MenuItem {
                 id: openWebViewAction
-                text: "Open WebView"
+                text: qsTr("Open Web Page")
                 onClicked: {
                     refreshWorkDetails = true
                     var _props = {"initUrl": "http://touch.pixiv.net/member_illust.php?mode=medium&illust_id=" + workID }
                     pageStack.push('WebViewPage.qml', _props)
                 }
             }
+        }
+
+        PullDownMenu {
+            id: pullDownMenu
             MenuItem {
                 id: refreshAction
-                text: "Refresh"
+                text: qsTr("Refresh")
                 onClicked: loadDetails()
             }
-            /*
             MenuItem {
                 id: downloadAction
-                text: "Download [todo]"
+                text: qsTr("Download")	// TODO open downloaded file
                 onClicked: {
                     if (debugOn) console.log("downloadAction clicked")
-                    //Pixiv.downloadWork(token, workID, someCallback)   // TODO
+                    // %a: authorID, %u: userName, %n: work.authorName, %i: workID, %t: work.title
+                    var userName = work.authorIcon.match(/profile\/(.+)\//)[1]
+                    var _filename = customName.replace('%a', authorID).replace('%u', userName).replace('%n', work.authorName)
+                    var filename = _filename
+                    var pn, src_large, thumb
+                    for (var i = 0; i < pageCount; i++) {
+                        pn = '_p' + i
+                        src_large = work.large.replace('_p0.', pn+'.')
+                        thumb = work.square128.replace('_p0_', pn+'_')
+
+                        // file name
+                        if (_filename.indexOf('%i') >= 0) {
+                            filename = _filename.replace('%i', workID + pn).replace('%t', work.title)
+                        } else if (_filename.indexOf('%t') >= 0) {
+                            filename = _filename.replace('%t', work.title + pn)
+                        } else {
+                            filename += workID + pn
+                        }
+                        filename += work.large.substr(work.large.lastIndexOf('.'))
+
+                        if (savePath[savePath.length-1] !== '/') savePath += '/'
+                        var _savePath = savePath
+                        // sub directory
+                        if (filename.lastIndexOf('/') > 0) {
+                            if (filename[0] === '/') filename = filename.substr(1)
+                            _savePath += filename.substr(0, filename.lastIndexOf('/')+1)
+                            filename = filename.substr(filename.lastIndexOf('/')+1)
+                        }
+
+                        if (debugOn) console.log("Downloading:", src_large, "to", _savePath, filename)
+                        requestMgr.saveImage(token, src_large, _savePath, filename)
+                        downloadsModel.append( {
+                            filename: filename,
+                            path: _savePath,
+                            source: src_large,
+                            thumb: thumb,
+                            finished: 0
+                        } )
+                    }
                 }
             }
-            */
+
             MenuItem {
                 id: privBookmarkAction
-                text: "Bookmark privately"
+                text: qsTr("Bookmark privately")
                 onClicked: {
                     if (loginCheck()) {
                         if (favoriteID > 0) {
@@ -234,7 +283,7 @@ Page {
             }
             MenuItem {
                 id: bookmarkAction
-                text: favoriteID > 0 ? "Remove bookmark" : "Bookmark"
+                text: favoriteID > 0 ? qsTr("Remove bookmark") : qsTr("Bookmark")
                 onClicked: {
                     if (loginCheck()) {
                         if (favoriteID > 0) {
@@ -282,7 +331,7 @@ Page {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            if (currentModel[currentModel.length-1] == "userWorkModel") {
+                            if (currentModel[currentModel.length-1] === "userWorkModel") {
                                 if (debugOn) console.log('nav back to user work page ' + authorID)
                                 pageStack.navigateBack()
                             } else {
@@ -522,6 +571,8 @@ Page {
                 'headerText': '',
                 'title': '',
                 'master480': '',
+                'large': '',
+                'square128': '',
                 'authorIcon': '',
                 'authorName': ''
             }
