@@ -327,7 +327,16 @@ Page {
                     height: width
                     anchors.top: parent.top
                     anchors.left: parent.left
-                    source: work.authorIcon
+                    source: {
+                        // Workaround for server's error response
+                        if (work.authorIcon.slice(-6, -4) !== '_s') {
+                            if (debugOn) console.log('orig:', work.authorIcon)
+                            if (debugOn) console.log('replace the icon with the 50x50 one')
+                            return work.authorIcon.slice(0, -4) + '_s' + work.authorIcon.slice(-4)
+                        } else {
+                            return work.authorIcon
+                        }
+                    }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
