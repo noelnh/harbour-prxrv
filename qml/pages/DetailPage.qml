@@ -134,6 +134,7 @@ Page {
         if (resp[0]['is_manga']) {
             pageCount = resp[0]['page_count']
             var p0 = work.master480
+            slideModel.clear()
             for (var i = 0; i < pageCount; i++) {
                 var pn = '_p' + i + '_'
                 slideModel.append( { imgUrl: p0.replace('_p0_', pn) } )
@@ -348,6 +349,7 @@ Page {
                                 currentModel.push("userWorkModel")
                                 var _props = {"authorName": authorName.text, "authorID": authorID, "fromID": workID}
                                 pageStack.push("UserWorkPage.qml", _props)
+                                coverIndex[0] = 0
                             }
                         }
                     }
@@ -445,6 +447,7 @@ Page {
                             if (debugOn) console.log('push search model')
                             currentModel.push("worksSearchModel")
                             pageStack.push("WorksSearchPage.qml", { searchParams: params, fromTag: tag })
+                            coverIndex[0] = 0
                         }
                     }
                 }
@@ -565,7 +568,8 @@ Page {
                 coverIndex.pop()
             } else {
                 // _navigation is PageNavigation.None
-                coverIndex[0] = 0
+                if (debugOn) console.log("Page nav forward", _navigation)
+                //coverIndex[0] = 0 // Moved to function onClicked of each tag & authorIcon
             }
         }
     }
