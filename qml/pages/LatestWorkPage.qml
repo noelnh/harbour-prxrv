@@ -21,7 +21,7 @@ Page {
 
         if (debugOn) console.log('adding works to latestWorkModel');
         for (var i in works) {
-            if (!showR18 && works[i]['age_limit'].indexOf('r18') >= 0) continue
+            if (!showR18 && works[i]['age_limit'].indexOf('r18') >= 0) continue;
             latestWorkModel.append({
                 workID: works[i]['id'],
                 title: works[i]['title'],

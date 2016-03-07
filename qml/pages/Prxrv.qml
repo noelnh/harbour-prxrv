@@ -78,6 +78,11 @@ Page {
                 model: "downloadsModel"
                 page: "DownloadsPage.qml"
             }
+            ListElement {
+                label: "Yande.re"
+                model: "booruModel"
+                page: "BooruPage.qml"
+            }
         }
 
         delegate: ListItem {
@@ -95,6 +100,8 @@ Page {
                     if (debugOn) console.log( user['id'], user['name'] )
                     var _props =  {"userID": user['id'], "userName": user['name']}
                     pageStack.push(page, _props)
+                } else if (page === 'Yande.re') {
+                    pageStack.push(page)
                 } else if (token) {
                     if (model) currentModel = [model,]
                     coverIndex = [0,]
