@@ -10,6 +10,12 @@ Page {
     property int currentPage: 1
     property int currentIndex: -1
 
+    // TODO store
+    property bool pxvOnly: true
+
+    // TODO other sites
+    property string booruSite: 'Yande.re'
+
     ListModel { id: booruModel }
 
 
@@ -23,9 +29,11 @@ Page {
         if (debugOn) console.log('adding posts to booruModel')
         for (var i in works) {
             if (!showR18 && works[i]['rating'] !== 's') continue;
+            if (pxvOnly && works[i]['source'].indexOf('pixiv') < 0) continue;
+            // TODO pxv icon
             booruModel.append( {
                 workID: works[i]['id'],
-                headerText: works[i]['id'],
+                headerText: booruSite + ' ' + works[i]['id'],
                 preview: works[i]['preview_url'],
                 sample: works[i]['sample_url'],
                 large: works[i]['file_url'],
@@ -54,8 +62,26 @@ Page {
             }
 
             onClicked: {
-                var _props = {"workID": workID, "currentIndex": index, "work": booruModel.get(index)}
-                pageStack.push("BooruDetailPage.qml", _props)
+                if (source.indexOf('pixiv') > 0) {
+                    var illust_id = 'None'
+                    if (source.indexOf('illust_id=') > 0) {
+                        illust_id = source.substr(source.indexOf('illust_id=')+10)
+                    } else if (source.indexOf('pixiv.net/img-orig') > 0) {
+                        var illust_name = source.substr(source.lastIndexOf('/')+1)
+                        illust_id = illust_name.substr(0, illust_name.indexOf('_'))
+                    }
+                    if (!isNaN(illust_id) && illust_id > 0) {
+                        var _props = {"workID": illust_id, "authorID": "", "currentIndex": -1}
+                        pageStack.push("DetailPage.qml", _props)
+                    }
+                } else {
+                    var _props = {
+                        "workID": workID,
+                        "currentIndex": index,
+                        "work": booruModel.get(index)
+                    }
+                    pageStack.push("BooruDetailPage.qml", _props)
+                }
             }
         }
     }
@@ -71,7 +97,7 @@ Page {
         delegate: booruDelegate
 
         header: PageHeader {
-            title: "Yande.re"
+            title: booruSite
         }
 
         PullDownMenu {
@@ -79,6 +105,15 @@ Page {
             MenuItem {
                 text: qsTr("Refresh")
                 onClicked: {
+                    booruModel.clear()
+                    currentPage = 1
+                    Booru.getPosts(50, currentPage, '', addBooruPosts)
+                }
+            }
+            MenuItem {
+                text: pxvOnly ? qsTr("Show all") : qsTr("Show pixiv only")
+                onClicked: {
+                    pxvOnly = !pxvOnly
                     booruModel.clear()
                     currentPage = 1
                     Booru.getPosts(50, currentPage, '', addBooruPosts)

@@ -85,7 +85,7 @@ Page {
                     if (work.source.indexOf('http') === 0 && work.source.indexOf('illust_id=') > 0) {
                         var illust_id = work.source.substr(work.source.indexOf('illust_id=')+10)
                         return 'Source: <a href="' + work.source + '">illust/' + illust_id + '</a>'
-                    } else if (work.source.indexOf('pixiv.net/img-orig') >= 0) {
+                    } else if (work.source.indexOf('pixiv.net/img-orig') > 0) {
                         var illust_name = work.source.substr(work.source.lastIndexOf('/')+1)
                         var illust_id = illust_name.substr(0, illust_name.indexOf('_'))
                         var pxv_url = 'http://touch.pixiv.net/member_illust.php?illust_id='+illust_id
