@@ -20,7 +20,7 @@ Page {
 
     SilicaFlickable {
         id: detailFlickable
-        contentHeight: column.height
+        contentHeight: column.height + 200
 
         anchors.fill: parent
 

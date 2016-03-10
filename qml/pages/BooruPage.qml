@@ -16,7 +16,11 @@ Page {
     // TODO other sites
     property string booruSite: 'Yande.re'
 
-    ListModel { id: booruModel }
+    property int heightL: 0
+    property int heightR: 0
+
+    ListModel { id: booruModelL }
+    ListModel { id: booruModelR }
 
 
     // Add posts to this model
@@ -31,33 +35,48 @@ Page {
             if (!showR18 && works[i]['rating'] !== 's') continue;
             if (pxvOnly && works[i]['source'].indexOf('pixiv') < 0) continue;
             // TODO pxv icon
-            booruModel.append( {
+            var elmt = {
                 workID: works[i]['id'],
                 headerText: booruSite + ' ' + works[i]['id'],
                 preview: works[i]['preview_url'],
                 sample: works[i]['sample_url'],
                 large: works[i]['file_url'],
                 source: works[i]['source'],
+                height_p: works[i]['actual_preview_height'] / works[i]['actual_preview_width'],
                 authorID: works[i]['creator_id'],
                 authorName: works[i]['author'],
                 md5: works[i]['md5'],
                 tags: works[i]['tags'],
                 createdAt: works[i]['created_at']
-            } )
+            };
+            if ( heightR >= heightL ) {
+                elmt.column = 'L';
+                booruModelL.append(elmt);
+                heightL += elmt.height_p * 100;
+                if (debugOn) console.log('left +', 270 * elmt.height_p);
+            } else {
+                elmt.column = 'R';
+                booruModelR.append(elmt);
+                heightR += elmt.height_p * 100;
+                if (debugOn) console.log('right +', 270 * elmt.height_p);
+            }
         }
     }
+
+
     Component {
         id: booruDelegate
 
-        BackgroundItem {
-            width: gridView.cellWidth
-            height: width
+        ListItem {
+            id: bitem
+            width: parent.width
+            contentHeight: width * height_p
 
             Image {
+                id: image
                 anchors.centerIn: parent
-                width: gridView.cellWidth
-                height: width
-                fillMode: Image.PreserveAspectCrop
+                width: parent.width
+                height: parent.height
                 source: preview
             }
 
@@ -75,10 +94,11 @@ Page {
                         pageStack.push("DetailPage.qml", _props)
                     }
                 } else {
+                    console.log('Column:', column)
                     var _props = {
                         "workID": workID,
                         "currentIndex": index,
-                        "work": booruModel.get(index)
+                        "work": column === 'L' ? booruModelL.get(index) : booruModelR.get(index)
                     }
                     pageStack.push("BooruDetailPage.qml", _props)
                 }
@@ -86,17 +106,14 @@ Page {
         }
     }
 
-    SilicaGridView {
-        id: gridView
+    SilicaFlickable {
+        id: booruFlicableView
 
+        contentHeight: header.height + (columnLeft.height > columnRight.height ? columnLeft.height : columnRight.height)
         anchors.fill: parent
-        cellWidth: width / 2
-        cellHeight: cellWidth
 
-        model: booruModel
-        delegate: booruDelegate
-
-        header: PageHeader {
+        PageHeader {
+            id: header
             title: booruSite
         }
 
@@ -105,7 +122,8 @@ Page {
             MenuItem {
                 text: qsTr("Refresh")
                 onClicked: {
-                    booruModel.clear()
+                    booruModelL.clear()
+                    booruModelR.clear()
                     currentPage = 1
                     Booru.getPosts(50, currentPage, '', addBooruPosts)
                 }
@@ -114,7 +132,8 @@ Page {
                 text: pxvOnly ? qsTr("Show all") : qsTr("Show pixiv only")
                 onClicked: {
                     pxvOnly = !pxvOnly
-                    booruModel.clear()
+                    booruModelL.clear()
+                    booruModelR.clear()
                     currentPage = 1
                     Booru.getPosts(50, currentPage, '', addBooruPosts)
                 }
@@ -124,14 +143,38 @@ Page {
         BusyIndicator {
             size: BusyIndicatorSize.Large
             anchors.centerIn: parent
-            running: requestLock || !booruModel.count
+            running: requestLock || !(booruModelL.count + booruModelR.count)
+        }
+
+        ListView {
+            id: columnLeft
+            width: parent.width / 2
+            height: childrenRect.height
+            anchors.top: header.bottom
+            anchors.left: parent.left
+
+            model: booruModelL
+            delegate: booruDelegate
+
+        }
+
+        ListView {
+            id: columnRight
+            width: parent.width / 2
+            height: childrenRect.height
+            anchors.top: header.bottom
+            anchors.left: columnLeft.right
+
+            model: booruModelR
+            delegate: booruDelegate
+
         }
 
         onAtYEndChanged: {
             if (debugOn) console.log('at y end changed')
-            if (gridView.atYEnd) {
+            if (booruFlicableView.atYEnd) {
                 console.log('gridView at end')
-                if ( !requestLock && booruModel.count > 0 ) {
+                if ( !requestLock && booruModelL.count + booruModelR.count > 0 ) {
                     requestLock = true
                     currentPage += 1
                     Booru.getPosts(50, currentPage, '', addBooruPosts)
@@ -151,7 +194,7 @@ Page {
 
     Component.onCompleted: {
         console.log("onCompleted")
-       if (booruModel.count === 0) {
+       if (booruModelR.count + booruModelL.count === 0) {
            currentPage = 1
            Booru.getPosts(50, currentPage, '', addBooruPosts)
        }
