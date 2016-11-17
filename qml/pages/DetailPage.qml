@@ -56,6 +56,15 @@ Page {
         }
     }
 
+    function setIcon() {
+        if (!work.authorIcon) return;
+        var icon_path = Prxrv.getIcon(work.authorIcon);
+        if (icon_path) {
+            authorIcon.source = icon_path;
+            requestMgr.cacheDone.disconnect(setIcon);
+        }
+    }
+
     function setDetails(resp_j) {
 
         if (!resp_j) {
@@ -257,7 +266,7 @@ Page {
                         }
 
                         if (debugOn) console.log("Downloading:", src_large, "to", _savePath, filename)
-                        requestMgr.saveImage(token, src_large, _savePath, filename)
+                        requestMgr.saveImage(token, src_large, _savePath, filename, 0)
                         downloadsModel.append( {
                             filename: filename,
                             path: _savePath,
@@ -328,16 +337,17 @@ Page {
                     height: width
                     anchors.top: parent.top
                     anchors.left: parent.left
-                    source: {
-                        // Workaround for server's error response
-                        if (work.authorIcon.slice(-6, -4) !== '_s') {
-                            if (debugOn) console.log('orig:', work.authorIcon)
-                            if (debugOn) console.log('replace the icon with the 50x50 one')
-                            return work.authorIcon.slice(0, -4) + '_s' + work.authorIcon.slice(-4)
-                        } else {
-                            return work.authorIcon
-                        }
-                    }
+                    source: ''
+//                    source: {
+//                        // Workaround for server's error response
+//                        if (work.authorIcon.slice(-6, -4) !== '_s') {
+//                            if (debugOn) console.log('orig:', work.authorIcon)
+//                            if (debugOn) console.log('replace the icon with the 50x50 one')
+//                            return work.authorIcon.slice(0, -4) + '_s' + work.authorIcon.slice(-4)
+//                        } else {
+//                            return work.authorIcon
+//                        }
+//                    }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -600,6 +610,9 @@ Page {
         // Cover image index
         coverIndex[coverIndex.length] = currentIndex
         coverIndex[0] = coverIndex[coverIndex.length - 1]
+
+        requestMgr.cacheDone.connect(setIcon);
+        setIcon();
     }
 }
 

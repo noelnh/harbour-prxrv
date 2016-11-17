@@ -245,7 +245,7 @@ function getFollowing(token, user_id, page, callback) {
     if (!checkToken(token, 'getFollowing')) return;
     var url = base_url + '/users/' + user_id + '/following.json';
     var params = {
-        'per_page': '50',
+        'per_page': '20',
         'page': page
     };
     sendRequest('GET', token, url, params, callback);
@@ -257,7 +257,7 @@ function getMyFollowing(token, publicity, page, callback) {
     var params = {
         'publicity': publicity,
         'page': page,
-        'per_page': '50',
+        'per_page': '20',
     };
     sendRequest('GET', token, url, params, callback);
 }

@@ -8,7 +8,6 @@ import "../js/storage.js" as Storage
 Page {
     id: staccPage
 
-
     Component {
         id: activityDelegate
 
@@ -75,7 +74,7 @@ Page {
         }
 
         onAtYEndChanged: {
-            if (gridView.atYEnd && minActivityID < 2000000000) {
+            if (gridView.atYEnd && minActivityID > 0) {
                 if ( !requestLock && activityModel.count > 0 && loginCheck() ) {
                     requestLock = true
                     Pixiv.getStacc(token, showR18, Prxrv.addActivities, minActivityID - 1)
@@ -89,7 +88,9 @@ Page {
         if (activityModel.count == 0) {
             illustArray = []
             if(loginCheck()) {
-                Pixiv.getStacc(token, showR18, Prxrv.addActivities)
+                Pixiv.getStacc(token, showR18, function(activities) {
+                    Prxrv.addActivities(activities, []);
+                });
             } else {
                 // Try again
             }

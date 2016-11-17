@@ -2,6 +2,7 @@ import QtQuick 2.2
 import Sailfish.Silica 1.0
 
 import "../js/pixiv.js" as Pixiv
+import "../js/prxrv.js" as Prxrv
 
 Page {
     id: profilePage
@@ -9,6 +10,8 @@ Page {
     property string userID: ""
     property string userName: ""
     property string userAccount: ""
+
+    property string authorIconSrc: ""
 
     property int leftPadding: 25
 
@@ -20,6 +23,15 @@ Page {
         beenForward = true
     }
 
+    function setIcon() {
+        if (!authorIconSrc) return;
+        var icon_path = Prxrv.getIcon(authorIconSrc);
+        if (icon_path) {
+            authorIcon.source = icon_path;
+            requestMgr.cacheDone.disconnect(setIcon);
+        }
+    }
+
     function setProfile(resp_j) {
         if (!resp_j) return
 
@@ -29,7 +41,8 @@ Page {
         if (resp_j['count'] > 0) {
             var _user = resp_j['response'][0]
             userName = _user['name']
-            authorIcon.source = _user['profile_image_urls']['px_50x50']
+            authorIconSrc = _user['profile_image_urls']['px_50x50']
+            setIcon();
             userAccount = _user['account']
             userWorkLabel.text = "Works (" + _user['stats']['works'] + ")"
             favoriteWorkLabel.text = "Bookmarks (" + _user['stats']['favorites'] + ")"
@@ -342,6 +355,7 @@ Page {
         if (loginCheck() && userID) {
             Pixiv.getUser(token, userID, setProfile)
         }
+        requestMgr.cacheDone.connect(setIcon);
     }
 
 }

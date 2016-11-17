@@ -22,7 +22,7 @@ public:
 signals:
     void saveImageSucceeded(PxvRequest*);
     void saveImageFailed(PxvRequest*);
-    void errorMessage(QString msg);
+    void errorMessage(QString msg, PxvRequest*);
 
 public slots:
     void writeFile();
@@ -38,8 +38,8 @@ private:
     QString filename;
 
     QUrl rqurl;
-    QNetworkReply* qnr;
-    QNetworkRequest* qnrq;
+    QNetworkReply* qnr = nullptr;
+    QNetworkRequest* qnrq = nullptr;
 
     bool isAborted = false;
 

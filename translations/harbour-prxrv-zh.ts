@@ -290,6 +290,14 @@
         <source>Custom filename, e.g. %a_%u/%i_%t</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version 0.13.2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>StaccListPage</name>

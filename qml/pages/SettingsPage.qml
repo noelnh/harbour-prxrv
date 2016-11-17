@@ -161,6 +161,18 @@ Page {
                 }
             }
 
+            SectionHeader {
+                text: qsTr("About")
+            }
+
+            Label {
+                id: versionLabel
+                width: parent.width - 60
+                anchors.horizontalCenter: parent.horizontalCenter
+                color: Theme.secondaryColor
+                text: qsTr("Version 0.13.2")
+            }
+
         }
 
     }

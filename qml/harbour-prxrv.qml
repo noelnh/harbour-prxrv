@@ -15,6 +15,7 @@ ApplicationWindow
     property int expireOn: parseInt(Storage.readSetting('expireOn')) || 0
     property bool showR18: Storage.readSetting('showR18')
     property string savePath: Storage.readSetting('savePath') || "/home/nemo/Pictures"
+    property string cachePath: Storage.readSetting('cachePath') || "/home/nemo/.cache/harbour-prxrv"
     property string customName: Storage.readSetting('customName') || '%i'
 
     // String list of models
@@ -30,7 +31,7 @@ ApplicationWindow
 
     // Activity
     property var illustArray: []
-    property int minActivityID: 2000000000
+    property int minActivityID: 0
     property bool staccListMode: Storage.readSetting('staccListMode')
 
     // LatestWork

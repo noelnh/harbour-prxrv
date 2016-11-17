@@ -32,7 +32,7 @@ function getActionName(activity_type) {
  * Add activities to activityModel
  * Used as callback in StaccPage and StaccListPage
  */
-function addActivities(resp_j) {
+function addActivities(resp_j, icon_urls) {
 
     requestLock = false;
 
@@ -44,7 +44,7 @@ function addActivities(resp_j) {
     for (var i in activities) {
 
         var activityID = parseInt(activities[i]['id']);
-        if (activityID < minActivityID)
+        if (activityID < minActivityID || minActivityID == 0)
             minActivityID = activityID;
 
         var activity_type = activities[i]['type'];
@@ -73,9 +73,11 @@ function addActivities(resp_j) {
             authorName: activities[i]['ref_work']['user']['name'],
             activityTime: activities[i]['post_time'],
             activityType: activities[i]['type'],
-            userIcon: activities[i]['user']['profile_image_urls']['px_50x50'],
+            userIcon: '',
             userName: activities[i]['user']['name'],
         });
+        if (icon_urls)
+            icon_urls.push(activities[i]['user']['profile_image_urls']['px_50x50']);
     }
 }
 
@@ -172,3 +174,30 @@ function getDuration(time_str) {
     return (seconds) + qsTr(" seconds");
 }
 
+
+function getIcon(icon_url) {
+    var iconPath = cachePath + '/icons/';
+
+    if (Array.isArray(icon_url)) {
+        if (icon_url.length > 0) {
+            var sorted_urls = icon_url.slice().sort();
+            for (var i=sorted_urls.length-1; i>0; i--) {
+                if (sorted_urls[i] === sorted_urls[i-1])
+                    sorted_urls.splice(i, 1);
+            }
+            requestMgr.saveCaches(token, sorted_urls, iconPath);
+        }
+        return;
+    }
+
+    var idx = icon_url.lastIndexOf('/');
+    var filename = icon_url.substr(idx+1);
+    var filePath = iconPath + filename;
+    if (requestMgr.checkFile(filePath)) {
+//        console.log('Found icon:' + filePath);
+        return filePath;
+    }
+    requestMgr.saveImage(token, icon_url, iconPath, filename, 1);
+//    console.log('icon not found:' + filename, ', downloading...')
+    return '';
+}
