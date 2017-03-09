@@ -3,7 +3,7 @@ import Sailfish.Silica 1.0
 
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
-import "../js/storage.js" as Storage
+import "../js/settings.js" as Settings
 
 Page {
     id: staccPage
@@ -52,7 +52,7 @@ Page {
                 onClicked: {
                     pageStack.replace("StaccListPage.qml")
                     staccListMode = true
-                    Storage.writeSetting('staccListMode', true)
+                    Settings.write('staccListMode', true)
                 }
             }
             MenuItem {

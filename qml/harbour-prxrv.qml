@@ -4,19 +4,29 @@ import org.nemomobile.notifications 1.0
 
 import "pages"
 import "js/pixiv.js" as Pixiv
-import "js/storage.js" as Storage
+import "js/settings.js" as Settings
+import "js/accounts.js" as Accounts
+import "js/upgrade.js" as Upgrade
 
 ApplicationWindow
 {
-    // Storage
-    property bool debugOn: Storage.readSetting('debugOn') || true
-    property var user: JSON.parse(Storage.readSetting('user') || '{}')
-    property string token: Storage.readSetting('token')
-    property int expireOn: parseInt(Storage.readSetting('expireOn')) || 0
-    property bool showR18: Storage.readSetting('showR18')
-    property string savePath: Storage.readSetting('savePath') || "/home/nemo/Pictures"
-    property string cachePath: Storage.readSetting('cachePath') || "/home/nemo/.cache/harbour-prxrv"
-    property string customName: Storage.readSetting('customName') || '%i'
+
+    // Database
+    property string dbVersion: checkDbVersion()
+
+    // Settings
+    property bool debugOn: Settings.read('debugOn') || true
+    property bool showR18: Settings.read('showR18')
+    property string savePath: Settings.read('savePath') || "/home/nemo/Pictures"
+    property string cachePath: Settings.read('cachePath') || "/home/nemo/.cache/harbour-prxrv"
+    property string customName: Settings.read('customName') || '%i'
+
+    // Account
+    property string token: ''
+    property int expireOn: 0
+    property var user: readAccount()
+
+    property string defaultIcon: 'http://source.pixiv.net/common/images/no_profile_s.png'
 
     // String list of models
     property var currentModel: []
@@ -32,7 +42,7 @@ ApplicationWindow
     // Activity
     property var illustArray: []
     property int minActivityID: 0
-    property bool staccListMode: Storage.readSetting('staccListMode')
+    property bool staccListMode: Settings.read('staccListMode')
 
     // LatestWork
     property bool showFollowing: true
@@ -48,6 +58,8 @@ ApplicationWindow
     property bool refreshWorkDetails: false
 
 
+    ListModel { id: accountModel }
+
     ListModel { id: activityModel }
 
     ListModel { id: latestWorkModel }
@@ -56,22 +68,88 @@ ApplicationWindow
 
     ListModel { id: downloadsModel }
 
-    function loginCheck() {
+
+    function readAccount() {
+        var account = Accounts.current();
+        if (account) {
+            token = account.token;
+            expireOn = parseInt(account.expireOn) || 0;
+            return JSON.parse(account.user || '{}');
+        }
+        return {};
+    }
+
+    function checkDbVersion() {
+        return Upgrade.upgrade();
+    }
+
+    function changeCurrentUser(account) {
+        try {
+            user = JSON.parse(account.user) || {};
+        } catch (err) {
+            console.error("Failed to parse user:", err);
+            user = {};
+        }
+        token = account.token || '';
+        expireOn = account.expireOn || 0;
+    }
+
+    /**
+     * Check login
+     */
+    function loginCheck(accountName) {
         if (debugOn) console.log("login check")
+
+        var account = null;
+        var _expireOn = expireOn;
+
+        // Change account
+        if (accountName && user['account'] !== accountName) {
+            clearCurrentAccount();
+            account = Accounts.find("account", accountName);
+            _expireOn = account.expireOn || 0;
+            changeCurrentUser(account);
+        }
+
         var seconds = new Date().getTime() / 1000
-        if (expireOn < seconds) {
-            token = ""
-            var refresh_token = Storage.readSetting("refresh_token")
-            if (debugOn) console.log('refresh_token:', refresh_token)
-            if (!refresh_token) {
-                pageStack.push('SettingsPage.qml')
-            } else if (!requestLock) {
-                requestLock = true
-                if (Storage.readSetting('rememberMe') && user.account) {
-                    var passwd = Storage.readSetting('passwd')
-                    Pixiv.login(user.account, passwd, setToken)
+
+        if (_expireOn < seconds || _expireOn === 0) {
+            if (debugOn) console.log("try to re-login ...");
+
+            // Reset token and expireOn
+            token = "";
+            expireOn = 0;
+
+            // Read account info
+            if (!account) {
+                if (accountName) {
+                    account = Accounts.find("account", accountName);
                 } else {
+                    account = Accounts.current();
+                }
+            }
+
+            var username = account.account;
+            if (!account || !username) { return false; }
+
+            var refresh_token = account.refreshToken
+
+            // Re-login
+            if (!requestLock) {
+                requestLock = true
+                if (account.remember && account.password) {
+                    // Use password
+                    if (debugOn) console.log("Login as " + username + " using password")
+                    Pixiv.login(username, account.password, setToken)
+                } else if (refresh_token) {
+                    // Use refresh token
+                    if (debugOn) console.log("Login as " + username + " using refresh_token")
                     Pixiv.relogin(refresh_token, setToken)
+                } else {
+                    // Invalid account
+                    if (debugOn) console.log("Failed to login with password or refresh_token")
+                    requestLock = false
+                    pageStack.push('SettingsPage.qml')
                 }
             }
             return false
@@ -79,7 +157,42 @@ ApplicationWindow
         return true
     }
 
-    function setToken(resp_j) {
+    /**
+     * Remove account
+     */
+    function removeAccount(accountName, callback, pop) {
+        if (Accounts.remove(accountName)) {
+            if (typeof callback === 'function') {
+                callback();
+            }
+            if (accountName === user['account']) {
+                user = {};
+                token = "";
+                expireOn = 0;
+            }
+            if (pop) {
+                pageStack.pop();
+            }
+        }
+    }
+
+    /**
+     * Clear current (global) account info
+     */
+    function clearCurrentAccount() {
+        activityModel.clear()
+        latestWorkModel.clear()
+        user = {}
+        token = ""
+        expireOn = 0
+    }
+
+    /**
+     * Callback to set token and user info to db
+     * resp_j: object, response
+     * extraOptions: object, {password, remember, isActive}
+     */
+    function setToken(resp_j, extraOptions) {
 
         requestLock = false
 
@@ -92,14 +205,19 @@ ApplicationWindow
         var resp = resp_j['response']
         user = resp['user']
         token = resp['access_token']
-        if (debugOn) console.log('token: ' + token + '\nuser: ' + user['name'])
-        Storage.writeSetting('user', JSON.stringify(resp['user']))
-        Storage.writeSetting('token', token)
-        Storage.writeSetting('refresh_token', resp['refresh_token'])
+
+        if (debugOn) console.log('New token: ' + token + '\nuser: ' + user['account'])
 
         var seconds = new Date().getTime() / 1000
-        Storage.writeSetting('expireOn', (seconds + 3590 | 0).toString())
         expireOn = seconds + 3590 | 0
+
+        var data = {
+            token: token,
+            refreshToken: resp['refresh_token'],
+            expireOn: expireOn.toString(),
+        }
+
+        Accounts.save(user, data, extraOptions)
     }
 
     // Update download progress

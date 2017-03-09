@@ -27,6 +27,7 @@ OTHER_FILES += qml/harbour-prxrv.qml \
     qml/fonts/fontawesome-webfont.ttf \
     qml/images/* \
     rpm/harbour-prxrv.yaml \
+    rpm/harbour-prxrv.changes \
     translations/*.ts \
     harbour-prxrv.desktop \
     harbour-prxrv.png
@@ -36,10 +37,6 @@ OTHER_FILES += qml/harbour-prxrv.qml \
 CONFIG += sailfishapp_i18n
 
 TRANSLATIONS += translations/harbour-prxrv-zh.ts
-
-DISTFILES += \
-    rpm/harbour-prxrv.changes \
-    qml/pages/DownloadsPage.qml
 
 HEADERS += \
     src/pxvrequest.h \

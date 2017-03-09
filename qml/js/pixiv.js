@@ -54,9 +54,18 @@ function sendRequest(method, token, url, params, callback) {
 
     if ((method == 'GET' || method == 'DELETE') && params_str != '') url += '?' + params_str;
 
+    var headers = {
+        'Referer': 'https://app-api.pixiv.net/',
+        'App-OS': 'ios',
+        'App-OS-Version': '9.3.3',
+        'App-Version': '6.0.9',
+        'User-Agent': 'PixivIOSApp/6.0.9 (iOS 9.3.3; iPhone8,1)',
+    }
+
     xmlhttp.open(method, url, true);
-    xmlhttp.setRequestHeader('Referer', 'http://spapi.pixiv.net/');
-    xmlhttp.setRequestHeader('User-Agent', 'PixivIOSApp/5.8.0');
+    for (var key in headers) {
+        xmlhttp.setRequestHeader(key, headers[key]);
+    }
     if (token !== '') xmlhttp.setRequestHeader('Authorization', 'Bearer ' + token);
 
     // TODO

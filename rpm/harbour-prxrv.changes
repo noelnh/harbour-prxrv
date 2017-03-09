@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Thu Mar  9 2017 Noel Nhato <noelnhato@gmail.com> 0.14.0-5
+- Multiple accounts
+
 * Thu Nov 17 2016 Noel Nhato <noelnhato@gmail.com> 0.13.2-1
 - Fix user icons
 

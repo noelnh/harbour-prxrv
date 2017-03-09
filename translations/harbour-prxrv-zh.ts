@@ -2,6 +2,41 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
+    <name>AccountPage</name>
+    <message>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Username</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remember me</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <source>Prxrv</source>
@@ -236,31 +271,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remember me</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Logout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Account</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -295,7 +310,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Version 0.13.2</source>
+        <source>Version 0.14.0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set one account as active!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset all settings and accounts?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
