@@ -284,26 +284,26 @@ Page {
                 }
             }
 
-            ListItem {
-                id: userFeedItem
-                width: parent.width
-                anchors.top: latestWorkItem.bottom
-                contentHeight: Theme.itemSizeMedium
-                Label {
-                    id: userFeedLabel
-                    color: parent.highlighted ? Theme.highlightColor : Theme.primaryColor
-                    anchors.left: parent.left
-                    anchors.leftMargin: leftPadding
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: "Feed"
-                }
-                onClicked: {
-                    console.log("goto user feed page")
-                    currentModel.push("feedsModel");
-                    pageStack.push("FeedsPage.qml", {"userID": userID, "userName": userName})
-                    goForward()
-                }
-            }
+//            ListItem {
+//                id: userFeedItem
+//                width: parent.width
+//                anchors.top: latestWorkItem.bottom
+//                contentHeight: Theme.itemSizeMedium
+//                Label {
+//                    id: userFeedLabel
+//                    color: parent.highlighted ? Theme.highlightColor : Theme.primaryColor
+//                    anchors.left: parent.left
+//                    anchors.leftMargin: leftPadding
+//                    anchors.verticalCenter: parent.verticalCenter
+//                    text: "Feed"
+//                }
+//                onClicked: {
+//                    console.log("goto user feed page")
+//                    currentModel.push("feedsModel");
+//                    pageStack.push("FeedsPage.qml", {"userID": userID, "userName": userName})
+//                    goForward()
+//                }
+//            }
         }
 
         ListView {

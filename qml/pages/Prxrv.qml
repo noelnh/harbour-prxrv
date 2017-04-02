@@ -43,11 +43,11 @@ Page {
         }
 
         model: ListModel {
-            ListElement {
-                label: "Stacc"
-                model: "activityModel"
-                page: "StaccPage.qml"
-            }
+//            ListElement {
+//                label: "Stacc"
+//                model: "activityModel"
+//                page: "StaccPage.qml"
+//            }
             ListElement {
                 label: "New Works"
                 model: "latestWorkModel"
