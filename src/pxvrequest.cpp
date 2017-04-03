@@ -65,6 +65,10 @@ QString PxvRequest::getFilename() {
 }
 
 void PxvRequest::writeFile() {
+    if (this->qnr->error() != QNetworkReply::NoError) {
+        qDebug() << "Error occurred:" << this->qnr->error() << ", file:" << this->rqurl.toString();
+        return;
+    }
     if (this->isAborted) {
         qDebug() << "Abort writing ...";
         return;
