@@ -54,6 +54,11 @@ Page {
                 page: "LatestWorkPage.qml"
             }
             ListElement {
+                label: "Recommendation"
+                model: "recommendationModel"
+                page: "RecommendationPage.qml"
+            }
+            ListElement {
                 label: "Rankings"
                 model: "rankingWorkModel"
                 page: "RankingPage.qml"

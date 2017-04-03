@@ -261,6 +261,17 @@
     </message>
 </context>
 <context>
+    <name>RecommendationPage</name>
+    <message>
+        <source>Recommendation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Behaviour</source>

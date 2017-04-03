@@ -28,7 +28,7 @@ function getActionName(activity_type) {
     }
 }
 
-/*
+/**
  * Add activities to activityModel
  * Used as callback in StaccPage and StaccListPage
  */
@@ -89,6 +89,9 @@ function getCurrentModel() {
                 return worksModelStack[worksModelStack.length - 1];
             case 'userWorkModel':
                 if (debugOn) console.log('choose userWorkModel');
+                return worksModelStack[worksModelStack.length - 1];
+            case 'recommendationModel':
+                if (debugOn) console.log('choose recommendationModel');
                 return worksModelStack[worksModelStack.length - 1];
             case 'feedsModel':
                 if (debugOn) console.log('choose feedsModel');
@@ -175,29 +178,45 @@ function getDuration(time_str) {
 }
 
 
-function getIcon(icon_url) {
-    var iconPath = cachePath + '/icons/';
+/**
+ * Get image from local cache
+ *
+ * @param {string} image_url
+ * @param {string} subdir
+ * @returns {undefined|string}
+ */
+function getImage(image_url, subdir) {
+    if (!subdir) return;
+    var imageDirPath = cachePath + '/' + subdir + '/';
 
-    if (Array.isArray(icon_url)) {
-        if (icon_url.length > 0) {
-            var sorted_urls = icon_url.slice().sort();
+    if (Array.isArray(image_url)) {
+        if (image_url.length > 0) {
+            var sorted_urls = image_url.slice().sort();
             for (var i=sorted_urls.length-1; i>0; i--) {
                 if (sorted_urls[i] === sorted_urls[i-1])
                     sorted_urls.splice(i, 1);
             }
-            requestMgr.saveCaches(token, sorted_urls, iconPath);
+            requestMgr.saveCaches(token, sorted_urls, imageDirPath);
         }
         return;
     }
 
-    var idx = icon_url.lastIndexOf('/');
-    var filename = icon_url.substr(idx+1);
-    var filePath = iconPath + filename;
+    var idx = image_url.lastIndexOf('/');
+    var filename = image_url.substr(idx+1);
+    var filePath = imageDirPath + filename;
     if (requestMgr.checkFile(filePath)) {
-//        console.log('Found icon:' + filePath);
+//        console.log('Found image:' + filePath);
         return filePath;
     }
-    requestMgr.saveImage(token, icon_url, iconPath, filename, 1);
-//    console.log('icon not found:' + filename, ', downloading...')
+    requestMgr.saveImage(token, image_url, imageDirPath, filename, 1);
+//    console.log('Image not found:' + filename, ', downloading...')
     return '';
+}
+
+function getIcon(icon_url) {
+    return getImage(icon_url, 'icons');
+}
+
+function getThumb(thumb_url, size) {
+    return getImage(thumb_url, 'thumbnails/' + size);
 }

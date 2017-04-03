@@ -64,6 +64,8 @@ ApplicationWindow
 
     ListModel { id: latestWorkModel }
 
+    ListModel { id: recommendationModel }
+
     ListModel { id: rankingWorkModel }
 
     ListModel { id: downloadsModel }
@@ -182,6 +184,7 @@ ApplicationWindow
     function clearCurrentAccount() {
         activityModel.clear()
         latestWorkModel.clear()
+        recommendationModel.clear()
         user = {}
         token = ""
         expireOn = 0

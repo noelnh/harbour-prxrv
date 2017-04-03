@@ -1,6 +1,7 @@
 .pragma library
 
 var base_url = 'https://public-api.secure.pixiv.net/v1'
+var app_url = 'https://app-api.pixiv.net/v1'
 
 function checkToken(token, msg) {
     console.log('Token for ' + msg + '(): ' + token);
@@ -36,7 +37,7 @@ function sendRequest(method, token, url, params, callback) {
                 typeof(callback) === 'function' && callback(null);
             } else if (xmlhttp.status == 200) {
                 var resp_j = JSON.parse(xmlhttp.responseText);
-                if (token == '' || resp_j['status'] == 'success') {
+                if (token == '' || resp_j['status'] == 'success' || resp_j['illusts']) {
                     //var resp = resp_j['response'];
                     typeof(callback) === 'function' && callback(resp_j);
                 }
@@ -176,6 +177,20 @@ function getRankingWork(token, type, mode, page, callback) {
     sendRequest('GET', token, url, params, callback);
 }
 
+
+// Recommendation (App API)
+//
+function getRecommendation(token, page, callback) {
+    if (!checkToken(token, 'getRecommendation')) return;
+    var url = app_url + '/illust/recommended';
+    var params = {
+        'content_type': 'illust',
+        'include_ranking_label': 'true',
+        'filter': 'for_ios',
+        'offset': (page-1) * 30,
+    };
+    sendRequest('GET', token, url, params, callback);
+}
 
 // Latest Works
 //
