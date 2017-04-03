@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Mon Apr  3 2017 Noel Nhato <noelnhato@gmail.com> 0.15.0-1
+- Add recommendation
+
 * Thu Mar  9 2017 Noel Nhato <noelnhato@gmail.com> 0.14.0-5
 - Multiple accounts
 

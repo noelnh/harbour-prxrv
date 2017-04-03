@@ -18,6 +18,8 @@ Page {
     // Active user
     property int activeCount: 1
 
+    property int cacheSize: 0
+
     property int leftPadding: 25
 
     function saveSettings() {
@@ -269,6 +271,28 @@ Page {
             }
 
             SectionHeader {
+                text: qsTr("Cache")
+            }
+
+            BackgroundItem {
+                height: Theme.itemSizeSmall
+                width: parent.width
+                Label {
+                    width: parent.width
+                    anchors {
+                        left: parent.left
+                        leftMargin: leftPadding
+                        verticalCenter: parent.verticalCenter
+                    }
+                    text: qsTr("Click to clear cache: ") + (cacheSize || 0) + "KB"
+                }
+                onClicked: {
+                    var csize = cacheMgr.clear(cachePath + '/thumbnails', '128x128');
+                    cacheSize = csize;
+                }
+            }
+
+            SectionHeader {
                 text: qsTr("About")
             }
 
@@ -277,7 +301,7 @@ Page {
                 width: parent.width - 60
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: Theme.secondaryColor
-                text: qsTr("Version 0.14.0")
+                text: qsTr("Version 0.15.0")
             }
 
         }
@@ -302,6 +326,7 @@ Page {
 
     Component.onCompleted: {
         requestMgr.allCacheDone.connect(setIcon);
+        cacheSize = cacheMgr.getSize(cachePath + '/thumbnails', '') / 1024;
     }
 
     Component.onDestruction: {

@@ -40,6 +40,7 @@
 #include <sailfishapp.h>
 
 #include "requestmgr.h"
+#include "cachemgr.h"
 
 int main(int argc, char *argv[])
 {
@@ -48,6 +49,9 @@ int main(int argc, char *argv[])
 
     RequestMgr requestMgr;
     view->rootContext()->setContextProperty("requestMgr", &requestMgr);
+
+    CacheMgr cacheMgr;
+    view->rootContext()->setContextProperty("cacheMgr", &cacheMgr);
 
     view->setSource(SailfishApp::pathTo("qml/harbour-prxrv.qml"));
     view->show();

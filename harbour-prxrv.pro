@@ -18,7 +18,8 @@ CONFIG += c++11
 
 SOURCES += src/harbour-prxrv.cpp \
     src/pxvrequest.cpp \
-    src/requestmgr.cpp
+    src/requestmgr.cpp \
+    src/cachemgr.cpp
 
 OTHER_FILES += qml/harbour-prxrv.qml \
     qml/cover/CoverPage.qml \
@@ -40,5 +41,6 @@ TRANSLATIONS += translations/harbour-prxrv-zh.ts
 
 HEADERS += \
     src/pxvrequest.h \
-    src/requestmgr.h
+    src/requestmgr.h \
+    src/cachemgr.h
 

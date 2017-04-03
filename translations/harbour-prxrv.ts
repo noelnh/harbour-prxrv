@@ -321,10 +321,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Version 0.14.0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Accounts</source>
         <translation type="unfinished"></translation>
     </message>
@@ -350,6 +346,18 @@
     </message>
     <message>
         <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cache</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version 0.15.0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to clear cache: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
