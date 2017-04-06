@@ -159,7 +159,7 @@ Page {
         Item {
             id: column
             width: parent.width
-            height: authorBar.height + userWorkItem.height + favoriteWorkItem.height + latestWorkItem.height + userFeedItem.height
+            height: authorBar.height + userWorkItem.height + favoriteWorkItem.height + latestWorkItem.height
             anchors.top: pageHeader.bottom
             anchors.horizontalCenter: parent.horizontalCenter
 
