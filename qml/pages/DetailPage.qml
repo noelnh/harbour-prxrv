@@ -25,6 +25,8 @@ Page {
     property bool overwriteUrl: false
     property string imgUrlCache: ''
 
+    property string iconSrc: ''
+
     property int leftPadding: 25
 
     ListModel { id: slideModel }
@@ -63,7 +65,7 @@ Page {
         if (!work.authorIcon) return;
         var icon_path = Prxrv.getIcon(work.authorIcon);
         if (icon_path) {
-            authorIcon.source = icon_path;
+            iconSrc = icon_path;
             requestMgr.cacheDone.disconnect(setIcon);
         }
     }
@@ -137,6 +139,14 @@ Page {
                 'authorIcon': resp[0]['user']['profile_image_urls']['px_50x50'],
                 'authorName': resp[0]['user']['name']
             }
+        }
+
+        // Author icon
+        if (!work.authorIcon) {
+            work.authorIcon = resp[0]['user']['profile_image_urls']['px_50x50'];
+        }
+        if (iconSrc === '') {
+            setIcon();
         }
 
         if (!work.large) {
@@ -342,7 +352,7 @@ Page {
                     height: width
                     anchors.top: parent.top
                     anchors.left: parent.left
-                    source: ''
+                    source: iconSrc
 //                    source: {
 //                        // Workaround for server's error response
 //                        if (work.authorIcon.slice(-6, -4) !== '_s') {
