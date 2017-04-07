@@ -3,10 +3,28 @@ import Sailfish.Silica 1.0
 
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
-import "../js/storage.js" as Storage
+import "../js/settings.js" as Settings
 
 Page {
     id: feedsPage
+
+    property var userIconUrls: []
+
+    function setIcon() {
+        for (var i=0; i<userIconUrls.length; i++) {
+            var icon_url = userIconUrls[i];
+            if (!icon_url) continue;
+            var icon_path = Prxrv.getIcon(icon_url);
+            if (icon_path) {
+                activityModel.get(i).userIcon = icon_path;
+            }
+        }
+    }
+
+    function addActivities(activities) {
+        Prxrv.addActivities(activities, userIconUrls);
+        Prxrv.getIcon(userIconUrls);
+    }
 
 
     Component {
@@ -180,7 +198,7 @@ Page {
                 onClicked: {
                     pageStack.replace("StaccPage.qml")
                     staccListMode = false
-                    Storage.writeSetting('staccListMode', false)
+                    Settings.write('staccListMode', false)
                 }
             }
             MenuItem {
@@ -190,7 +208,7 @@ Page {
                         activityModel.clear()
                         illustArray = []
                         console.log("refresh stacc")
-                        Pixiv.getStacc(token, showR18, Prxrv.addActivities)
+                        Pixiv.getStacc(token, showR18, addActivities)
                     }
                 }
             }
@@ -204,29 +222,30 @@ Page {
 
         onAtYEndChanged: {
             if (debugOn) console.log('at y end changed')
-            if (listView.atYEnd && minActivityID < 2000000000) {
+            if (listView.atYEnd && minActivityID > 0) {
                 console.log('listView at end')
                 if ( !requestLock && activityModel.count > 0 && loginCheck() ) {
                     requestLock = true
-                    Pixiv.getStacc(token, showR18, Prxrv.addActivities, minActivityID - 1)
+                    Pixiv.getStacc(token, showR18, addActivities, minActivityID - 1)
                 }
             }
         }
 
     }
 
-
     Component.onCompleted: {
         console.log("onCompleted")
         if (activityModel.count == 0) {
             illustArray = []
             if(loginCheck()) {
-                Pixiv.getStacc(token, showR18, Prxrv.addActivities)
+                Pixiv.getStacc(token, showR18, addActivities);
             } else {
                 // Try again
             }
+            requestMgr.allCacheDone.connect(setIcon);
         }
     }
+    Component.onDestruction: {
+        requestMgr.allCacheDone.disconnect(setIcon);
+    }
 }
-
-

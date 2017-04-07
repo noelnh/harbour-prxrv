@@ -28,11 +28,11 @@ function getActionName(activity_type) {
     }
 }
 
-/*
+/**
  * Add activities to activityModel
  * Used as callback in StaccPage and StaccListPage
  */
-function addActivities(resp_j) {
+function addActivities(resp_j, icon_urls) {
 
     requestLock = false;
 
@@ -44,7 +44,7 @@ function addActivities(resp_j) {
     for (var i in activities) {
 
         var activityID = parseInt(activities[i]['id']);
-        if (activityID < minActivityID)
+        if (activityID < minActivityID || minActivityID == 0)
             minActivityID = activityID;
 
         var activity_type = activities[i]['type'];
@@ -73,9 +73,11 @@ function addActivities(resp_j) {
             authorName: activities[i]['ref_work']['user']['name'],
             activityTime: activities[i]['post_time'],
             activityType: activities[i]['type'],
-            userIcon: activities[i]['user']['profile_image_urls']['px_50x50'],
+            userIcon: '',
             userName: activities[i]['user']['name'],
         });
+        if (icon_urls)
+            icon_urls.push(activities[i]['user']['profile_image_urls']['px_50x50']);
     }
 }
 
@@ -87,6 +89,9 @@ function getCurrentModel() {
                 return worksModelStack[worksModelStack.length - 1];
             case 'userWorkModel':
                 if (debugOn) console.log('choose userWorkModel');
+                return worksModelStack[worksModelStack.length - 1];
+            case 'recommendationModel':
+                if (debugOn) console.log('choose recommendationModel');
                 return worksModelStack[worksModelStack.length - 1];
             case 'feedsModel':
                 if (debugOn) console.log('choose feedsModel');
@@ -172,3 +177,46 @@ function getDuration(time_str) {
     return (seconds) + qsTr(" seconds");
 }
 
+
+/**
+ * Get image from local cache
+ *
+ * @param {string} image_url
+ * @param {string} subdir
+ * @returns {undefined|string}
+ */
+function getImage(image_url, subdir) {
+    if (!subdir) return;
+    var imageDirPath = cachePath + '/' + subdir + '/';
+
+    if (Array.isArray(image_url)) {
+        if (image_url.length > 0) {
+            var sorted_urls = image_url.slice().sort();
+            for (var i=sorted_urls.length-1; i>0; i--) {
+                if (sorted_urls[i] === sorted_urls[i-1])
+                    sorted_urls.splice(i, 1);
+            }
+            requestMgr.saveCaches(token, sorted_urls, imageDirPath);
+        }
+        return;
+    }
+
+    var idx = image_url.lastIndexOf('/');
+    var filename = image_url.substr(idx+1);
+    var filePath = imageDirPath + filename;
+    if (requestMgr.checkFile(filePath)) {
+//        console.log('Found image:' + filePath);
+        return filePath;
+    }
+    requestMgr.saveImage(token, image_url, imageDirPath, filename, 1);
+//    console.log('Image not found:' + filename, ', downloading...')
+    return '';
+}
+
+function getIcon(icon_url) {
+    return getImage(icon_url, 'icons');
+}
+
+function getThumb(thumb_url, size) {
+    return getImage(thumb_url, 'thumbnails/' + size);
+}

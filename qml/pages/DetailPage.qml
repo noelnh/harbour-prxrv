@@ -22,6 +22,9 @@ Page {
 
     property bool isEmptyPage: false
 
+    property bool overwriteUrl: false
+    property string imgUrlCache: ''
+
     property int leftPadding: 25
 
     ListModel { id: slideModel }
@@ -53,6 +56,15 @@ Page {
         if (fromID == workID) {
             if (debugOn) console.log("set refreshWorkDetails true")
             refreshWorkDetails = true
+        }
+    }
+
+    function setIcon() {
+        if (!work.authorIcon) return;
+        var icon_path = Prxrv.getIcon(work.authorIcon);
+        if (icon_path) {
+            authorIcon.source = icon_path;
+            requestMgr.cacheDone.disconnect(setIcon);
         }
     }
 
@@ -115,11 +127,11 @@ Page {
             Prxrv.toggleIcon(resp_j)
         }
 
-        if (currentIndex < 0) {
+        if (currentIndex < 0 || overwriteUrl) {
             work = {
                 'headerText': resp[0]['title'],
                 'title': resp[0]['title'],
-                'master480': resp[0]['image_urls']['px_480mw'],
+                'master480': resp[0]['image_urls']['px_480mw'] || imgUrlCache,
                 'large': resp[0]['image_urls']['large'],
                 'square128': resp[0]['image_urls']['px_128x128'],
                 'authorIcon': resp[0]['user']['profile_image_urls']['px_50x50'],
@@ -257,7 +269,7 @@ Page {
                         }
 
                         if (debugOn) console.log("Downloading:", src_large, "to", _savePath, filename)
-                        requestMgr.saveImage(token, src_large, _savePath, filename)
+                        requestMgr.saveImage(token, src_large, _savePath, filename, 0)
                         downloadsModel.append( {
                             filename: filename,
                             path: _savePath,
@@ -288,8 +300,10 @@ Page {
                 onClicked: {
                     if (loginCheck()) {
                         if (favoriteID > 0) {
+                            console.log("Removing bookmark:", favoriteID)
                             Pixiv.unbookmarkWork(token, favoriteID, setBookmarkStatus)
                         } else {
+                            console.log("Adding bookmark:", workID)
                             Pixiv.bookmarkWork(token, workID, 'public', setBookmarkStatus)
                         }
                     }
@@ -328,16 +342,17 @@ Page {
                     height: width
                     anchors.top: parent.top
                     anchors.left: parent.left
-                    source: {
-                        // Workaround for server's error response
-                        if (work.authorIcon.slice(-6, -4) !== '_s') {
-                            if (debugOn) console.log('orig:', work.authorIcon)
-                            if (debugOn) console.log('replace the icon with the 50x50 one')
-                            return work.authorIcon.slice(0, -4) + '_s' + work.authorIcon.slice(-4)
-                        } else {
-                            return work.authorIcon
-                        }
-                    }
+                    source: ''
+//                    source: {
+//                        // Workaround for server's error response
+//                        if (work.authorIcon.slice(-6, -4) !== '_s') {
+//                            if (debugOn) console.log('orig:', work.authorIcon)
+//                            if (debugOn) console.log('replace the icon with the 50x50 one')
+//                            return work.authorIcon.slice(0, -4) + '_s' + work.authorIcon.slice(-4)
+//                        } else {
+//                            return work.authorIcon
+//                        }
+//                    }
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -578,7 +593,14 @@ Page {
         if (debugOn) console.log("details onCompleted")
 
         if (authorID && currentIndex >= 0) {
-            work = Prxrv.getModelItem(currentIndex)
+            var _work = Prxrv.getModelItem(currentIndex);
+            // If the access of master480 is forbidden by server,
+            // use Pixiv.getWorkDetails()'s result to overwrite it
+            if (overwriteUrl) {
+                imgUrlCache = _work.master480 || imgUrlCache;
+                _work.master480 = '';
+            }
+            work = _work;
         } else {
             work = {
                 'headerText': '',
@@ -600,6 +622,9 @@ Page {
         // Cover image index
         coverIndex[coverIndex.length] = currentIndex
         coverIndex[0] = coverIndex[coverIndex.length - 1]
+
+        requestMgr.cacheDone.connect(setIcon);
+        setIcon();
     }
 }
 

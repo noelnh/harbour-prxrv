@@ -15,8 +15,23 @@ Page {
     property bool notEmptyFeed: true
 
     property var feedArray: []
+    property int minActivityID: 0
+
+    property var authorIconUrls: []
 
     ListModel { id: feedsModel }
+
+
+    function setIcon() {
+        for (var i=0; i<authorIconUrls.length; i++) {
+            var icon_url = authorIconUrls[i];
+            if (!icon_url) continue;
+            var icon_path = Prxrv.getIcon(icon_url);
+            if (icon_path) {
+                feedsModel.get(i).authorIconLocal = icon_path;
+            }
+        }
+    }
 
     function addActivities(resp_j) {
         requestLock = false;
@@ -29,7 +44,7 @@ Page {
         for (var i in activities) {
 
             var activityID = parseInt(activities[i]['id']);
-            if ( activityID < minActivityID) {
+            if ( activityID < minActivityID || minActivityID == 0) {
                 minActivityID = activityID; 
             }
 
@@ -59,10 +74,13 @@ Page {
                 master480: activities[i]['ref_work']['image_urls']['px_480mw'],
                 //large: activities[i]['ref_work']['image_urls']['large'],  // large is not available
                 authorIcon: activities[i]['ref_work']['user']['profile_image_urls']['px_50x50'],
+                authorIconLocal: '',
                 authorID: activities[i]['ref_work']['user']['id'],
                 authorName: activities[i]['ref_work']['user']['name'],
             } );
+            authorIconUrls.push(activities[i]['ref_work']['user']['profile_image_urls']['px_50x50']);
         }
+        Prxrv.getIcon(authorIconUrls);
     }
 
 
@@ -121,7 +139,7 @@ Page {
                         height: width
                         anchors.top: parent.top
                         anchors.left: parent.left
-                        source: authorIcon
+                        source: authorIconLocal
                     }
                     Column {
                         height: 80
@@ -230,7 +248,7 @@ Page {
         }
 
         onAtYEndChanged: {
-            if (listView.atYEnd) {
+            if (listView.atYEnd && minActivityID > 0) {
                 if ( !requestLock && feedsModel.count > 0 && loginCheck() ) {
                     requestLock = true
                     Pixiv.getFeeds(token, userID, showR18, addActivities, minActivityID - 1)
@@ -265,7 +283,11 @@ Page {
             } else {
                 // Try again
             }
+            requestMgr.allCacheDone.connect(setIcon);
         }
+    }
+    Component.onDestruction: {
+        requestMgr.allCacheDone.disconnect(setIcon);
     }
 }
 

@@ -1,6 +1,7 @@
 .pragma library
 
 var base_url = 'https://public-api.secure.pixiv.net/v1'
+var app_url = 'https://app-api.pixiv.net/v1'
 
 function checkToken(token, msg) {
     console.log('Token for ' + msg + '(): ' + token);
@@ -36,7 +37,7 @@ function sendRequest(method, token, url, params, callback) {
                 typeof(callback) === 'function' && callback(null);
             } else if (xmlhttp.status == 200) {
                 var resp_j = JSON.parse(xmlhttp.responseText);
-                if (token == '' || resp_j['status'] == 'success') {
+                if (token == '' || resp_j['status'] == 'success' || resp_j['illusts']) {
                     //var resp = resp_j['response'];
                     typeof(callback) === 'function' && callback(resp_j);
                 }
@@ -54,9 +55,18 @@ function sendRequest(method, token, url, params, callback) {
 
     if ((method == 'GET' || method == 'DELETE') && params_str != '') url += '?' + params_str;
 
+    var headers = {
+        'Referer': 'https://app-api.pixiv.net/',
+        'App-OS': 'ios',
+        'App-OS-Version': '9.3.3',
+        'App-Version': '6.0.9',
+        'User-Agent': 'PixivIOSApp/6.0.9 (iOS 9.3.3; iPhone8,1)',
+    }
+
     xmlhttp.open(method, url, true);
-    xmlhttp.setRequestHeader('Referer', 'http://spapi.pixiv.net/');
-    xmlhttp.setRequestHeader('User-Agent', 'PixivIOSApp/5.8.0');
+    for (var key in headers) {
+        xmlhttp.setRequestHeader(key, headers[key]);
+    }
     if (token !== '') xmlhttp.setRequestHeader('Authorization', 'Bearer ' + token);
 
     // TODO
@@ -168,6 +178,20 @@ function getRankingWork(token, type, mode, page, callback) {
 }
 
 
+// Recommendation (App API)
+//
+function getRecommendation(token, page, callback) {
+    if (!checkToken(token, 'getRecommendation')) return;
+    var url = app_url + '/illust/recommended';
+    var params = {
+        'content_type': 'illust',
+        'include_ranking_label': 'true',
+        'filter': 'for_ios',
+        'offset': (page-1) * 30,
+    };
+    sendRequest('GET', token, url, params, callback);
+}
+
 // Latest Works
 //
 function getLatestWork(token, page, callback) {
@@ -245,7 +269,7 @@ function getFollowing(token, user_id, page, callback) {
     if (!checkToken(token, 'getFollowing')) return;
     var url = base_url + '/users/' + user_id + '/following.json';
     var params = {
-        'per_page': '50',
+        'per_page': '20',
         'page': page
     };
     sendRequest('GET', token, url, params, callback);
@@ -257,7 +281,7 @@ function getMyFollowing(token, publicity, page, callback) {
     var params = {
         'publicity': publicity,
         'page': page,
-        'per_page': '50',
+        'per_page': '20',
     };
     sendRequest('GET', token, url, params, callback);
 }

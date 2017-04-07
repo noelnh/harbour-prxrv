@@ -3,11 +3,10 @@ import Sailfish.Silica 1.0
 
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
-import "../js/storage.js" as Storage
+import "../js/settings.js" as Settings
 
 Page {
     id: staccPage
-
 
     Component {
         id: activityDelegate
@@ -53,7 +52,7 @@ Page {
                 onClicked: {
                     pageStack.replace("StaccListPage.qml")
                     staccListMode = true
-                    Storage.writeSetting('staccListMode', true)
+                    Settings.write('staccListMode', true)
                 }
             }
             MenuItem {
@@ -75,7 +74,7 @@ Page {
         }
 
         onAtYEndChanged: {
-            if (gridView.atYEnd && minActivityID < 2000000000) {
+            if (gridView.atYEnd && minActivityID > 0) {
                 if ( !requestLock && activityModel.count > 0 && loginCheck() ) {
                     requestLock = true
                     Pixiv.getStacc(token, showR18, Prxrv.addActivities, minActivityID - 1)
@@ -89,7 +88,9 @@ Page {
         if (activityModel.count == 0) {
             illustArray = []
             if(loginCheck()) {
-                Pixiv.getStacc(token, showR18, Prxrv.addActivities)
+                Pixiv.getStacc(token, showR18, function(activities) {
+                    Prxrv.addActivities(activities, []);
+                });
             } else {
                 // Try again
             }

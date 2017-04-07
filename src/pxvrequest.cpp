@@ -7,8 +7,10 @@
 
 PxvRequest::PxvRequest(QObject *parent) : QObject(parent) {}
 PxvRequest::~PxvRequest() {
-    delete this->qnrq;
-    this->qnr->deleteLater();
+    if (this->qnrq)
+        delete this->qnrq;
+    if (this->qnr)
+        this->qnr->deleteLater();
 }
 
 void PxvRequest::get(QNetworkAccessManager &qnam, QString url, QString path, QString filename) {
@@ -18,7 +20,7 @@ void PxvRequest::get(QNetworkAccessManager &qnam, QString url, QString path, QSt
     if (!dir.exists()) {
        if (!dir.mkpath(".")) {
            path = "/home/nemo/";
-           emit errorMessage("Failed to create directory.");
+           emit errorMessage("Failed to create directory.", this);
            // TODO system notification
        }
     }
@@ -29,7 +31,7 @@ void PxvRequest::get(QNetworkAccessManager &qnam, QString url, QString path, QSt
     // Check file path
     QFileInfo checkFile(path.append(filename));
     if (checkFile.exists()) {
-        emit errorMessage("File exits: " + filename);
+        emit errorMessage("File exits: " + filename, this);
         return;
     }
     this->filename = filename;
@@ -63,15 +65,19 @@ QString PxvRequest::getFilename() {
 }
 
 void PxvRequest::writeFile() {
+    if (this->qnr->error() != QNetworkReply::NoError) {
+        qDebug() << "Error occurred:" << this->qnr->error() << ", file:" << this->rqurl.toString();
+        return;
+    }
     if (this->isAborted) {
-        qDebug() << "Abort write ...";
+        qDebug() << "Abort writing ...";
         return;
     }
     QFile* file = new QFile(path.append(filename));
     if (file->open(QIODevice::WriteOnly)) {
         file->write(qnr->readAll());
         file->close();
-        qDebug() << filename.append(" finished");
+        //qDebug() << filename.append(" finished");
         delete file;
         emit saveImageSucceeded(this);
     } else {

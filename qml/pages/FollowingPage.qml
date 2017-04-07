@@ -2,6 +2,7 @@ import QtQuick 2.2
 import Sailfish.Silica 1.0
 
 import "../js/pixiv.js" as Pixiv
+import "../js/prxrv.js" as Prxrv
 
 Page {
     id: followingPage
@@ -13,6 +14,8 @@ Page {
 
     property int currentPage: 0
     property int totalFollowing: 0
+
+    property var authorIconUrls: []
 
     function setFollowing(resp_j) {
 
@@ -28,10 +31,25 @@ Page {
                 userID: users[i]['id'],
                 userName: users[i]['name'],
                 userAccount: users[i]['account'],
-                userIcon: users[i]['profile_image_urls']['px_50x50']
+                userIcon: ''
             } );
+            authorIconUrls.push(users[i]['profile_image_urls']['px_50x50']);
+        }
+
+        Prxrv.getIcon(authorIconUrls);
+    }
+
+    function setIcon() {
+        for (var i=0; i<authorIconUrls.length; i++) {
+            var icon_url = authorIconUrls[i];
+            if (!icon_url) continue;
+            var icon_path = Prxrv.getIcon(icon_url);
+            if (icon_path) {
+                followingModel.get(i).userIcon = icon_path;
+            }
         }
     }
+
 
     ListModel { id: followingModel }
 
@@ -156,7 +174,10 @@ Page {
                 Pixiv.getMyFollowing(token, publicity, currentPage, setFollowing)
             }
         }
+        requestMgr.allCacheDone.connect(setIcon);
     }
 
+    Component.onDestruction: {
+        requestMgr.allCacheDone.disconnect(setIcon);
+    }
 }
-
