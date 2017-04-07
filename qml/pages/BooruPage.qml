@@ -10,6 +10,8 @@ Page {
     property int currentPage: 1
     property int currentIndex: -1
 
+    property int emptyFetch: 0
+
     // TODO store
     property bool pxvOnly: true
 
@@ -22,7 +24,6 @@ Page {
     ListModel { id: booruModelL }
     ListModel { id: booruModelR }
 
-
     // Add posts to this model
     function addBooruPosts(works) {
 
@@ -31,9 +32,10 @@ Page {
         if (!works) return;
 
         if (debugOn) console.log('adding posts to booruModel')
+        var validCount = 0;
         for (var i in works) {
             if (!showR18 && works[i]['rating'] !== 's') continue;
-            if (pxvOnly && works[i]['source'].indexOf('pixiv') < 0) continue;
+            if (pxvOnly && !isPxvSource(works[i]['source'], true)) continue;
             // TODO pxv icon
             var elmt = {
                 workID: works[i]['id'],
@@ -60,9 +62,26 @@ Page {
                 heightR += elmt.height_p * 100;
                 if (debugOn) console.log('right +', 270 * elmt.height_p);
             }
+            validCount += 1;
+        }
+        if (emptyFetch < 2) {
+            if (validCount === 0) {
+                emptyFetch += 1;
+                requestLock = true;
+                currentPage += 1;
+                Booru.getPosts(50, currentPage, '', addBooruPosts);
+            } else {
+                emptyFetch = 0;
+            }
+        } else {
+            infoBanner.showText("Cannot load posts...");
         }
     }
 
+    function isPxvSource(url, shortMatch) {
+        if (shortMatch) return url.indexOf('pixiv') > 0 || url.indexOf('pximg') > 0;
+        return url.indexOf('pixiv.net/img-orig') > 0 || url.indexOf('pximg.net/img-orig') > 0;
+    }
 
     Component {
         id: booruDelegate
@@ -81,11 +100,11 @@ Page {
             }
 
             onClicked: {
-                if (source.indexOf('pixiv') > 0) {
+                if (isPxvSource(source, true)) {
                     var illust_id = 'None'
                     if (source.indexOf('illust_id=') > 0) {
                         illust_id = source.substr(source.indexOf('illust_id=')+10)
-                    } else if (source.indexOf('pixiv.net/img-orig') > 0) {
+                    } else if (isPxvSource(source)) {
                         var illust_name = source.substr(source.lastIndexOf('/')+1)
                         illust_id = illust_name.substr(0, illust_name.indexOf('_'))
                     }
@@ -94,7 +113,6 @@ Page {
                         pageStack.push("DetailPage.qml", _props)
                     }
                 } else {
-                    console.log('Column:', column)
                     var _props = {
                         "workID": workID,
                         "currentIndex": index,
@@ -125,6 +143,7 @@ Page {
                     booruModelL.clear()
                     booruModelR.clear()
                     currentPage = 1
+                    emptyFetch = 0
                     Booru.getPosts(50, currentPage, '', addBooruPosts)
                 }
             }
@@ -135,6 +154,7 @@ Page {
                     booruModelL.clear()
                     booruModelR.clear()
                     currentPage = 1
+                    emptyFetch = 0
                     Booru.getPosts(50, currentPage, '', addBooruPosts)
                 }
             }
@@ -171,9 +191,7 @@ Page {
         }
 
         onAtYEndChanged: {
-            if (debugOn) console.log('at y end changed')
             if (booruFlicableView.atYEnd) {
-                console.log('gridView at end')
                 if ( !requestLock && booruModelL.count + booruModelR.count > 0 ) {
                     requestLock = true
                     currentPage += 1
@@ -193,7 +211,6 @@ Page {
     }
 
     Component.onCompleted: {
-        console.log("onCompleted")
        if (booruModelR.count + booruModelL.count === 0) {
            currentPage = 1
            Booru.getPosts(50, currentPage, '', addBooruPosts)

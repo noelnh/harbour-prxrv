@@ -37,6 +37,28 @@
     </message>
 </context>
 <context>
+    <name>BooruDetailPage</name>
+    <message>
+        <source>Uploaded by: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>BooruPage</name>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show pixiv only</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CoverPage</name>
     <message>
         <source>Prxrv</source>
