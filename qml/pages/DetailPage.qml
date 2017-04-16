@@ -25,6 +25,7 @@ Page {
     property bool overwriteUrl: false
     property string imgUrlCache: ''
 
+    property string masterSrc: ''
     property string iconSrc: ''
 
     property int leftPadding: 25
@@ -58,6 +59,22 @@ Page {
         if (fromID == workID) {
             if (debugOn) console.log("set refreshWorkDetails true")
             refreshWorkDetails = true
+        }
+    }
+
+    function needCache(imgUrl) {
+        return imgUrl && imgUrl.indexOf("pximg.net") > 0;
+    }
+
+    function setMasterImg() {
+        if (!needCache(work.master480)) {
+            if (work.master480) masterSrc = work.master480;
+            return;
+        }
+        var thumb_path = Prxrv.getThumb(work.master480, '480x960');
+        if (thumb_path) {
+            masterSrc = thumb_path;
+            requestMgr.cacheDone.disconnect(setMasterImg);
         }
     }
 
@@ -140,6 +157,8 @@ Page {
                 'authorName': resp[0]['user']['name']
             }
         }
+
+        setMasterImg();
 
         // Author icon
         if (!work.authorIcon) {
@@ -331,11 +350,11 @@ Page {
                 id: image
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                source: work.master480
+                source: masterSrc
 
                 BusyIndicator {
                     anchors.centerIn: parent
-                    running: image.status == Image.Loading
+                    running: image.status == Image.Loading || !masterSrc
                 }
             }
 
@@ -632,6 +651,9 @@ Page {
         // Cover image index
         coverIndex[coverIndex.length] = currentIndex
         coverIndex[0] = coverIndex[coverIndex.length - 1]
+
+        requestMgr.cacheDone.connect(setMasterImg);
+        setMasterImg();
 
         requestMgr.cacheDone.connect(setIcon);
         setIcon();
