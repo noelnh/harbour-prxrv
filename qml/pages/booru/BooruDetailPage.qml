@@ -1,8 +1,8 @@
 import QtQuick 2.2
 import Sailfish.Silica 1.0
 
-import "../js/booru.js" as Booru
-import "../js/prxrv.js" as Prxrv
+import "../../js/booru.js" as Booru
+import "../../js/prxrv.js" as Prxrv
 
 Page {
     id: detailPage
@@ -11,12 +11,42 @@ Page {
 
     property var work: {}
 
+    property bool faved: false
+    property string username: "username"
+
     property int currentIndex: -1
 
     property int leftPadding: 25
 
     ListModel { id: tagModel }
 
+
+    function findMe(resp) {
+        var favedUsers = resp['favorited_users'];
+        if (favedUsers) {
+            if (favedUsers.split(",").indexOf(username) >= 0) {
+                faved = true;
+            } else {
+                faved = false;
+            }
+        }
+    }
+
+    function getFavedUsers() {
+        Booru.listFavedUsers(workID, findMe);
+    }
+
+    function toggleVote() {
+        var score = 3;
+        if (faved) score = 2;
+
+        Booru.vote(workID, score, function(resp) {
+            if (score > 2)
+                faved = true;
+            else
+                faved = false;
+        });
+    }
 
     SilicaFlickable {
         id: detailFlickable
@@ -27,7 +57,30 @@ Page {
         PageHeader {
             id: pageHeader
             width: parent.width
-            title: work.headerText
+            title: (faved ? "★ " : "☆ ") + work.headerText
+        }
+
+        PushUpMenu {
+            id: pushUpMenu
+            MenuItem {
+                id: openWebViewAction
+                text: qsTr("Open Web Page")
+                onClicked: {
+                    var postUrl = "https://yande.re/post/show/" + workID
+//                    var _props = {"initUrl":  postUrl}
+//                    pageStack.push('WebViewPage.qml', _props)
+                    Qt.openUrlExternally(postUrl);
+                }
+            }
+        }
+
+        PullDownMenu {
+            id: pullDownMenu
+            MenuItem {
+                id: voteAction
+                text: faved ? qsTr("Unlike") : qsTr("Like")
+                onClicked: toggleVote()
+            }
         }
 
         Item {
@@ -159,6 +212,8 @@ Page {
         for (var i in tags) {
             tagModel.append( { tag: tags[i] } )
         }
+
+        getFavedUsers();
     }
 }
 

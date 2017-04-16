@@ -24,6 +24,7 @@ SOURCES += src/harbour-prxrv.cpp \
 OTHER_FILES += qml/harbour-prxrv.qml \
     qml/cover/CoverPage.qml \
     qml/pages/*.qml \
+    qml/pages/booru/*.qml \
     qml/js/*.js \
     qml/fonts/fontawesome-webfont.ttf \
     qml/images/* \

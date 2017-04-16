@@ -42,6 +42,18 @@
         <source>Uploaded by: </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open Web Page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlike</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Like</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>BooruPage</name>
@@ -50,11 +62,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show all</source>
+        <source>Previous page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show pixiv only</source>
+        <source>Next page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to page ...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -209,6 +225,33 @@
     </message>
     <message>
         <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OptionsDialog</name>
+    <message>
+        <source>Options</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Go to page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>page number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Filters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show pixiv works only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show R-18 works</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

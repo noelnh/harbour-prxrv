@@ -86,7 +86,7 @@ Page {
             ListElement {
                 label: "Yande.re"
                 model: "booruModel"
-                page: "BooruPage.qml"
+                page: "booru/BooruPage.qml"
             }
         }
 
