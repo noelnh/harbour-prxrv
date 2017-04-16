@@ -287,7 +287,8 @@ Page {
                     text: qsTr("Click to clear cache: ") + (cacheSize || 0) + "KB"
                 }
                 onClicked: {
-                    var csize = cacheMgr.clear(cachePath + '/thumbnails', '128x128');
+                    cacheMgr.clear(cachePath + '/thumbnails', '128x128');
+                    var csize = cacheMgr.clear(cachePath + '/thumbnails', '480x960');
                     cacheSize = csize;
                 }
             }
