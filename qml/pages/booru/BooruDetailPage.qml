@@ -11,6 +11,10 @@ Page {
 
     property var work: {}
 
+    property string fromTags: ''
+    property bool pxvOnly: false
+    property string booruSite: 'Yande.re'
+
     property bool faved: false
     property string username: "username"
 
@@ -19,6 +23,7 @@ Page {
     property int leftPadding: 25
 
     ListModel { id: tagModel }
+    ListModel { id: familyModel }
 
 
     function findMe(resp) {
@@ -168,7 +173,39 @@ Page {
             }
 
             ListView {
+                id: familyList
                 anchors.top: updateTime.bottom
+                anchors.topMargin: 10
+                width: parent.width
+                height: childrenRect.height
+
+                model: familyModel
+                delegate: ListItem {
+                    height: Theme.itemSizeSmall
+                    width: parent.width
+                    Label {
+                        width: parent.width
+                        anchors {
+                            left: parent.left
+                            leftMargin: leftPadding
+                            verticalCenter: parent.verticalCenter
+                        }
+                        text: title
+                    }
+                    onClicked: {
+                        var _props =  {
+                            booruSite: booruSite,
+                            pxvOnly: pxvOnly,
+                            searchTags: "parent:" + searchID,
+                            fromBooruId: 0
+                        };
+                        pageStack.push("BooruPage.qml", _props);
+                    }
+                }
+            }
+
+            ListView {
+                anchors.top: familyList.bottom
                 anchors.topMargin: 10
                 width: parent.width
                 height: childrenRect.height
@@ -184,8 +221,18 @@ Page {
                         text: tag
                     }
                     onClicked: {
-                        // TODO
-                        if (debugOn) console.log('tag clicked')
+                        if (debugOn) console.log('tag clicked', tag);
+                        if (tag === fromTags) {
+                            if (debugOn) console.log('pop back to same tag')
+                            pageStack.pop()
+                        } else {
+                            pageStack.push("BooruPage.qml", {
+                                               booruSite: booruSite,
+                                               pxvOnly: pxvOnly,
+                                               searchTags: tag,
+                                               fromBooruId: workID
+                                           });
+                        }
                     }
                 }
             }
@@ -211,6 +258,13 @@ Page {
         tagModel.clear()
         for (var i in tags) {
             tagModel.append( { tag: tags[i] } )
+        }
+
+        if (work['parentID']) {
+            familyModel.append({ title: "Parent " + work['parentID'], searchID: work['parentID'] });
+        }
+        if (work['hasChildren']) {
+            familyModel.append({ title: "View children", searchID: work['workID'] });
         }
 
         getFavedUsers();

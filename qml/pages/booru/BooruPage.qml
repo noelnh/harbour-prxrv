@@ -11,11 +11,14 @@ Page {
     property int currentIndex: -1
     property int pageSize: 100
 
+    property string searchTags: ''
+
+    property string fromBooruId: ''
+
     property int emptyFetch: 0
 
     property bool pxvOnly: false
-
-    property bool doReset: false
+    property bool pxvDetail: true
 
     // TODO other sites
     property string booruSite: 'Yande.re'
@@ -27,6 +30,10 @@ Page {
     ListModel { id: booruModelR }
 
 
+    function generataPageStr() {
+        return booruSite + "," + pageSize + "," + currentPage + "," + searchTags;
+    }
+
     function reloadPostList(pageNum, _pxvOnly) {
         currentPage = pageNum || currentPage;
         if (typeof _pxvOnly === "boolean" && _pxvOnly !== pxvOnly) {
@@ -35,7 +42,7 @@ Page {
         booruModelL.clear();
         booruModelR.clear();
         emptyFetch = 0;
-        Booru.getPosts(pageSize, currentPage, '', addBooruPosts);
+        Booru.getPosts(pageSize, currentPage, searchTags, addBooruPosts);
     }
 
     // Add posts to this model
@@ -53,6 +60,8 @@ Page {
             // TODO pxv icon
             var elmt = {
                 workID: works[i]['id'],
+                parentID: works[i]['parent_id'],
+                hasChildren: works[i]['has_children'],
                 headerText: booruSite + ' ' + works[i]['id'],
                 preview: works[i]['preview_url'],
                 sample: works[i]['sample_url'],
@@ -83,7 +92,7 @@ Page {
                 emptyFetch += 1;
                 requestLock = true;
                 currentPage += 1;
-                Booru.getPosts(pageSize, currentPage, '', addBooruPosts);
+                Booru.getPosts(pageSize, currentPage, searchTags, addBooruPosts);
             } else {
                 emptyFetch = 0;
             }
@@ -125,7 +134,7 @@ Page {
             }
 
             onClicked: {
-                if (isPxvSource(source, true)) {
+                if (pxvDetail && isPxvSource(source, true)) {
                     var illust_id = 'None'
                     if (source.indexOf('illust_id=') > 0) {
                         illust_id = source.substr(source.indexOf('illust_id=')+10)
@@ -138,12 +147,19 @@ Page {
                         pageStack.push("../DetailPage.qml", _props)
                     }
                 } else {
-                    var _props = {
-                        "workID": workID,
-                        "currentIndex": index,
-                        "work": column === 'L' ? booruModelL.get(index) : booruModelR.get(index)
+                    if (fromBooruId == workID) { // string == number
+                        pageStack.pop()
+                    } else {
+                        var _props = {
+                            "workID": workID,
+                            "currentIndex": index,
+                            "fromTags": searchTags,
+                            "pxvOnly": pxvOnly,
+                            "booruSite": booruSite,
+                            "work": column === 'L' ? booruModelL.get(index) : booruModelR.get(index)
+                        }
+                        pageStack.push("BooruDetailPage.qml", _props)
                     }
-                    pageStack.push("BooruDetailPage.qml", _props)
                 }
             }
         }
@@ -157,7 +173,7 @@ Page {
 
         PageHeader {
             id: header
-            title: booruSite + ": " + currentPage
+            title: booruSite + ": " + searchTags + " P" + currentPage
         }
 
         PullDownMenu {
@@ -234,7 +250,12 @@ Page {
 
     onStatusChanged: {
         if (status == PageStatus.Active) {
-            pageStack.pushAttached("OptionsDialog.qml", {"_currentPage": currentPage, "_pxvOnly": pxvOnly});
+            pageStack.pushAttached("OptionsDialog.qml", {
+                                       "_currentPage": currentPage,
+                                       "_pxvOnly": pxvOnly,
+                                       "_pxvDetail": pxvDetail,
+                                       "_tags": searchTags
+                                   });
         }
         if (status == PageStatus.Deactivating) {
             if (_navigation == PageNavigation.Back) {
@@ -246,7 +267,8 @@ Page {
     Component.onCompleted: {
        if (booruModelR.count + booruModelL.count === 0) {
            currentPage = 1
-           Booru.getPosts(pageSize, currentPage, '', addBooruPosts)
+           Booru.getPosts(pageSize, currentPage, searchTags, addBooruPosts)
+           booruPageStack.push(generataPageStr());
        }
     }
 }
