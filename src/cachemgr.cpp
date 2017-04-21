@@ -14,18 +14,31 @@ quint64 CacheMgr::getSize(const QString & cacheDir, const QString & subDir) {
     return this->dirSize(this->concatPath(cacheDir, subDir));
 }
 
-quint64 CacheMgr::clear(const QString & cacheDir, const QString & subDir) {
-    QString path = this->concatPath(cacheDir, subDir);
-
-    QDir dir(path);
-    dir.setNameFilters(QStringList() << "*.*");
-    dir.setFilter(QDir::Files);
-    foreach(QString dirFile, dir.entryList())
+quint64 CacheMgr::clear(const QString & cacheDir, const QString & subDirs) {
+    QList<QString> dirs = subDirs.split(',');
+    quint64 sizez = 0;
+    foreach (QString dirStr, dirs)
     {
-        dir.remove(dirFile);
+        QString path = this->concatPath(cacheDir, dirStr);
+        this->clearDir(path);
+        sizez += this->dirSize(path);
     }
+    return sizez;
+}
 
-    return this->dirSize(path);
+void CacheMgr::clearDir(const QString &path) {
+    QDir dir(path);
+    QFileInfoList list = dir.entryInfoList(QDir::Files | QDir::Dirs |  QDir::Hidden | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+    foreach (QFileInfo fileInfo, list) {
+        if(fileInfo.isDir())
+        {
+            this->clearDir(fileInfo.absoluteFilePath());
+        }
+        else if (fileInfo.isFile())
+        {
+            dir.remove(fileInfo.fileName());
+        }
+    }
 }
 
 QString CacheMgr::concatPath(const QString & cacheDir, const QString & subDir) {
@@ -53,8 +66,9 @@ quint64 CacheMgr::dirSize(const QString & str)
                 sizex += this->dirSize(fileInfo.absoluteFilePath());
             }
             else
+            {
                 sizex += fileInfo.size();
-
+            }
         }
     }
     return sizex;

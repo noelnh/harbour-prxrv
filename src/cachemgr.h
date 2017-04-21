@@ -11,7 +11,8 @@ public:
 
 private:
     quint64 dirSize(const QString & str);
-    QString concatPath(const QString & cacheDir, const QString & subdir);
+    QString concatPath(const QString & cacheDir, const QString & subDirs);
+    void clearDir(const QString & path);
 
 signals:
 
