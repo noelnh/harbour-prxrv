@@ -268,7 +268,6 @@ Page {
        if (booruModelR.count + booruModelL.count === 0) {
            currentPage = 1
            Booru.getPosts(pageSize, currentPage, searchTags, addBooruPosts)
-           booruPageStack.push(generataPageStr());
        }
     }
 }
