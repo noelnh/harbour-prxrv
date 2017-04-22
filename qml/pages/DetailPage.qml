@@ -66,15 +66,30 @@ Page {
         return imgUrl && imgUrl.indexOf("pximg.net") > 0;
     }
 
-    function setMasterImg() {
-        if (!needCache(work.master480)) {
-            if (work.master480) masterSrc = work.master480;
-            return;
+    function setMoreImgs(p0) {
+        for (var i = 0; i < pageCount; i++) {
+            if (i==0) masterSrc = p0;
+            var pn = '_p' + i + '_'
+            slideModel.append( { imgUrl: p0.replace('_p0_', pn) } )
         }
-        var thumb_path = Prxrv.getThumb(work.master480, '480x960');
-        if (thumb_path) {
-            masterSrc = thumb_path;
-            requestMgr.cacheDone.disconnect(setMasterImg);
+    }
+
+    function setMasterImg() {
+        var p0 = work.master480;
+        slideModel.clear()
+
+        if (!needCache(p0)) {
+            return setMoreImgs(p0);
+        }
+
+        for(var i=0; i<pageCount; i++) {
+            var pn = '_p' + i + '_';
+            var thumbSrc = p0.replace('_p0_', pn)
+            var thumb_path = Prxrv.getThumb(thumbSrc, '480x960');
+            if (thumb_path) {
+                if (i == 0) masterSrc = thumb_path;
+                slideModel.append( { imgUrl: thumb_path } )
+            }
         }
     }
 
@@ -158,6 +173,10 @@ Page {
             }
         }
 
+        if (resp[0]['is_manga']) {
+            pageCount = resp[0]['page_count'] || 1;
+            pageStack.pushAttached(morePage)
+        }
         setMasterImg();
 
         // Author icon
@@ -170,17 +189,6 @@ Page {
 
         if (!work.large) {
             work.large = resp[0]['image_urls']['large']
-        }
-
-        if (resp[0]['is_manga']) {
-            pageCount = resp[0]['page_count']
-            var p0 = work.master480
-            slideModel.clear()
-            for (var i = 0; i < pageCount; i++) {
-                var pn = '_p' + i + '_'
-                slideModel.append( { imgUrl: p0.replace('_p0_', pn) } )
-            }
-            pageStack.pushAttached(morePage)
         }
     }
 
@@ -657,6 +665,10 @@ Page {
 
         requestMgr.cacheDone.connect(setIcon);
         setIcon();
+    }
+
+    Component.onDestruction: {
+        requestMgr.cacheDone.disconnect(setMasterImg);
     }
 }
 
