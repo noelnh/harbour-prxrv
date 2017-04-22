@@ -190,15 +190,7 @@ function getImage(image_url, subdir) {
     var imageDirPath = cachePath + '/' + subdir + '/';
 
     if (Array.isArray(image_url)) {
-        if (image_url.length > 0) {
-            var sorted_urls = image_url.slice().sort();
-            for (var i=sorted_urls.length-1; i>0; i--) {
-                if (sorted_urls[i] === sorted_urls[i-1])
-                    sorted_urls.splice(i, 1);
-            }
-            requestMgr.saveCaches(token, sorted_urls, imageDirPath);
-        }
-        return;
+        return cacheImages(image_url, imageDirPath);
     }
 
     var idx = image_url.lastIndexOf('/');
@@ -211,6 +203,17 @@ function getImage(image_url, subdir) {
     requestMgr.saveImage(token, image_url, imageDirPath, filename, 1);
 //    console.log('Image not found:' + filename, ', downloading...')
     return '';
+}
+
+function cacheImages(image_urls, imageDirPath) {
+    if (image_urls.length > 0) {
+        var sorted_urls = image_urls.slice().sort();
+        for (var i=sorted_urls.length-1; i>0; i--) {
+            if (sorted_urls[i] === sorted_urls[i-1])
+                sorted_urls.splice(i, 1);
+        }
+        requestMgr.saveCaches(token, sorted_urls, imageDirPath);
+    }
 }
 
 function getIcon(icon_url) {
