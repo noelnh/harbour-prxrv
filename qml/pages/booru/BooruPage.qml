@@ -159,7 +159,13 @@ Page {
                         illust_id = source.substr(source.indexOf('illust_id=')+10)
                     } else if (isPxvSource(source)) {
                         var illust_name = source.substr(source.lastIndexOf('/')+1)
-                        illust_id = illust_name.substr(0, illust_name.indexOf('_'))
+                        var pa = illust_name.indexOf('_');
+                        var pb = illust_name.indexOf('.');
+                        if (pa > 0) {
+                            illust_id = illust_name.substr(0, pa);
+                        } else if (pb > 0) {
+                            illust_id = illust_name.substr(0, pb);
+                        }
                     }
                     if (!isNaN(illust_id) && illust_id > 0) {
                         var _props = {"workID": illust_id, "authorID": "", "currentIndex": -1}

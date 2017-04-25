@@ -94,7 +94,7 @@ Page {
     }
 
     function setIcon() {
-        if (!work.authorIcon) return;
+        if (!work || !work.authorIcon) return;
         var icon_path = Prxrv.getIcon(work.authorIcon);
         if (icon_path) {
             iconSrc = icon_path;
