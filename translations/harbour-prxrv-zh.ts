@@ -73,6 +73,14 @@
         <source>Go to page ...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Unlike</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Like</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CoverPage</name>
@@ -264,6 +272,10 @@
     </message>
     <message>
         <source>Open pixiv details</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search Tags</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

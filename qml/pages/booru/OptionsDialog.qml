@@ -11,78 +11,94 @@ Dialog {
 
     property int leftPadding: 25
 
-    Column {
-        width: parent.width
+    SilicaFlickable {
+        id: optionsFlicableView
 
-        DialogHeader {
-            title: qsTr("Options")
-        }
+        contentHeight: optionsColumn.height
+        anchors.fill: parent
 
-        SectionHeader {
-            text: qsTr("Go to page")
-        }
-
-        TextField {
-            id: pageNumField
+        Column {
+            id: optionsColumn
             width: parent.width
-            label: qsTr("page number")
-            placeholderText: _currentPage
-            validator: RegExpValidator { regExp: /^\d*$/ }
-        }
 
-        SectionHeader {
-            text: qsTr("Filters")
-        }
-
-        TextSwitch {
-            id: pxvSwitch
-            text: qsTr("Show pixiv works only")
-            checked: _pxvOnly
-            onCheckedChanged: {
+            DialogHeader {
+                title: qsTr("Options")
             }
-        }
-        TextSwitch {
-            id: limitSwitch
-            text: qsTr("Show R-18 works")
-            checked: showR18
-            onCheckedChanged: {
+
+            SectionHeader {
+                text: qsTr("Go to page")
             }
-        }
 
-        SectionHeader {
-            text: qsTr("Behavior")
-        }
-
-        TextSwitch {
-            id: pxvDetailSwitch
-            text: qsTr("Open pixiv details")
-            checked: _pxvDetail
-            onCheckedChanged: {
-                if (checked != _pxvDetail) {
-                    pageStack.previousPage().pxvDetail = checked;
-                }
-            }
-        }
-
-        SectionHeader {
-            text: qsTr("Tags")
-        }
-
-        BackgroundItem {
-            height: Theme.itemSizeSmall
-            width: parent.width
-            Label {
+            TextField {
+                id: pageNumField
                 width: parent.width
-                anchors {
-                    left: parent.left
-                    leftMargin: leftPadding
-                    verticalCenter: parent.verticalCenter
-                }
-                text: _tags
+                label: qsTr("page number")
+                placeholderText: _currentPage
+                validator: RegExpValidator { regExp: /^\d*$/ }
             }
-            onClicked: {
-                if (debugOn) console.log('tag clicked', _tags);
-                pageStack.navigateBack();
+
+            SectionHeader {
+                text: qsTr("Filters")
+            }
+
+            TextSwitch {
+                id: pxvSwitch
+                text: qsTr("Show pixiv works only")
+                checked: _pxvOnly
+                onCheckedChanged: {
+                }
+            }
+            TextSwitch {
+                id: limitSwitch
+                text: qsTr("Show R-18 works")
+                checked: showR18
+                onCheckedChanged: {
+                }
+            }
+
+            SectionHeader {
+                text: qsTr("Behavior")
+            }
+
+            TextSwitch {
+                id: pxvDetailSwitch
+                text: qsTr("Open pixiv details")
+                checked: _pxvDetail
+                onCheckedChanged: {
+                    if (checked != _pxvDetail) {
+                        pageStack.previousPage().pxvDetail = checked;
+                    }
+                }
+            }
+
+            SectionHeader {
+                text: qsTr("Tags")
+            }
+
+            TextField {
+                id: tagsField
+                width: parent.width
+                label: qsTr("Search Tags")
+                placeholderText: _tags
+                inputMethodHints: Qt.ImhNoAutoUppercase
+            }
+
+            BackgroundItem {
+                height: Theme.itemSizeSmall
+                width: parent.width
+                Label {
+                    width: parent.width
+                    anchors {
+                        left: parent.left
+                        leftMargin: leftPadding
+                        verticalCenter: parent.verticalCenter
+                    }
+                    text: _tags
+                }
+                onClicked: {
+                    if (debugOn) console.log('tag clicked', _tags);
+                    pageStack.navigateBack();
+                }
             }
         }
     }
@@ -106,8 +122,13 @@ Dialog {
             toReload = true;
         }
 
+        if (tagsField.text != _tags) {
+            _tags = tagsField.text;
+            toReload = true;
+        }
+
         if (toReload) {
-            pageStack.previousPage().reloadPostList(_currentPage, _pxvOnly);
+            pageStack.previousPage().reloadPostList(_currentPage, _pxvOnly, _tags);
         }
 
         pageStack.popAttached();
