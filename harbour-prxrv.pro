@@ -19,15 +19,18 @@ CONFIG += c++11
 SOURCES += src/harbour-prxrv.cpp \
     src/pxvrequest.cpp \
     src/requestmgr.cpp \
-    src/cachemgr.cpp
+    src/cachemgr.cpp \
+    src/utils.cpp
 
 OTHER_FILES += qml/harbour-prxrv.qml \
     qml/cover/CoverPage.qml \
     qml/pages/*.qml \
-    qml/pages/booru/*.qml \
+    qml/booru/pages/*.qml \
     qml/js/*.js \
-    qml/fonts/fontawesome-webfont.ttf \
+    qml/booru/js/*.js \
     qml/images/* \
+    qml/booru/images/* \
+    qml/fonts/fontawesome-webfont.ttf \
     rpm/harbour-prxrv.yaml \
     rpm/harbour-prxrv.changes \
     translations/*.ts \
@@ -43,5 +46,6 @@ TRANSLATIONS += translations/harbour-prxrv-zh.ts
 HEADERS += \
     src/pxvrequest.h \
     src/requestmgr.h \
-    src/cachemgr.h
+    src/cachemgr.h \
+    src/utils.h
 

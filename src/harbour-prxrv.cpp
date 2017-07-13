@@ -41,6 +41,7 @@
 
 #include "requestmgr.h"
 #include "cachemgr.h"
+#include "utils.h"
 
 int main(int argc, char *argv[])
 {
@@ -52,6 +53,9 @@ int main(int argc, char *argv[])
 
     CacheMgr cacheMgr;
     view->rootContext()->setContextProperty("cacheMgr", &cacheMgr);
+
+    Utils utils;
+    view->rootContext()->setContextProperty("utils", &utils);
 
     view->setSource(SailfishApp::pathTo("qml/harbour-prxrv.qml"));
     view->show();

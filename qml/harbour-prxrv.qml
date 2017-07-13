@@ -57,6 +57,16 @@ ApplicationWindow
      */
     property bool refreshWorkDetails: false
 
+    // Booru
+    property bool toReloadAccounts: true
+    property int leftPadding: 25
+    property bool loadSample: false
+    property string currentSite: ''
+    property string currentUsername: ''
+    property string currentPasshash: ''
+    property string currentThumb: ''
+    property bool openPxvDetails: true
+
 
     ListModel { id: accountModel }
 

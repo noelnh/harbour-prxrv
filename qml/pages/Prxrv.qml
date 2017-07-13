@@ -84,9 +84,9 @@ Page {
                 page: "DownloadsPage.qml"
             }
             ListElement {
-                label: "Yande.re"
+                label: "Moebooru"
                 model: "booruModel"
-                page: "booru/BooruPage.qml"
+                page: "../booru/pages/MainPage.qml"
             }
         }
 
@@ -105,8 +105,9 @@ Page {
                     if (debugOn) console.log( user['id'], user['name'] )
                     var _props =  {"userID": user['id'], "userName": user['name']}
                     pageStack.push(page, _props)
-                } else if (page === 'Yande.re') {
+                } else if (label === 'Moebooru') {
                     pageStack.push(page)
+                    toReloadAccounts = true;
                 } else if (token) {
                     if (model) currentModel = [model,]
                     coverIndex = [0,]

@@ -1,35 +1,30 @@
-import QtQuick 2.2
+import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-import "../../js/booru.js" as Booru
-import "../../js/prxrv.js" as Prxrv
+import "../js/booru.js" as Booru
 
 Page {
-    id: detailPage
+    id: postPage
 
     property string workID: ''
 
     property var work: {}
 
     property string fromTags: ''
-    property bool pxvOnly: false
-    property string booruSite: 'Yande.re'
+    property string siteName: '?'
 
     property bool faved: false
-    property string username: "username"
 
     property int currentIndex: -1
 
-    property int leftPadding: 25
-
-    ListModel { id: tagModel }
+    ListModel { id: tagsModel }
     ListModel { id: familyModel }
 
 
     function findMe(resp) {
         var favedUsers = resp['favorited_users'];
         if (favedUsers) {
-            if (favedUsers.split(",").indexOf(username) >= 0) {
+            if (favedUsers.split(",").indexOf(currentUsername) >= 0) {
                 faved = true;
             } else {
                 faved = false;
@@ -38,14 +33,14 @@ Page {
     }
 
     function getFavedUsers() {
-        Booru.listFavedUsers(workID, findMe);
+        Booru.listFavedUsers(currentSite, workID, findMe);
     }
 
     function toggleVote() {
         var score = 3;
         if (faved) score = 2;
 
-        Booru.vote(workID, score, function(resp) {
+        Booru.vote(currentSite, currentUsername, currentPasshash, workID, score, function(resp) {
             if (score > 2)
                 faved = true;
             else
@@ -71,7 +66,7 @@ Page {
                 id: openWebViewAction
                 text: qsTr("Open Web Page")
                 onClicked: {
-                    var postUrl = "https://yande.re/post/show/" + workID
+                    var postUrl = currentSite + "/post/show/" + workID
 //                    var _props = {"initUrl":  postUrl}
 //                    pageStack.push('WebViewPage.qml', _props)
                     Qt.openUrlExternally(postUrl);
@@ -82,6 +77,7 @@ Page {
         PullDownMenu {
             id: pullDownMenu
             MenuItem {
+                visible: currentUsername
                 id: voteAction
                 text: faved ? qsTr("Unlike") : qsTr("Like")
                 onClicked: toggleVote()
@@ -104,7 +100,7 @@ Page {
 
                 BusyIndicator {
                     anchors.centerIn: parent
-                    running: image.status == Image.Loading
+                    running: image.status === Image.Loading
                 }
             }
 
@@ -127,29 +123,14 @@ Page {
                 anchors.horizontalCenter: parent.horizontalCenter
                 wrapMode: Text.WordWrap
                 onLinkActivated: {
-                    if (link.indexOf('illust_id=') > 0) {
-                        var illust_id = link.substring(link.indexOf('_id=') + 4)
-                        if (!isNaN(illust_id)) {
-                            var _props = {"workID": illust_id, "authorID": "", "currentIndex": -1}
-                            pageStack.push("DetailPage.qml", _props)
-                        }
-                    } else {
-                        Qt.openUrlExternally(link)
-                    }
+                    Qt.openUrlExternally(link)
                 }
                 color: Theme.primaryColor
                 text: {
-                    console.log('source:'+work.source+':')
-                    if (work.source.indexOf('http') === 0 && work.source.indexOf('illust_id=') > 0) {
-                        var illust_id = work.source.substr(work.source.indexOf('illust_id=')+10)
-                        return 'Source: <a href="' + work.source + '">illust/' + illust_id + '</a>'
-                    } else if (work.source.indexOf('pixiv.net/img-orig') > 0) {
-                        var illust_name = work.source.substr(work.source.lastIndexOf('/')+1)
-                        var illust_id = illust_name.substr(0, illust_name.indexOf('_'))
-                        var pxv_url = 'http://touch.pixiv.net/member_illust.php?illust_id='+illust_id
-                        return 'Source: <a href="' + pxv_url + '">illust/' + illust_id + '</a>'
-                    } else if (work.source.indexOf('http') === 0) {
-                        return 'Source: <a href="' + work.source + '">' + work.source + '</a>'
+                    if (debugOn) console.log('source:'+work.source+':')
+                    if (work.source.indexOf('http') === 0) {
+                        return 'Source: <a href="' + work.source + '">' +
+                                work.source.replace(/&/g, '&amp;') + '</a>'
                     } else if (work.source !== '') {
                         return 'Source: ' + work.source
                     } else {
@@ -194,23 +175,23 @@ Page {
                     }
                     onClicked: {
                         var _props =  {
-                            booruSite: booruSite,
-                            pxvOnly: pxvOnly,
+                            siteName: siteName,
                             searchTags: "parent:" + searchID,
                             fromBooruId: 0
                         };
-                        pageStack.push("BooruPage.qml", _props);
+                        pageStack.push("ListPage.qml", _props);
                     }
                 }
             }
 
             ListView {
+                id: tagsList
                 anchors.top: familyList.bottom
                 anchors.topMargin: 10
                 width: parent.width
                 height: childrenRect.height
 
-                model: tagModel
+                model: tagsModel
                 delegate: ListItem {
                     width: parent.width
                     height: Theme.itemSizeSmall
@@ -226,9 +207,8 @@ Page {
                             if (debugOn) console.log('pop back to same tag')
                             pageStack.pop()
                         } else {
-                            pageStack.push("BooruPage.qml", {
-                                               booruSite: booruSite,
-                                               pxvOnly: pxvOnly,
+                            pageStack.push("ListPage.qml", {
+                                               siteName: siteName,
                                                searchTags: tag,
                                                fromBooruId: workID
                                            });
@@ -242,22 +222,28 @@ Page {
 
 
     onStatusChanged: {
-        if (status == PageStatus.Active) {
+        if (status === PageStatus.Active) {
             if (debugOn) console.log("detail page actived: " + workID)
+
+            // Set cover image
+            if (work && work.preview) {
+                currentThumb = work.preview
+            }
         }
 
-        /* TODO Cover
-         *
-         */
+        if (status === PageStatus.Inactive) {
+            currentThumb = ""
+        }
+
     }
 
     Component.onCompleted: {
         if (debugOn) console.log("details onCompleted")
 
         var tags = work.tags.split(' ')
-        tagModel.clear()
+        tagsModel.clear()
         for (var i in tags) {
-            tagModel.append( { tag: tags[i] } )
+            tagsModel.append( { tag: tags[i] } )
         }
 
         if (work['parentID']) {

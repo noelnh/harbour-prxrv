@@ -25,6 +25,7 @@ CoverBackground {
 
     CoverPlaceholder {
         id: coverHolder
+        visible: !currentThumb
         icon.source: "../images/harbour-prxrv.png"
         text: qsTr("Prxrv")
     }
@@ -44,12 +45,18 @@ CoverBackground {
         anchors.centerIn: parent
         width: 180
         height: width
+        fillMode: Image.PreserveAspectCrop
         source: ""
     }
 
     onStatusChanged: {
         if (status === PageStatus.Activating) {
-            setCover(coverIndex[0])
+            if (currentThumb && currentThumb.indexOf('http') === 0) {
+                coverImage.source = currentThumb
+                coverTitle.text = qsTr("Mieru")
+            } else {
+                setCover(coverIndex[0])
+            }
         }
     }
 
@@ -58,12 +65,12 @@ CoverBackground {
 
         CoverAction {
             iconSource: "image://theme/icon-cover-previous"
-            onTriggered: setCover(coverIndex[0] > 0 ? coverIndex[0] - 1 : 0 )
+            onTriggered: currentThumb ? '' : setCover(coverIndex[0] > 0 ? coverIndex[0] - 1 : 0 )
         }
 
         CoverAction {
             iconSource: "image://theme/icon-cover-next"
-            onTriggered: setCover(coverIndex[0] + 1)
+            onTriggered: currentThumb ? '' : setCover(coverIndex[0] + 1)
         }
     }
 }
