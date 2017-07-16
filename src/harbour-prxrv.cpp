@@ -39,14 +39,20 @@
 
 #include <sailfishapp.h>
 
+#include "pxvimageprovider.h"
 #include "requestmgr.h"
 #include "cachemgr.h"
 #include "utils.h"
 
 int main(int argc, char *argv[])
 {
+
+
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
     QScopedPointer<QQuickView> view(SailfishApp::createView());
+
+    PxvImageProvider* pxvImageProvider = new PxvImageProvider;
+    view->engine()->addImageProvider(QLatin1String("pxv"), pxvImageProvider);
 
     RequestMgr requestMgr;
     view->rootContext()->setContextProperty("requestMgr", &requestMgr);

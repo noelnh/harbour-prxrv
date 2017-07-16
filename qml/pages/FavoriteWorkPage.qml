@@ -74,7 +74,7 @@ Page {
                 anchors.centerIn: parent
                 width: gridView.cellWidth
                 height: width
-                source: square128
+                source: "image://pxv/" + token + '#' + square128
 
                 Image {
                     visible: isManga

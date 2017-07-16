@@ -20,7 +20,8 @@ SOURCES += src/harbour-prxrv.cpp \
     src/pxvrequest.cpp \
     src/requestmgr.cpp \
     src/cachemgr.cpp \
-    src/utils.cpp
+    src/utils.cpp \
+    src/pxvimageprovider.cpp
 
 OTHER_FILES += qml/harbour-prxrv.qml \
     qml/cover/CoverPage.qml \
@@ -47,5 +48,6 @@ HEADERS += \
     src/pxvrequest.h \
     src/requestmgr.h \
     src/cachemgr.h \
-    src/utils.h
+    src/utils.h \
+    src/pxvimageprovider.h
 
