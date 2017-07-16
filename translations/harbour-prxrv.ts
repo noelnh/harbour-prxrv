@@ -287,15 +287,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mieru</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moebooru</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

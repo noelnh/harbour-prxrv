@@ -39,6 +39,7 @@
 
 #include <sailfishapp.h>
 
+#include "pxvnamfactory.h"
 #include "pxvimageprovider.h"
 #include "requestmgr.h"
 #include "cachemgr.h"
@@ -50,6 +51,9 @@ int main(int argc, char *argv[])
 
     QScopedPointer<QGuiApplication> app(SailfishApp::application(argc, argv));
     QScopedPointer<QQuickView> view(SailfishApp::createView());
+
+    PxvNAMFactory pnamf;
+    view->engine()->setNetworkAccessManagerFactory(&pnamf);
 
     PxvImageProvider* pxvImageProvider = new PxvImageProvider;
     view->engine()->addImageProvider(QLatin1String("pxv"), pxvImageProvider);

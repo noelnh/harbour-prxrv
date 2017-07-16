@@ -16,20 +16,31 @@ CONFIG += sailfishapp
 
 CONFIG += c++11
 
+HEADERS += \
+    src/pxvrequest.h \
+    src/requestmgr.h \
+    src/cachemgr.h \
+    src/utils.h \
+    src/pxvimageprovider.h \
+    src/pxvnamfactory.h \
+    src/pxvnetworkaccessmanager.h
+
 SOURCES += src/harbour-prxrv.cpp \
     src/pxvrequest.cpp \
     src/requestmgr.cpp \
     src/cachemgr.cpp \
     src/utils.cpp \
-    src/pxvimageprovider.cpp
+    src/pxvimageprovider.cpp \
+    src/pxvnamfactory.cpp \
+    src/pxvnetworkaccessmanager.cpp
 
 OTHER_FILES += qml/harbour-prxrv.qml \
     qml/cover/CoverPage.qml \
     qml/pages/*.qml \
-    qml/booru/pages/*.qml \
     qml/js/*.js \
-    qml/booru/js/*.js \
     qml/images/* \
+    qml/booru/pages/*.qml \
+    qml/booru/js/*.js \
     qml/booru/images/* \
     qml/fonts/fontawesome-webfont.ttf \
     rpm/harbour-prxrv.yaml \
@@ -43,11 +54,3 @@ OTHER_FILES += qml/harbour-prxrv.qml \
 CONFIG += sailfishapp_i18n
 
 TRANSLATIONS += translations/harbour-prxrv-zh.ts
-
-HEADERS += \
-    src/pxvrequest.h \
-    src/requestmgr.h \
-    src/cachemgr.h \
-    src/utils.h \
-    src/pxvimageprovider.h
-
