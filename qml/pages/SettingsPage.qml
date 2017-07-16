@@ -1,8 +1,6 @@
 import QtQuick 2.2
 import Sailfish.Silica 1.0
 
-import "../js/pixiv.js" as Pixiv
-import "../js/prxrv.js" as Prxrv
 import "../js/settings.js" as Settings
 import "../js/accounts.js" as Accounts
 import "../js/upgrade.js" as Upgrade
@@ -12,13 +10,8 @@ Page {
 
     property bool showR18_: Settings.read('showR18')
 
-    // Active user
-    property int activeCount: 1
-
     property int cacheSize: 0
     property bool cacheSized: false
-
-    property int leftPadding: 25
 
     function saveSettings() {
         if ( customName !== customNameField.text ) {
@@ -38,29 +31,6 @@ Page {
             }
         }
     }
-
-    function reloadAccounts() {
-        Accounts.findAll(function(account) {
-            if (!account.account) return;
-            account.password = account.password || '';
-            try {
-                user = JSON.parse(account.user);
-                account.userIconSrc = user["profile_image_urls"]["px_50x50"];
-            } catch (err) {
-                account.userIconSrc = '';
-                console.error("Cannot find icon for user:", users.user)
-            }
-            accountModel.append(account);
-        }, function() {
-            accountModel.clear();
-        }, function(users) {
-            activeCount = 0;
-            for (var i=0; i<users.length; i++) {
-                if (users[i].isActive) activeCount++;
-            }
-        });
-    }
-
 
     Component {
         id: resetDialog
@@ -117,105 +87,6 @@ Page {
 
             PageHeader {
                 title: qsTr("Settings")
-            }
-
-            SectionHeader {
-                text: qsTr("Accounts")
-            }
-
-            Label {
-                width: parent.width
-                anchors {
-                    left: parent.left
-                    leftMargin: leftPadding
-                }
-                visible: activeCount !== 1
-                text: qsTr("Set one account as active!")
-            }
-
-            ListView {
-                id: accountListView
-                width: parent.width
-                height: childrenRect.height
-
-                model: accountModel
-
-                delegate: ListItem {
-                    width: parent.width
-                    contentHeight: Theme.itemSizeSmall
-                    Item {
-                        width: parent.width
-                        height: parent.height
-                        Image {
-                            id: userIcon
-                            height: Theme.itemSizeSmall - 8
-                            width: height
-                            source: userIconSrc
-                            anchors {
-                                left: parent.left
-                                leftMargin: leftPadding
-                                verticalCenter: parent.verticalCenter
-                            }
-                        }
-                        Label {
-                            width: parent.width - leftPadding*3 - Theme.itemSizeSmall
-                            anchors.right: parent.right
-                            anchors.verticalCenter: parent.verticalCenter
-                            color: isActive ? Theme.highlightColor : Theme.secondaryHighlightColor
-                            text: name === account ? account : name + " (" + account + ")"
-                        }
-                    }
-
-                    menu: ContextMenu {
-                        MenuItem {
-                            visible: !isActive
-                            text: qsTr("Active")
-                            onClicked: {
-                                loginCheck(account)
-                                if (Accounts.change(account)) {
-                                    reloadAccounts()
-                                }
-                            }
-                        }
-                        MenuItem {
-                            text: qsTr("Remove")
-                            onClicked: removeAccount(account, reloadAccounts)
-                        }
-                    }
-                    onClicked: {
-                        pageStack.push("AccountPage.qml", {
-                                           username: account,
-                                           password: password,
-                                           rememberMe: remember,
-                                           isActive: isActive
-                                       });
-                    }
-                }
-            }
-
-            BackgroundItem {
-                height: Theme.itemSizeSmall
-                width: parent.width
-                Image {
-                    id: userAddIcon
-                    height: Theme.itemSizeSmall - 8
-                    width: height
-                    source: "image://theme/icon-m-add"
-                    anchors {
-                        left: parent.left
-                        leftMargin: leftPadding
-                        verticalCenter: parent.verticalCenter
-                    }
-                }
-                Label {
-                    width: parent.width - leftPadding*3 - Theme.itemSizeSmall
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-                    text: qsTr("Add account")
-                }
-                onClicked: {
-                    pageStack.push("AccountPage.qml", {isNew: true})
-                }
             }
 
             SectionHeader {
@@ -296,9 +167,6 @@ Page {
     }
 
     onStatusChanged: {
-        if (status == PageStatus.Active) {
-            reloadAccounts();
-        }
         if (status == PageStatus.Deactivating) {
             saveSettings()
             if (showR18_ !== limitSwitch.checked) {

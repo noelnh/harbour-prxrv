@@ -53,7 +53,7 @@ CoverBackground {
         if (status === PageStatus.Activating) {
             if (currentThumb && currentThumb.indexOf('http') === 0) {
                 coverImage.source = currentThumb
-                coverTitle.text = qsTr("Mieru")
+                coverTitle.text = qsTr("Moebooru")
             } else {
                 setCover(coverIndex[0])
             }

@@ -30,6 +30,12 @@ Page {
                 visible: false
             }
             MenuItem {
+                text: "Accounts"
+                onClicked: {
+                    pageStack.push("AccountsPage.qml")
+                }
+            }
+            MenuItem {
                 text: "Settings"
                 onClicked: {
                     pageStack.push("SettingsPage.qml")
@@ -107,7 +113,7 @@ Page {
                     pageStack.push(page, _props)
                 } else if (label === 'Moebooru') {
                     pageStack.push(page)
-                    toReloadAccounts = true;
+                    toReloadAccounts = true
                 } else if (token) {
                     if (model) currentModel = [model,]
                     coverIndex = [0,]
@@ -127,7 +133,7 @@ Page {
             if (debugOn) console.log('page _navigation:', _navigation)
             if (debugOn) console.log('username', user.name)
             if (!user.name) {
-                pageStack.push("SettingsPage.qml")
+                pageStack.push("AccountsPage.qml")
             }
         }
     }

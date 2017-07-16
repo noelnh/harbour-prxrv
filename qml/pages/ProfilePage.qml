@@ -13,7 +13,6 @@ Page {
 
     property string authorIconSrc: ""
 
-    property int leftPadding: 25
 
     // for cover index
     property bool beenForward: false

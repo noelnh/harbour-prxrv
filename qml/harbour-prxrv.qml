@@ -24,7 +24,7 @@ ApplicationWindow
     // Account
     property string token: ''
     property int expireOn: 0
-    property var user: readAccount()
+    property var user: currentAccount()
 
     property string defaultIcon: 'http://source.pixiv.net/common/images/no_profile_s.png'
 
@@ -57,9 +57,10 @@ ApplicationWindow
      */
     property bool refreshWorkDetails: false
 
+    property int leftPadding: 25
+
     // Booru
     property bool toReloadAccounts: true
-    property int leftPadding: 25
     property bool loadSample: false
     property string currentSite: ''
     property string currentUsername: ''
@@ -81,7 +82,7 @@ ApplicationWindow
     ListModel { id: downloadsModel }
 
 
-    function readAccount() {
+    function currentAccount() {
         var account = Accounts.current();
         if (account) {
             token = account.token;
@@ -204,8 +205,9 @@ ApplicationWindow
      * Callback to set token and user info to db
      * resp_j: object, response
      * extraOptions: object, {password, remember, isActive}
+     * pop: pop pageStack
      */
-    function setToken(resp_j, extraOptions) {
+    function setToken(resp_j, extraOptions, pop) {
 
         requestLock = false
 
@@ -216,21 +218,31 @@ ApplicationWindow
         }
 
         var resp = resp_j['response']
-        user = resp['user']
-        token = resp['access_token']
+        var _user = resp['user']
+        var _token = resp['access_token']
 
-        if (debugOn) console.log('New token: ' + token + '\nuser: ' + user['account'])
+        if (debugOn) console.log('New token: ' + _token + '\nuser: ' + _user['account'])
 
         var seconds = new Date().getTime() / 1000
-        expireOn = seconds + 3590 | 0
+        var _expireOn = seconds + 3590 | 0
 
-        var data = {
-            token: token,
-            refreshToken: resp['refresh_token'],
-            expireOn: expireOn.toString(),
+        // Set global properties, except for adding an inactive account
+        if (!extraOptions || extraOptions.isActive) {
+            user = _user
+            token = _token
+            expireOn = _expireOn
         }
 
-        Accounts.save(user, data, extraOptions)
+        var data = {
+            token: _token,
+            refreshToken: resp['refresh_token'],
+            expireOn: _expireOn.toString(),
+        }
+
+        Accounts.save(_user, data, extraOptions)
+
+        if (pop)
+            pageStack.pop()
     }
 
     // Update download progress

@@ -22,7 +22,6 @@ Page {
 
     property bool isEmptyPage: false
 
-    property int leftPadding: 25
 
     ListModel { id: slideModel }
     ListModel { id: tagModel }

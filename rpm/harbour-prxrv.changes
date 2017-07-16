@@ -11,6 +11,7 @@
 * Sun Jul 16 2017 Noel Nhato <noelnhato@gmail.com> 0.16.0-1
 - New disk cache
 - Add moebooru support
+- Add accounts page
 
 * Sat Apr 22 2017 Noel Nhato <noelnhato@gmail.com> 0.15.1-1
 - Fix detail images

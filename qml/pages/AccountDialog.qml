@@ -2,11 +2,11 @@ import QtQuick 2.2
 import Sailfish.Silica 1.0
 
 import "../js/pixiv.js" as Pixiv
-import "../js/settings.js" as Settings
 import "../js/accounts.js" as Accounts
 
 Page {
-    id: accountsPage
+    // Dialog Component leads to missing global properties in callback setTokenAndConfig()
+    id: accountDialog
 
     // User account name
     property string username: ''
@@ -29,7 +29,7 @@ Page {
             remember: rememberMe,
             isActive: isActive
         }
-        setToken(resp_j, extraOptions)
+        setToken(resp_j, extraOptions, true)
     }
 
     function saveAccount() {
@@ -42,19 +42,25 @@ Page {
                 passField.focus = true
                 return
             }
-            Pixiv.login(username, password, setTokenAndConfig)
+            if (!requestLock) {
+                requestLock = true
+                Pixiv.login(username, password, setTokenAndConfig)
+            }
         } else {
             Accounts.update(username, password, rememberMe, isActive)
             // Check active user
             if (isActive) {
                 if (user['account'] !== username) {
-                    clearCurrentAccount()
-                    Pixiv.login(username, password, setTokenAndConfig)
+                    if (!requestLock) {
+                        clearCurrentAccount()
+                        requestLock = true
+                        Pixiv.login(username, password, setTokenAndConfig)
+                    }
                 } else {
                     loginCheck(username)
                 }
             } else {
-                readAccount()
+                currentAccount()
             }
         }
     }
@@ -64,13 +70,21 @@ Page {
         passField.text = ""
     }
 
-    SilicaFlickable {
-        id: settingsFlickable
 
-        contentHeight: settingsColumn.height + Theme.paddingLarge
+    SilicaFlickable {
+        id: accountFlickable
+
+        contentHeight: accountColumn.height + Theme.paddingLarge
         anchors.fill: parent
 
         PullDownMenu {
+            MenuItem {
+                text: qsTr("Save")
+                onClicked: saveAccount()
+            }
+        }
+
+        PushUpMenu {
             MenuItem {
                 visible: isNew
                 text: qsTr("Reset")
@@ -81,20 +95,20 @@ Page {
                 text: qsTr("Remove")
                 onClicked: removeAccount(username, null, true)
             }
-            MenuItem {
-                id: saveAction
-                text: qsTr("Save")
-                onClicked: saveAccount()
-            }
+        }
+
+        BusyIndicator {
+            anchors.centerIn: parent
+            running: requestLock
         }
 
         Column {
-            id: settingsColumn
+            id: accountColumn
             width: parent.width
             height: childrenRect.height
 
             PageHeader {
-                title: qsTr("Account")
+                title: isNew ? qsTr("New Account") : qsTr("Edit Account")
             }
 
             TextField {
@@ -103,6 +117,7 @@ Page {
                 text: username
                 label: qsTr("Username")
                 placeholderText: label
+                inputMethodHints: Qt.ImhNoAutoUppercase
                 readOnly: !isNew
                 onTextChanged: {
                     username = text;
@@ -133,7 +148,6 @@ Page {
 
             TextSwitch {
                 id: activeSwitch
-                //visible: !isActive
                 text: qsTr("Active")
                 checked: isActive
                 onCheckedChanged: {
@@ -143,7 +157,5 @@ Page {
         }
     }
 
-    onStatusChanged: {
-    }
 }
 

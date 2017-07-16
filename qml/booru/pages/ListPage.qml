@@ -206,6 +206,7 @@ Page {
                 var _props = {}
                 if (pillust_id > 0) {
                     _props = {"workID": pillust_id, "authorID": "", "currentIndex": -1}
+                    currentThumb = ''
                     pageStack.push("../../pages/DetailPage.qml", _props)
                 } else if (fromBooruId == workID) { // string == number
                     pageStack.pop()

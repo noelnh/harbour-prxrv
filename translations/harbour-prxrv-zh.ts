@@ -51,15 +51,12 @@
         <source>Anonymous</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>AccountPage</name>
     <message>
-        <source>Save</source>
+        <source>Reset</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Account</source>
+        <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -75,15 +72,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remove</source>
+        <source>Active</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Reset</source>
+        <source>Save</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AccountsPage</name>
+    <message>
+        <source>Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set one account as active!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add account</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -94,7 +114,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mieru</source>
+        <source>Moebooru</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -492,23 +512,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Accounts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set one account as active!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Active</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add account</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
