@@ -524,10 +524,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Version 0.15.0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Click to clear cache: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -565,6 +561,14 @@
     </message>
     <message>
         <source>Downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Click to get cache size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version 0.16.0</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

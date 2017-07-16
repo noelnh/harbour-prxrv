@@ -16,6 +16,7 @@ Page {
     property int activeCount: 1
 
     property int cacheSize: 0
+    property bool cacheSized: false
 
     property int leftPadding: 25
 
@@ -266,10 +267,15 @@ Page {
                         leftMargin: leftPadding
                         verticalCenter: parent.verticalCenter
                     }
-                    text: qsTr("Click to clear cache: ") + (cacheSize || 0) + "KB"
+                    text: cacheSized ? qsTr("Click to clear cache: ") + (cacheSize || 0) + "KB" : qsTr("Click to get cache size")
                 }
                 onClicked: {
-                    cacheSize = cacheMgr.clear(cachePath + '/thumbnails', '128x128,480x960');
+                    if (cacheSized) {
+                        cacheSize = cacheMgr.clear(cachePath, 'thumbnails,icons') / 1024;
+                    } else {
+                        cacheSize = cacheMgr.getSize(cachePath, 'thumbnails,icons') / 1024;
+                        cacheSized = !cacheSized;
+                    }
                 }
             }
 
@@ -282,7 +288,7 @@ Page {
                 width: parent.width - 60
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: Theme.secondaryColor
-                text: qsTr("Version 0.15.0")
+                text: qsTr("Version 0.16.0")
             }
 
         }
@@ -290,7 +296,7 @@ Page {
     }
 
     onStatusChanged: {
-        if (status == PageStatus.Activating) {
+        if (status == PageStatus.Active) {
             reloadAccounts();
         }
         if (status == PageStatus.Deactivating) {
@@ -305,7 +311,4 @@ Page {
         }
     }
 
-    Component.onCompleted: {
-        cacheSize = cacheMgr.getSize(cachePath + '/thumbnails', '') / 1024;
-    }
 }

@@ -8,6 +8,13 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Jul 16 2017 Noel Nhato <noelnhato@gmail.com> 0.16.0-1
+- New disk cache
+- Add moebooru support
+
+* Sat Apr 22 2017 Noel Nhato <noelnhato@gmail.com> 0.15.1-1
+- Fix detail images
+
 * Mon Apr  3 2017 Noel Nhato <noelnhato@gmail.com> 0.15.0-1
 - Add recommendation
 

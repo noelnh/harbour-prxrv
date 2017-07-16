@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
     view->rootContext()->setContextProperty("requestMgr", &requestMgr);
 
     CacheMgr cacheMgr;
+    cacheMgr.setQNetworkAccessManager(view->engine()->networkAccessManager());
     view->rootContext()->setContextProperty("cacheMgr", &cacheMgr);
 
     Utils utils;
