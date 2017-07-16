@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sat Apr 22 2017 Noel Nhato <noelnhato@gmail.com> 0.15.1-1
+- Fix detail images
+
 * Mon Apr  3 2017 Noel Nhato <noelnhato@gmail.com> 0.15.0-1
 - Add recommendation
 

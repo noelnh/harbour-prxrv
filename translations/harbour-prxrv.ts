@@ -353,11 +353,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Version 0.15.0</source>
+        <source>Click to clear cache: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Click to clear cache: </source>
+        <source>Version 0.15.1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
