@@ -32,7 +32,7 @@ function getActionName(activity_type) {
  * Add activities to activityModel
  * Used as callback in StaccPage and StaccListPage
  */
-function addActivities(resp_j, icon_urls) {
+function addActivities(resp_j) {
 
     requestLock = false;
 
@@ -73,11 +73,9 @@ function addActivities(resp_j, icon_urls) {
             authorName: activities[i]['ref_work']['user']['name'],
             activityTime: activities[i]['post_time'],
             activityType: activities[i]['type'],
-            userIcon: '',
+            userIcon: activities[i]['user']['profile_image_urls']['px_50x50'],
             userName: activities[i]['user']['name'],
         });
-        if (icon_urls)
-            icon_urls.push(activities[i]['user']['profile_image_urls']['px_50x50']);
     }
 }
 

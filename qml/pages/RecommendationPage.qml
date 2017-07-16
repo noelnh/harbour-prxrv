@@ -12,9 +12,6 @@ Page {
 
     property bool isNewModel: true
 
-    property var thumbUrls: []
-    property var thumbStatus: []    // 0: pending, 1: loading, 2: finished, -1: failed
-
     function addRecommendedWork(resp_j) {
 
         requestLock = false;
@@ -51,32 +48,11 @@ Page {
                 isManga: works[i]['is_manga'] || false,
                 favoriteID: works[i]['favorite_id'] || 0
             });
-
-            thumbUrls.push(square128);
-            thumbStatus.push(0);
         }
-
-        Prxrv.getThumb(thumbUrls, '128x128');
     }
 
     function getWork() {
         Pixiv.getRecommendation(token, currentPage, addRecommendedWork);
-    }
-
-    // TODO status -1: failed, retry
-    function setThumbs() {
-        for (var i=0; i<thumbUrls.length; i++) {
-            if (thumbStatus[i] > 1) continue;
-            var thumb_url = thumbUrls[i];
-            if (!thumb_url) continue;
-            var thumb_path = Prxrv.getThumb(thumb_url, '128x128');
-            if (thumb_path) {
-                recommendationModel.get(i).square128 = thumb_path;
-                thumbStatus[i] = 2;
-            } else {
-                thumbStatus[i] = 1;
-            }
-        }
     }
 
 
@@ -183,12 +159,6 @@ Page {
                 // Try again
             }
         }
-
-        // px128 local cache
-        requestMgr.allCacheDone.connect(setThumbs);
     }
 
-    Component.onDestruction: {
-        requestMgr.allCacheDone.disconnect(setThumbs);
-    }
 }

@@ -12,9 +12,6 @@ Page {
 
     property bool showR18_: Settings.read('showR18')
 
-    // User accounts icons
-    property var userIconUrls: []
-
     // Active user
     property int activeCount: 1
 
@@ -45,39 +42,24 @@ Page {
         Accounts.findAll(function(account) {
             if (!account.account) return;
             account.password = account.password || '';
-            account.userIconSrc = '';
+            try {
+                user = JSON.parse(account.user);
+                account.userIconSrc = user["profile_image_urls"]["px_50x50"];
+            } catch (err) {
+                account.userIconSrc = '';
+                console.error("Cannot find icon for user:", users.user)
+            }
             accountModel.append(account);
         }, function() {
             accountModel.clear();
         }, function(users) {
-            userIconUrls = [];
             activeCount = 0;
             for (var i=0; i<users.length; i++) {
                 if (users[i].isActive) activeCount++;
-                try {
-                    var user = JSON.parse(users[i].user);
-                    var px50 = user["profile_image_urls"]["px_50x50"];
-                    if (user && px50) {
-                        userIconUrls.push(px50);
-                    }
-                } catch (err) {
-                    console.error("Cannot find icon for user:", users.user)
-                }
             }
-            setIcon();
         });
     }
 
-    function setIcon() {
-        for (var i=0; i<userIconUrls.length; i++) {
-            var icon_url = userIconUrls[i];
-            icon_url = icon_url || defaultIcon;
-            var icon_path = Prxrv.getIcon(icon_url);
-            if (icon_path) {
-                accountModel.get(i).userIconSrc = icon_path;
-            }
-        }
-    }
 
     Component {
         id: resetDialog
@@ -324,11 +306,6 @@ Page {
     }
 
     Component.onCompleted: {
-        requestMgr.allCacheDone.connect(setIcon);
         cacheSize = cacheMgr.getSize(cachePath + '/thumbnails', '') / 1024;
-    }
-
-    Component.onDestruction: {
-        requestMgr.allCacheDone.disconnect(setIcon);
     }
 }

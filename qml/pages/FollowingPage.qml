@@ -15,8 +15,6 @@ Page {
     property int currentPage: 0
     property int totalFollowing: 0
 
-    property var authorIconUrls: []
-
     function setFollowing(resp_j) {
 
         requestLock = false;
@@ -31,22 +29,8 @@ Page {
                 userID: users[i]['id'],
                 userName: users[i]['name'],
                 userAccount: users[i]['account'],
-                userIcon: ''
+                userIcon: users[i]['profile_image_urls']['px_50x50']
             } );
-            authorIconUrls.push(users[i]['profile_image_urls']['px_50x50']);
-        }
-
-        Prxrv.getIcon(authorIconUrls);
-    }
-
-    function setIcon() {
-        for (var i=0; i<authorIconUrls.length; i++) {
-            var icon_url = authorIconUrls[i];
-            if (!icon_url) continue;
-            var icon_path = Prxrv.getIcon(icon_url);
-            if (icon_path) {
-                followingModel.get(i).userIcon = icon_path;
-            }
         }
     }
 
@@ -174,10 +158,5 @@ Page {
                 Pixiv.getMyFollowing(token, publicity, currentPage, setFollowing)
             }
         }
-        requestMgr.allCacheDone.connect(setIcon);
-    }
-
-    Component.onDestruction: {
-        requestMgr.allCacheDone.disconnect(setIcon);
     }
 }

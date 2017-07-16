@@ -23,15 +23,6 @@ Page {
         beenForward = true
     }
 
-    function setIcon() {
-        if (!authorIconSrc) return;
-        var icon_path = Prxrv.getIcon(authorIconSrc);
-        if (icon_path) {
-            authorIcon.source = icon_path;
-            requestMgr.cacheDone.disconnect(setIcon);
-        }
-    }
-
     function setProfile(resp_j) {
         if (!resp_j) return
 
@@ -42,7 +33,6 @@ Page {
             var _user = resp_j['response'][0]
             userName = _user['name']
             authorIconSrc = _user['profile_image_urls']['px_50x50']
-            setIcon();
             userAccount = _user['account']
             userWorkLabel.text = "Works (" + _user['stats']['works'] + ")"
             favoriteWorkLabel.text = "Bookmarks (" + _user['stats']['favorites'] + ")"
@@ -181,7 +171,7 @@ Page {
                     anchors.top: parent.top
                     anchors.left: parent.left
                     anchors.leftMargin: leftPadding
-                    source: ""
+                    source: authorIconSrc
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -355,7 +345,6 @@ Page {
         if (loginCheck() && userID) {
             Pixiv.getUser(token, userID, setProfile)
         }
-        requestMgr.cacheDone.connect(setIcon);
     }
 
 }

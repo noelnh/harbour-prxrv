@@ -22,12 +22,6 @@ Page {
 
     property bool isEmptyPage: false
 
-    property bool overwriteUrl: false
-    property string imgUrlCache: ''
-
-    property string masterSrc: ''
-    property string iconSrc: ''
-
     property int leftPadding: 25
 
     ListModel { id: slideModel }
@@ -59,46 +53,6 @@ Page {
         if (fromID == workID) {
             if (debugOn) console.log("set refreshWorkDetails true")
             refreshWorkDetails = true
-        }
-    }
-
-    function needCache(imgUrl) {
-        return imgUrl && imgUrl.indexOf("pximg.net") > 0;
-    }
-
-    function setMoreImgs(p0) {
-        for (var i = 0; i < pageCount; i++) {
-            if (i==0) masterSrc = p0;
-            var pn = '_p' + i + '_'
-            slideModel.append( { imgUrl: p0.replace('_p0_', pn) } )
-        }
-    }
-
-    function setMasterImg() {
-        var p0 = work.master480;
-        slideModel.clear()
-
-        if (!needCache(p0)) {
-            return setMoreImgs(p0);
-        }
-
-        for(var i=0; i<pageCount; i++) {
-            var pn = '_p' + i + '_';
-            var thumbSrc = p0.replace('_p0_', pn)
-            var thumb_path = Prxrv.getThumb(thumbSrc, '480x960');
-            if (thumb_path) {
-                if (i == 0) masterSrc = thumb_path;
-                slideModel.append( { imgUrl: thumb_path } )
-            }
-        }
-    }
-
-    function setIcon() {
-        if (!work || !work.authorIcon) return;
-        var icon_path = Prxrv.getIcon(work.authorIcon);
-        if (icon_path) {
-            iconSrc = icon_path;
-            requestMgr.cacheDone.disconnect(setIcon);
         }
     }
 
@@ -161,11 +115,11 @@ Page {
             Prxrv.toggleIcon(resp_j)
         }
 
-        if (currentIndex < 0 || overwriteUrl) {
+        if (currentIndex < 0) {
             work = {
                 'headerText': resp[0]['title'],
                 'title': resp[0]['title'],
-                'master480': resp[0]['image_urls']['px_480mw'] || imgUrlCache,
+                'master480': resp[0]['image_urls']['px_480mw'],
                 'large': resp[0]['image_urls']['large'],
                 'square128': resp[0]['image_urls']['px_128x128'],
                 'authorIcon': resp[0]['user']['profile_image_urls']['px_50x50'],
@@ -173,22 +127,18 @@ Page {
             }
         }
 
-        if (resp[0]['is_manga']) {
-            pageCount = resp[0]['page_count'] || 1;
-            pageStack.pushAttached(morePage)
-        }
-        setMasterImg();
-
-        // Author icon
-        if (!work.authorIcon) {
-            work.authorIcon = resp[0]['user']['profile_image_urls']['px_50x50'];
-        }
-        if (iconSrc === '') {
-            setIcon();
-        }
-
         if (!work.large) {
             work.large = resp[0]['image_urls']['large']
+        }
+
+        if (resp[0]['is_manga']) {
+            pageCount = resp[0]['page_count'] || 1
+            var p0 = work.master480
+            for (var i = 0; i < pageCount; i++) {
+                var pn = '_p' + i + '_'
+                slideModel.append( { imgUrl: p0.replace('_p0_', pn) } )
+            }
+            pageStack.pushAttached(morePage)
         }
     }
 
@@ -358,11 +308,11 @@ Page {
                 id: image
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                source: masterSrc
+                source: work.master480
 
                 BusyIndicator {
                     anchors.centerIn: parent
-                    running: image.status == Image.Loading || !masterSrc
+                    running: image.status == Image.Loading
                 }
             }
 
@@ -379,17 +329,7 @@ Page {
                     height: width
                     anchors.top: parent.top
                     anchors.left: parent.left
-                    source: iconSrc
-//                    source: {
-//                        // Workaround for server's error response
-//                        if (work.authorIcon.slice(-6, -4) !== '_s') {
-//                            if (debugOn) console.log('orig:', work.authorIcon)
-//                            if (debugOn) console.log('replace the icon with the 50x50 one')
-//                            return work.authorIcon.slice(0, -4) + '_s' + work.authorIcon.slice(-4)
-//                        } else {
-//                            return work.authorIcon
-//                        }
-//                    }
+                    source: work.authorIcon
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
@@ -630,14 +570,7 @@ Page {
         if (debugOn) console.log("details onCompleted")
 
         if (authorID && currentIndex >= 0) {
-            var _work = Prxrv.getModelItem(currentIndex);
-            // If the access of master480 is forbidden by server,
-            // use Pixiv.getWorkDetails()'s result to overwrite it
-            if (overwriteUrl) {
-                imgUrlCache = _work.master480 || imgUrlCache;
-                _work.master480 = '';
-            }
-            work = _work;
+            work = Prxrv.getModelItem(currentIndex)
         } else {
             work = {
                 'headerText': '',
@@ -659,16 +592,6 @@ Page {
         // Cover image index
         coverIndex[coverIndex.length] = currentIndex
         coverIndex[0] = coverIndex[coverIndex.length - 1]
-
-        requestMgr.cacheDone.connect(setMasterImg);
-        setMasterImg();
-
-        requestMgr.cacheDone.connect(setIcon);
-        setIcon();
-    }
-
-    Component.onDestruction: {
-        requestMgr.cacheDone.disconnect(setMasterImg);
     }
 }
 
