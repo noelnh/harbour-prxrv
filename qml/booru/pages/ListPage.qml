@@ -155,7 +155,7 @@ Page {
                     visible: currentUsername
                     text: qsTr("Like")
                     onClicked: {
-                        console.log("Like post:", workID);
+                        if (debugOn) console.log("Like post:", workID);
                         Booru.vote(currentSite, currentUsername, currentPasshash, workID, 3, function(resp) {});
                     }
                 }
@@ -163,7 +163,7 @@ Page {
                     visible: currentUsername
                     text: qsTr("Unlike")
                     onClicked: {
-                        console.log("Unlike post:", workID);
+                        if (debugOn) console.log("Unlike post:", workID);
                         Booru.vote(currentSite, currentUsername, currentPasshash, workID, 2, function(resp) {});
                     }
                 }

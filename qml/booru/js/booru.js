@@ -2,7 +2,7 @@
 
 function sendRequest(method, url, params, data, callback) {
 
-    console.log(method, url, params, data);
+    console.log(method, url, '[params]', data);
 
     var xmlhttp = new XMLHttpRequest();
 

@@ -15,7 +15,7 @@ var db = Storage.db;
 function upgrade() {
 
     if (version !== db.version) {
-        console.log("Version mismatch:", db.version, version);
+        console.warn("Version mismatch:", db.version, version);
         if (db.version == "1.0" && version == "1.1") {
             console.log("Upgrading database...");
             try {
@@ -36,7 +36,7 @@ function upgrade() {
                 }
                 console.log("Upgrade done");
             } catch (err) {
-                console.log("Exception:", err);
+                console.error("Exception:", err);
             }
         } else {
             console.log("Unable to upgrade database!");
@@ -48,7 +48,7 @@ function upgrade() {
 
 function downgrade() {
     if (version !== db.version) {
-        console.log("Version mismatch:", db.version, version);
+        console.warn("Version mismatch:", db.version, version);
         if (db.version == "1.1" && version == "1.0") {
             console.log("Downgrading database...");
             db.changeVersion(db.version, version, function(tx) {
@@ -56,7 +56,7 @@ function downgrade() {
             });
             console.log("Downgrade done");
         } else {
-            console.log("Unable to downgrade database!");
+            console.warn("Unable to downgrade database!");
         }
     }
 }

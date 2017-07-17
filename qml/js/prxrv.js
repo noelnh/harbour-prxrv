@@ -195,11 +195,11 @@ function getImage(image_url, subdir) {
     var filename = image_url.substr(idx+1);
     var filePath = imageDirPath + filename;
     if (requestMgr.checkFile(filePath)) {
-//        console.log('Found image:' + filePath);
+        if (debugOn) console.log('Found image:' + filePath);
         return filePath;
     }
     requestMgr.saveImage(token, image_url, imageDirPath, filename, 1);
-//    console.log('Image not found:' + filename, ', downloading...')
+    if (debugOn) console.log('Image not found:' + filename, ', downloading...')
     return '';
 }
 

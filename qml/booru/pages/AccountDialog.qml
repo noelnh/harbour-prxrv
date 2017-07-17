@@ -78,7 +78,7 @@ Dialog {
                     }
                 }
                 onClicked: {
-                    console.log(value)
+                    if (debugOn) console.log(value)
                 }
 
                 onValueChanged: {
@@ -157,9 +157,9 @@ Dialog {
             var password = passwordField.text;
             var result = Accounts.saveAccount(utils.sha1, domain, username, password, oldname);
             if (!result) {
-                console.log("Failed to save account:", domain, username);
+                if (debugOn) console.log("Failed to save account:", domain);
             } else {
-                console.log("Account saved:", domain, username);
+                if (debugOn) console.log("Account saved:", domain);
             }
             toReloadAccounts = true;
         }

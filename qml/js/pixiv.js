@@ -370,7 +370,6 @@ function unbookmarkWork(token, favorite_id, callback) {
 // Login
 //
 function login(username, password, callback) {
-    //console.log('Login as: ' + username);
     var url = 'https://oauth.secure.pixiv.net/auth/token';
     var postdata = {
         'grant_type': 'password',
@@ -383,7 +382,6 @@ function login(username, password, callback) {
 }
 
 function relogin(refresh_token, callback) {
-    console.log('refresh token ')
     var url = 'https://oauth.secure.pixiv.net/auth/token';
     var postdata = {
         'grant_type': 'refresh_token',

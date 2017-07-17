@@ -84,7 +84,6 @@ function change(accountName) {
  * Remove an account
  */
 function remove(accountName) {
-    console.log("Removing an account", accountName);
     var result = false;
     db.transaction(function(tx) {
         try {
@@ -103,7 +102,6 @@ function remove(accountName) {
  * Update an account
  */
 function update(accountName, password, remember, isActive) {
-    console.log("updating account", accountName, password, remember, isActive);
 
     // Change active account first
     if (isActive) { change(accountName); }

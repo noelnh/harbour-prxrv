@@ -37,7 +37,7 @@ function saveAccount(sha1, domain, username, password, oldname) {
         removeAccount(domain, oldname);
     }
 
-    console.log("Adding account", domain, username);
+    console.log("Adding account", domain);
     db.transaction(function(tx) {
         tx.executeSql("INSERT OR REPLACE INTO accounts VALUES (?, ?, ?, ?, ?);", [domain, username, passhash, 1, 1]);
         tx.executeSql("COMMIT;");
@@ -50,7 +50,7 @@ function saveAccount(sha1, domain, username, password, oldname) {
  * Remove an account
  */
 function removeAccount(domain, username) {
-    console.log("Removing an account", domain, username);
+    console.log("Removing an account", domain);
     var result = false;
     db.transaction(function(tx) {
         try {
