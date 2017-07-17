@@ -286,10 +286,10 @@ Page {
                 onClicked: {
                     if (loginCheck()) {
                         if (favoriteID > 0) {
-                            console.log("Removing bookmark:", favoriteID)
+                            if (debugOn) console.log("Removing bookmark:", favoriteID)
                             Pixiv.unbookmarkWork(token, favoriteID, setBookmarkStatus)
                         } else {
-                            console.log("Adding bookmark:", workID)
+                            if (debugOn) console.log("Adding bookmark:", workID)
                             Pixiv.bookmarkWork(token, workID, 'public', setBookmarkStatus)
                         }
                     }

@@ -155,8 +155,8 @@ Page {
                 rankingMode = modeCombo.value
                 rankingType = contentCombo.value
                 typeArray = [contentCombo.currentIndex, modeCombo.currentIndex]
-                console.log('content: ' + contentCombo.value)
-                console.log('mode: ' + rankingMode)
+                if (debugOn) console.log('content: ' + contentCombo.value)
+                if (debugOn) console.log('mode: ' + rankingMode)
                 pageStack.popAttached()
             }
         }
@@ -241,9 +241,7 @@ Page {
         }
 
         onAtYEndChanged: {
-            if (debugOn) console.log('at y end changed')
             if (gridView.atYEnd) {
-                console.log('gridView at end')
                 if ( !requestLock && rankingWorkModel.count > 0
                         && rankingWorkModel.count < totalWork - hiddenWork && loginCheck() ) {
                     requestLock = true
@@ -273,7 +271,6 @@ Page {
     }
 
     Component.onCompleted: {
-        console.log("onCompleted")
         if (rankingWorkModel.count == 0) {
             if(loginCheck()) {
                 currentPage = 1

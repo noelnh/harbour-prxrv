@@ -4,7 +4,7 @@ var base_url = 'https://public-api.secure.pixiv.net/v1'
 var app_url = 'https://app-api.pixiv.net/v1'
 
 function checkToken(token, msg) {
-    console.log('Token for ' + msg + '(): ' + token);
+    //console.log('Token for ' + msg + '(): ' + token);
     if (token == '') {
         console.log('Token is empty');
         return false;
@@ -370,7 +370,7 @@ function unbookmarkWork(token, favorite_id, callback) {
 // Login
 //
 function login(username, password, callback) {
-    console.log('Login as: ' + username);
+    //console.log('Login as: ' + username);
     var url = 'https://oauth.secure.pixiv.net/auth/token';
     var postdata = {
         'grant_type': 'password',

@@ -99,6 +99,7 @@ Page {
         delegate: ListItem {
             id: listItem
             width: parent.width
+            visible: model != "booruModel" || booruEnabled
             contentHeight: Theme.itemSizeMedium
             Label {
                 color: listItem.highlighted ? Theme.highlightColor : Theme.primaryColor
@@ -108,10 +109,9 @@ Page {
             onClicked: {
                 firstPage = pageStack.currentPage
                 if (page == 'ProfilePage.qml') {
-                    if (debugOn) console.log( user['id'], user['name'] )
                     var _props =  {"userID": user['id'], "userName": user['name']}
                     pageStack.push(page, _props)
-                } else if (label === 'Moebooru') {
+                } else if (model === 'booruModel') {
                     pageStack.push(page)
                     toReloadAccounts = true
                 } else if (token) {
@@ -129,9 +129,8 @@ Page {
 
     onStatusChanged: {
         if (status == PageStatus.Active) {
+            console.log('Debug mode:', debugOn)
             // TODO side menu
-            if (debugOn) console.log('page _navigation:', _navigation)
-            if (debugOn) console.log('username', user.name)
             if (!user.name) {
                 pageStack.push("AccountsPage.qml")
             }

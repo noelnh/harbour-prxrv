@@ -133,9 +133,7 @@ Page {
         }
 
         onAtYEndChanged: {
-            if (debugOn) console.log('at y end changed')
             if (gridView.atYEnd) {
-                console.log('gridView at end')
                 if ( !requestLock && latestWorkModel.count > 0 && loginCheck() ) {
                     requestLock = true
                     currentPage += 1
@@ -147,7 +145,6 @@ Page {
     }
 
     Component.onCompleted: {
-        console.log("onCompleted")
         if (latestWorkModel.count == 0) {
             if(loginCheck()) {
                 currentPage = 1

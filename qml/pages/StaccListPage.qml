@@ -188,7 +188,7 @@ Page {
                     if (loginCheck()) {
                         activityModel.clear()
                         illustArray = []
-                        console.log("refresh stacc")
+                        if (debugOn) console.log("refresh stacc")
                         Pixiv.getStacc(token, showR18, Prxrv.addActivities)
                     }
                 }
@@ -202,9 +202,7 @@ Page {
         }
 
         onAtYEndChanged: {
-            if (debugOn) console.log('at y end changed')
             if (listView.atYEnd && minActivityID > 0) {
-                console.log('listView at end')
                 if ( !requestLock && activityModel.count > 0 && loginCheck() ) {
                     requestLock = true
                     Pixiv.getStacc(token, showR18, Prxrv.addActivities, minActivityID - 1)
@@ -215,7 +213,6 @@ Page {
     }
 
     Component.onCompleted: {
-        console.log("onCompleted")
         if (activityModel.count == 0) {
             illustArray = []
             if(loginCheck()) {

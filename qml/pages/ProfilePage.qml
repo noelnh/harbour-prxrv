@@ -54,7 +54,7 @@ Page {
                     // skip
                 } else {
                     if (typeof(_user['profile'][title]) !== 'string') continue
-                    console.log("append", title)
+                    if (debugOn) console.log("append", title)
                     var _content = _user['profile'][title]
                     if (title == 'homepage' && _content.indexOf('http') === 0) {
                         _content = '<a href="' + _content + '">' + _content + '</a>'
@@ -67,7 +67,7 @@ Page {
             }
 
             if (_user['stats']['works'] == 0) {
-                console.log('nav forward')
+                if (debugOn) console.log('nav forward')
                 pageStack.navigateForward()
             }
         }
@@ -139,7 +139,7 @@ Page {
             MenuItem {
                 text: qsTr("Refresh")
                 onClicked: {
-                    console.log("refreshAction clicked")
+                    if (debugOn) console.log("refreshAction clicked")
                     if (userID) Pixiv.getUser(token, userID, setProfile)
                 }
             }
@@ -175,7 +175,7 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             if (currentModel[currentModel.length-1] == "userWorkModel") {
-                                console.log('nav back to user work page ' + userID)
+                                if (debugOn) console.log('nav back to user work page ' + userID)
                                 pageStack.navigateBack()
                             }
                         }
@@ -263,7 +263,7 @@ Page {
                     text: "Following"
                 }
                 onClicked: {
-                    console.log("goto following users page")
+                    if (debugOn) console.log("goto following users page")
                     if (userID == user['id']) {
                         pageStack.push("FollowingPage.qml")
                     } else {
@@ -287,7 +287,7 @@ Page {
 //                    text: "Feed"
 //                }
 //                onClicked: {
-//                    console.log("goto user feed page")
+//                    if (debugOn) console.log("goto user feed page")
 //                    currentModel.push("feedsModel");
 //                    pageStack.push("FeedsPage.qml", {"userID": userID, "userName": userName})
 //                    goForward()

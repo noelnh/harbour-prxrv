@@ -15,7 +15,7 @@ ApplicationWindow
     property string dbVersion: checkDbVersion()
 
     // Settings
-    property bool debugOn: Settings.read('debugOn') || true
+    property bool debugOn: Settings.read('debugOn')
     property bool showR18: Settings.read('showR18')
     property string savePath: Settings.read('savePath') || "/home/nemo/Pictures"
     property string cachePath: Settings.read('cachePath') || "/home/nemo/.cache/harbour-prxrv"
@@ -60,6 +60,7 @@ ApplicationWindow
     property int leftPadding: 25
 
     // Booru
+    property bool booruEnabled: Settings.read('booruEnabled') || false
     property bool toReloadAccounts: true
     property bool loadSample: false
     property string currentSite: ''
@@ -152,11 +153,11 @@ ApplicationWindow
                 requestLock = true
                 if (account.remember && account.password) {
                     // Use password
-                    if (debugOn) console.log("Login as " + username + " using password")
+                    //if (debugOn) console.log("Login as " + username + " using password")
                     Pixiv.login(username, account.password, setToken)
                 } else if (refresh_token) {
                     // Use refresh token
-                    if (debugOn) console.log("Login as " + username + " using refresh_token")
+                    //if (debugOn) console.log("Login as " + username + " using refresh_token")
                     Pixiv.relogin(refresh_token, setToken)
                 } else {
                     // Invalid account
@@ -221,7 +222,7 @@ ApplicationWindow
         var _user = resp['user']
         var _token = resp['access_token']
 
-        if (debugOn) console.log('New token: ' + _token + '\nuser: ' + _user['account'])
+        //if (debugOn) console.log('New token: ' + _token + '\nuser: ' + _user['account'])
 
         var seconds = new Date().getTime() / 1000
         var _expireOn = seconds + 3590 | 0

@@ -124,6 +124,24 @@ Page {
                 }
             }
 
+            TextSwitch {
+                id: debugSwitch
+                text: qsTr("Debug mode")
+                checked: debugOn
+                onCheckedChanged: {
+                    Settings.write('debugOn', checked)
+                }
+            }
+
+            TextSwitch {
+                id: booruSwitch
+                text: qsTr("Moebooru support (Beta)")
+                checked: booruEnabled
+                onCheckedChanged: {
+                    Settings.write('booruEnabled', checked)
+                }
+            }
+
             SectionHeader {
                 text: qsTr("Cache")
             }
@@ -169,6 +187,8 @@ Page {
     onStatusChanged: {
         if (status == PageStatus.Deactivating) {
             saveSettings()
+            debugOn = debugSwitch.checked
+            booruEnabled = booruSwitch.checked
             if (showR18_ !== limitSwitch.checked) {
                 showR18 = limitSwitch.checked
                 activityModel.clear()

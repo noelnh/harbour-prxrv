@@ -116,7 +116,7 @@ Page {
             }
             onDone: {
                 if (result == DialogResult.Accepted) {
-                    console.log("unfollow user")
+                    if (debugOn) console.log("unfollow user")
                     Pixiv.unfollowUser(token, authorID, setStatus)
                 }
             }
@@ -142,7 +142,7 @@ Page {
             }
             onDone: {
                 if (result == DialogResult.Accepted) {
-                    console.log("follow user " + publicity + "ly")
+                    if (debugOn) console.log("follow user " + publicity + "ly")
                     Pixiv.followUser(token, authorID, publicity, setStatus)
                 }
             }
@@ -223,10 +223,10 @@ Page {
                 onClicked: {
                     if (loginCheck()) {
                         if (text == qsTr("Follow")) {
-                            console.log("follow user")
+                            if (debugOn) console.log("follow user")
                             pageStack.push(followDialog)
                         } else {
-                            console.log("unfollow user")
+                            if (debugOn) console.log("unfollow user")
                             pageStack.push(unfollowDialog)
                         }
                     }
@@ -252,9 +252,7 @@ Page {
         }
 
         onAtYEndChanged: {
-            if (debugOn) console.log('at y end changed')
             if (gridView.atYEnd) {
-                console.log('gridView at end')
                 if ( !requestLock && userWorkModel.count < totalWork - hiddenWork
                         && userWorkModel.count > 0 && loginCheck() ) {
                     requestLock = true
@@ -271,18 +269,17 @@ Page {
         //}
         if (status == PageStatus.Deactivating) {
             if (_navigation == PageNavigation.Back) {
-                console.log("navigated back")
+                if (debugOn) console.log("navigated back")
                 if (currentModel[currentModel.length-1] == "userWorkModel" && worksModelStack.length) {
                     worksModelStack.pop()
                     var _popModel = currentModel.pop()
-                    console.log("pop model: " + _popModel)
+                    if (debugOn) console.log("pop model: " + _popModel)
                 }
             }
         }
     }
 
     Component.onCompleted: {
-        console.log("onCompleted")
         if (isNewModel) {
             worksModelStack.push(userWorkModel)
             isNewModel = false

@@ -19,7 +19,7 @@ Page {
         if (!resp_j) return;
 
         var works = resp_j['illusts'];
-        console.log('found works:', works.length);
+        if (debugOn) console.log('found works:', works.length);
 
         if (debugOn) console.log('adding works to recommendationModel');
         for (var i in works) {
@@ -132,9 +132,7 @@ Page {
         }
 
         onAtYEndChanged: {
-            if (debugOn) console.log('at y end changed')
             if (gridView.atYEnd) {
-                console.log('gridView at end')
                 if ( !requestLock && recommendationModel.count > 0 && loginCheck() ) {
                     requestLock = true
                     currentPage += 1
@@ -146,7 +144,6 @@ Page {
     }
 
     Component.onCompleted: {
-        console.log("onCompleted")
         if (isNewModel) {
             worksModelStack.push(recommendationModel)
             isNewModel = false
