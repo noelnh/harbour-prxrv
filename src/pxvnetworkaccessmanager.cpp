@@ -1,4 +1,5 @@
 #include "pxvnetworkaccessmanager.h"
+#include "utils.h"
 
 PxvNetworkAccessManager::PxvNetworkAccessManager(QObject *parent) : QNetworkAccessManager(parent)
 {
@@ -11,8 +12,7 @@ QNetworkReply *PxvNetworkAccessManager::createRequest(Operation op, const QNetwo
 
     if (url.contains("pximg.net") || url.contains("pixiv.net"))
     {
-        rqst.setHeader(QNetworkRequest::UserAgentHeader, "PixivIOSApp/6.0.9 (iOS 9.3.3; iPhone8,1)");
-        rqst.setRawHeader("Referer", "http://spapi.pixiv.net/");
+        Utils::setHeaders(rqst);
     }
 
     if (url.endsWith(".gif") || url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".ico"))

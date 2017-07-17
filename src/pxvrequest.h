@@ -43,7 +43,6 @@ private:
 
     bool isAborted = false;
 
-    void setHeaders();
 };
 
 #endif // DOWNLOAD_H

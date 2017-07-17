@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include <QObject>
+#include <QNetworkRequest>
 
 class Utils : public QObject
 {
@@ -11,6 +12,9 @@ public:
 
 public slots:
     QString sha1(const QString & data);
+
+public:
+    static void setHeaders(QNetworkRequest & request, const QString & token = "");
 };
 
 #endif // UTILS_H

@@ -4,6 +4,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 
+#include "utils.h"
 #include "pxvimageprovider.h"
 
 PxvImageProvider::PxvImageProvider() : QQuickImageProvider(QQuickImageProvider::Image, QQuickImageProvider::ForceAsynchronousImageLoading)
@@ -44,9 +45,7 @@ QImage PxvImageProvider::requestImage(const QString &id, QSize *size, const QSiz
     QNetworkRequest request;
     request.setUrl(QUrl(url));
 
-    request.setHeader(QNetworkRequest::UserAgentHeader, "PixivIOSApp/6.0.9 (iOS 9.3.3; iPhone8,1)");
-    request.setRawHeader("Referer", "http://spapi.pixiv.net/");
-    request.setRawHeader("Authorization", QString("Bearer ").append(token).toStdString().c_str());
+    Utils::setHeaders(request, token);
 
     mgr.get(request);
     loop.exec();

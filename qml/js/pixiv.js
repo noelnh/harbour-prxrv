@@ -58,9 +58,9 @@ function sendRequest(method, token, url, params, callback) {
     var headers = {
         'Referer': 'https://app-api.pixiv.net/',
         'App-OS': 'ios',
-        'App-OS-Version': '9.3.3',
-        'App-Version': '6.0.9',
-        'User-Agent': 'PixivIOSApp/6.0.9 (iOS 9.3.3; iPhone8,1)',
+        'App-OS-Version': '10.3.1',
+        'App-Version': '6.7.1',
+        'User-Agent': 'PixivIOSApp/6.7.1 (iOS 10.3.1; iPhone8,1)',
     }
 
     xmlhttp.open(method, url, true);

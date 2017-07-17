@@ -3,6 +3,8 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
+
+#include "utils.h"
 #include "requestmgr.h"
 
 PxvRequest::PxvRequest(QObject *parent) : QObject(parent) {}
@@ -39,7 +41,7 @@ void PxvRequest::get(QNetworkAccessManager &qnam, QString url, QString path, QSt
     this->rqurl.setUrl(url);
 
     this->qnrq = new QNetworkRequest(rqurl);
-    this->setHeaders();
+    Utils::setHeaders(*this->qnrq, this->token);
 
     this->qnr = qnam.get(*qnrq);
 
@@ -66,7 +68,7 @@ QString PxvRequest::getFilename() {
 
 void PxvRequest::writeFile() {
     if (this->qnr->error() != QNetworkReply::NoError) {
-        qDebug() << "Error occurred:" << this->qnr->error() << ", file:" << this->rqurl.toString();
+        qDebug() << "Error occurred:" << this->qnr->error() << ", url:" << this->rqurl.toString();
         return;
     }
     if (this->isAborted) {
@@ -94,15 +96,4 @@ void PxvRequest::logProgress(qint64 received, qint64 total) {
 void PxvRequest::emitFailed(QNetworkReply::NetworkError code) {
     qDebug() << "Error Code:" << code;
     emit saveImageFailed(this);
-}
-
-// Private
-
-void PxvRequest::setHeaders() {
-    qnrq->setHeader(QNetworkRequest::UserAgentHeader, "PixivIOSApp/5.8.3");
-    qnrq->setRawHeader("Referer", "http://spapi.pixiv.net/");
-    if (this->token != "") {
-        qnrq->setRawHeader("Authorization", QString("Bearer ")
-                           .append(this->token).toStdString().c_str());
-    }
 }
