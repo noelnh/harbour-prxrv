@@ -177,7 +177,7 @@ Page {
                 width: parent.width - 60
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: Theme.secondaryColor
-                text: qsTr("Version 0.16.0")
+                text: qsTr("Version 0.16.1")
             }
 
         }

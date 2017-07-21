@@ -43,6 +43,7 @@ Page {
                 authorIcon: works[i]['work']['user']['profile_image_urls']['px_50x50'],
                 authorID: works[i]['work']['user']['id'],
                 authorName: works[i]['work']['user']['name'],
+                authorAccount: works[i]['work']['user']['account'],
                 rankUp: works[i]['previous_rank'] - works[i]['rank'],
                 isManga: works[i]['work']['page_count'] > 1
             });

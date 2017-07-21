@@ -45,6 +45,7 @@ Page {
                 authorIcon: authorIcon50,
                 authorID: works[i]['user']['id'],
                 authorName: works[i]['user']['name'],
+                authorAccount: works[i]['user']['account'],
                 isManga: works[i]['is_manga'] || false,
                 favoriteID: works[i]['favorite_id'] || 0
             });
@@ -91,7 +92,7 @@ Page {
             }
 
             onClicked: {
-                var _props = {"workID": workID, "authorID": authorID, "currentIndex": index, "overwriteUrl": true}
+                var _props = {"workID": workID, "authorID": authorID, "currentIndex": index}
                 pageStack.push("DetailPage.qml", _props)
             }
         }

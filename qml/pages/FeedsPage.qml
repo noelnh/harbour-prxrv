@@ -77,6 +77,7 @@ Page {
                 authorIconLocal: '',
                 authorID: activities[i]['ref_work']['user']['id'],
                 authorName: activities[i]['ref_work']['user']['name'],
+                authorAccount: activities[i]['ref_work']['user']['account'],
             } );
             authorIconUrls.push(activities[i]['ref_work']['user']['profile_image_urls']['px_50x50']);
         }

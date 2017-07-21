@@ -572,15 +572,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Version 0.16.0</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Debug mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Moebooru support (Beta)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Version 0.16.1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

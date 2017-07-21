@@ -122,6 +122,7 @@ Page {
                 'large': resp[0]['image_urls']['large'],
                 'square128': resp[0]['image_urls']['px_128x128'],
                 'authorIcon': resp[0]['user']['profile_image_urls']['px_50x50'],
+                'authorAccount': resp[0]['user']['account'],
                 'authorName': resp[0]['user']['name']
             }
         }
@@ -138,6 +139,49 @@ Page {
                 slideModel.append( { imgUrl: p0.replace('_p0_', pn) } )
             }
             pageStack.pushAttached(morePage)
+        }
+    }
+
+    function download() {
+        // %a: authorID, %u: work.authorAccount, %n: work.authorName, %i: workID, %t: work.title
+        if (debugOn) console.log('custom filename', '%a:', authorID, '%u:', work.authorAccount, '%n:', work.authorName,
+                                 '%i:', workID, '%t:', work.title)
+        var _filename = customName.replace('%a', authorID).replace('%u', work.authorAccount).replace('%n', work.authorName)
+        var filename = _filename
+        var pn, src_large, thumb
+        for (var i = 0; i < pageCount; i++) {
+            pn = '_p' + i
+            src_large = work.large.replace('_p0.', pn+'.')
+            thumb = work.square128.replace('_p0_', pn+'_')
+
+            // file name
+            if (_filename.indexOf('%i') >= 0) {
+                filename = _filename.replace('%i', workID + pn).replace('%t', work.title)
+            } else if (_filename.indexOf('%t') >= 0) {
+                filename = _filename.replace('%t', work.title + pn)
+            } else {
+                filename += workID + pn
+            }
+            filename += work.large.substr(work.large.lastIndexOf('.'))
+
+            if (savePath[savePath.length-1] !== '/') savePath += '/'
+            var _savePath = savePath
+            // sub directory
+            if (filename.lastIndexOf('/') > 0) {
+                if (filename[0] === '/') filename = filename.substr(1)
+                _savePath += filename.substr(0, filename.lastIndexOf('/')+1)
+                filename = filename.substr(filename.lastIndexOf('/')+1)
+            }
+
+            if (debugOn) console.log("Downloading:", src_large, "to", _savePath, filename)
+            requestMgr.saveImage(token, src_large, _savePath, filename, 0)
+            downloadsModel.append( {
+                          filename: filename,
+                          path: _savePath,
+                          source: src_large,
+                          thumb: thumb,
+                          finished: 0
+                      } )
         }
     }
 
@@ -222,49 +266,8 @@ Page {
             }
             MenuItem {
                 id: downloadAction
-                text: qsTr("Download")	// TODO open downloaded file
-                onClicked: {
-                    if (debugOn) console.log("downloadAction clicked")
-                    // %a: authorID, %u: userName, %n: work.authorName, %i: workID, %t: work.title
-                    var userName = work.authorIcon.match(/profile\/(.+)\//)[1]
-                    var _filename = customName.replace('%a', authorID).replace('%u', userName).replace('%n', work.authorName)
-                    var filename = _filename
-                    var pn, src_large, thumb
-                    for (var i = 0; i < pageCount; i++) {
-                        pn = '_p' + i
-                        src_large = work.large.replace('_p0.', pn+'.')
-                        thumb = work.square128.replace('_p0_', pn+'_')
-
-                        // file name
-                        if (_filename.indexOf('%i') >= 0) {
-                            filename = _filename.replace('%i', workID + pn).replace('%t', work.title)
-                        } else if (_filename.indexOf('%t') >= 0) {
-                            filename = _filename.replace('%t', work.title + pn)
-                        } else {
-                            filename += workID + pn
-                        }
-                        filename += work.large.substr(work.large.lastIndexOf('.'))
-
-                        if (savePath[savePath.length-1] !== '/') savePath += '/'
-                        var _savePath = savePath
-                        // sub directory
-                        if (filename.lastIndexOf('/') > 0) {
-                            if (filename[0] === '/') filename = filename.substr(1)
-                            _savePath += filename.substr(0, filename.lastIndexOf('/')+1)
-                            filename = filename.substr(filename.lastIndexOf('/')+1)
-                        }
-
-                        if (debugOn) console.log("Downloading:", src_large, "to", _savePath, filename)
-                        requestMgr.saveImage(token, src_large, _savePath, filename, 0)
-                        downloadsModel.append( {
-                            filename: filename,
-                            path: _savePath,
-                            source: src_large,
-                            thumb: thumb,
-                            finished: 0
-                        } )
-                    }
-                }
+                text: qsTr("Download")
+                onClicked: download()
             }
 
             MenuItem {
@@ -578,6 +581,7 @@ Page {
                 'large': '',
                 'square128': '',
                 'authorIcon': '',
+                'authorAccount': '',
                 'authorName': ''
             }
         }

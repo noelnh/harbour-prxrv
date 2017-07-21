@@ -56,6 +56,7 @@ Page {
                 authorIcon: favWorks[i]['work']['user']['profile_image_urls']['px_50x50'],
                 authorID: favWorks[i]['work']['user']['id'],
                 authorName: favWorks[i]['work']['user']['name'],
+                authorAccount: favWorks[i]['work']['user']['account'],
                 isManga: favWorks[i]['work']['is_manga'],
                 favoriteID: favWorks[i]['work']['favorite_id']
             } );

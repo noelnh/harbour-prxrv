@@ -32,6 +32,7 @@ Page {
                 authorIcon: works[i]['user']['profile_image_urls']['px_50x50'],
                 authorID: works[i]['user']['id'],
                 authorName: works[i]['user']['name'],
+                authorAccount: works[i]['user']['account'],
                 isManga: works[i]['is_manga'],
                 favoriteID: works[i]['favorite_id']
             });
