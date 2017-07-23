@@ -92,7 +92,7 @@ Page {
             ListElement {
                 label: "Moebooru"
                 model: "booruModel"
-                page: "../booru/pages/MainPage.qml"
+                page: "/usr/share/harbour-mieru/qml/pages/MainPage.qml"
             }
         }
 

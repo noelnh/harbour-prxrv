@@ -15,7 +15,7 @@ QNetworkReply *PxvNetworkAccessManager::createRequest(Operation op, const QNetwo
         Utils::setHeaders(rqst);
     }
 
-    if (url.endsWith(".gif") || url.endsWith(".png") || url.endsWith(".jpg") || url.endsWith(".ico"))
+    if (checkCacheRule(url))
     {
         rqst.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::PreferCache);
     } else {
@@ -25,4 +25,10 @@ QNetworkReply *PxvNetworkAccessManager::createRequest(Operation op, const QNetwo
     QNetworkReply *reply = QNetworkAccessManager::createRequest(op, rqst, outgoingData);
 
     return reply;
+}
+
+bool PxvNetworkAccessManager::checkCacheRule(const QString &url) {
+    return url.endsWith(".ico") || url.endsWith(".gif") || url.endsWith(".jpeg") ||
+                    url.endsWith(".png") || url.endsWith(".jpg") ||
+                    url.contains("/tag.json?cache=1&");
 }

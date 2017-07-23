@@ -137,9 +137,11 @@ Page {
                 id: booruSwitch
                 text: qsTr("Moebooru support (Beta)")
                 checked: booruEnabled
+                enabled: utils.checkBooruInstalled()
                 onCheckedChanged: {
                     Settings.write('booruEnabled', checked)
                 }
+                description: enabled ? '' : qsTr("Please install harbour-mieru")
             }
 
             SectionHeader {

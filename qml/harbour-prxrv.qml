@@ -11,6 +11,8 @@ import "js/upgrade.js" as Upgrade
 ApplicationWindow
 {
 
+    property string appName: "harbour-prxrv"
+
     // Database
     property string dbVersion: checkDbVersion()
 
@@ -60,7 +62,7 @@ ApplicationWindow
     property int leftPadding: 25
 
     // Booru
-    property bool booruEnabled: Settings.read('booruEnabled') || false
+    property bool booruEnabled: checkBooruEnabled()
     property bool toReloadAccounts: true
     property bool loadSample: false
     property string currentSite: ''
@@ -82,6 +84,10 @@ ApplicationWindow
 
     ListModel { id: downloadsModel }
 
+
+    function checkBooruEnabled() {
+        return utils.checkBooruInstalled() && Settings.read('booruEnabled');
+    }
 
     function currentAccount() {
         var account = Accounts.current();

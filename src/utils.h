@@ -15,6 +15,8 @@ public slots:
 
 public:
     static void setHeaders(QNetworkRequest & request, const QString & token = "");
+
+    Q_INVOKABLE static bool checkBooruInstalled();
 };
 
 #endif // UTILS_H

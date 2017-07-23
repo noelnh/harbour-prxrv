@@ -15,6 +15,8 @@ public:
 
 protected:
     QNetworkReply *createRequest(Operation op, const QNetworkRequest &request, QIODevice *outgoingData);
+private:
+    bool checkCacheRule(const QString &url);
 };
 
 #endif // PXVNETWORKACCESSMANAGER_H

@@ -1,5 +1,7 @@
 #include <QCryptographicHash>
 
+#include <QDir>
+
 #include "utils.h"
 
 Utils::Utils(QObject *parent) : QObject(parent)
@@ -17,4 +19,11 @@ void Utils::setHeaders(QNetworkRequest & request, const QString & token)
     request.setRawHeader("Referer", "https://app-api.pixiv.net/");
     if (!token.isEmpty())
         request.setRawHeader("Authorization", QString("Bearer ").append(token).toStdString().c_str());
+}
+
+bool Utils::checkBooruInstalled()
+{
+    QString mieruPath = "/usr/share/harbour-mieru/qml/pages/MainPage.qml";
+    QDir dir(".");
+    return dir.exists(mieruPath);
 }
