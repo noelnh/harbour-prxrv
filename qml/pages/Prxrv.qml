@@ -111,6 +111,10 @@ Page {
                 if (page == 'ProfilePage.qml') {
                     var _props =  {"userID": user['id'], "userName": user['name']}
                     pageStack.push(page, _props)
+                } else if (page == 'FavoriteWorkPage.qml') {
+                    if (model) currentModel = [model,]
+                    var _props =  {"userID": user['id'], "userName": user['name'], "mine": true}
+                    pageStack.push(page, _props)
                 } else if (model === 'booruModel') {
                     pageStack.push(page)
                     toReloadAccounts = true

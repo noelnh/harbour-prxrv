@@ -29,26 +29,41 @@ Page {
 
     function privBookmark() {
         if (debugOn) console.log("Bookmark privately")
-        Pixiv.bookmarkWork(token, workID, 'private', setBookmarkStatus)
+        Pixiv.bookmarkWork(token, workID, 'private', setBookmarkOn)
     }
 
-    function setBookmarkStatus(resp_j) {
-        if (resp_j['count']) {
-            // bookmark added
-            if (debugOn) console.log("Bookmark Done")
-            favoriteID = resp_j['response'][0]['id']
-            bookmarkIcon.source = '../images/button-bookmark-active.svg'
-            bookmarkAction.text = "Remove bookmark"
-            bookmarkLable.text = " +" + (favCount + 1)
+    function toggleIcon(resp_j) {
+        if (resp_j['count'] && resp_j['response'][0]['favorite_id']) {
+            Prxrv.toggleIconOn()
         } else {
-            // bookmark removed
-            if (debugOn) console.log("Bookmark removed")
-            favoriteID = 0
-            bookmarkIcon.source = '../images/button-bookmark.svg'
-            bookmarkAction.text = "Bookmark"
-            bookmarkLable.text = " +" + (favCount - 1)
+            Prxrv.toggleIconOff()
         }
-        Prxrv.toggleIcon(resp_j)
+    }
+
+    function setBookmarkOn() {
+        // bookmark added
+        if (debugOn) console.log("Bookmark Done")
+        favoriteID = 1
+        bookmarkIcon.source = '../images/button-bookmark-active.svg'
+        bookmarkAction.text = "Remove bookmark"
+        bookmarkLable.text = " +" + (favCount + 1)
+        Prxrv.toggleIconOn()
+
+        if (fromID == workID) {
+            if (debugOn) console.log("set refreshWorkDetails true")
+            refreshWorkDetails = true
+        }
+    }
+
+    function setBookmarkOff() {
+        // bookmark removed
+        if (debugOn) console.log("Bookmark removed")
+        favoriteID = 0
+        bookmarkIcon.source = '../images/button-bookmark.svg'
+        bookmarkAction.text = "Bookmark"
+        bookmarkLable.text = " +" + (favCount - 1)
+        Prxrv.toggleIconOff()
+
         if (fromID == workID) {
             if (debugOn) console.log("set refreshWorkDetails true")
             refreshWorkDetails = true
@@ -111,7 +126,7 @@ Page {
          }
          */
         if (currentIndex >= 0) {
-            Prxrv.toggleIcon(resp_j)
+            toggleIcon(resp_j)
         }
 
         if (currentIndex < 0) {
@@ -289,11 +304,11 @@ Page {
                 onClicked: {
                     if (loginCheck()) {
                         if (favoriteID > 0) {
-                            if (debugOn) console.log("Removing bookmark:", favoriteID)
-                            Pixiv.unbookmarkWork(token, favoriteID, setBookmarkStatus)
+                            if (debugOn) console.log("Removing bookmark:", favoriteID, workID)
+                            Pixiv.unbookmarkWork(token, workID, setBookmarkOff)
                         } else {
                             if (debugOn) console.log("Adding bookmark:", workID)
-                            Pixiv.bookmarkWork(token, workID, 'public', setBookmarkStatus)
+                            Pixiv.bookmarkWork(token, workID, 'public', setBookmarkOn)
                         }
                     }
                 }

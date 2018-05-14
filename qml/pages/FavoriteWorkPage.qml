@@ -10,12 +10,13 @@ Page {
     property int currentPage: 1
     property int currentIndex: -1
 
+    property bool mine: false
     property string userID: ''
     property string userName: 'undefined'
 
     property string publicity: 'public'
+    property string next_url: ''
 
-    property int totalWork: 50
     property int hiddenWork: 0
 
     property bool isNewModel: true
@@ -37,30 +38,38 @@ Page {
 
         if (!resp_j) return;
 
-        totalWork = resp_j['pagination']['total'];
-        var favWorks = resp_j['response'];
+        var favWorks = resp_j['illusts'];
+        next_url = resp_j['next_url'] || ''
 
         if (debugOn) console.log('adding works to favoriteWorkModel');
         for (var i in favWorks) {
-            if (!showR18 && favWorks[i]['work']['age_limit'].indexOf('r18') >= 0) {
-                hiddenWork += 1
-                continue
-            }
+            // if (!showR18 && favWorks[i]['age_limit'].indexOf('r18') >= 0) {
+            //     hiddenWork += 1
+            //     continue
+            // }
             favoriteWorkModel.append( {
-                workID: favWorks[i]['work']['id'],
-                title:  favWorks[i]['work']['title'],
-                headerText: favWorks[i]['work']['title'],
-                square128: favWorks[i]['work']['image_urls']['px_128x128'],
-                master480: favWorks[i]['work']['image_urls']['px_480mw'],
-                large: favWorks[i]['work']['image_urls']['large'],
-                authorIcon: favWorks[i]['work']['user']['profile_image_urls']['px_50x50'],
-                authorID: favWorks[i]['work']['user']['id'],
-                authorName: favWorks[i]['work']['user']['name'],
-                authorAccount: favWorks[i]['work']['user']['account'],
-                isManga: favWorks[i]['work']['is_manga'],
-                favoriteID: favWorks[i]['work']['favorite_id']
+                workID: favWorks[i]['id'],
+                title:  favWorks[i]['title'],
+                headerText: favWorks[i]['title'],
+                square128: favWorks[i]['image_urls']['square_medium'],
+                master480: favWorks[i]['image_urls']['medium'],
+                large: favWorks[i]['image_urls']['large'],
+                authorIcon: favWorks[i]['user']['profile_image_urls']['medium'],
+                authorID: favWorks[i]['user']['id'],
+                authorName: favWorks[i]['user']['name'],
+                authorAccount: favWorks[i]['user']['account'],
+                isManga: favWorks[i]['page_count'] > 1,
+                favoriteID: favWorks[i]['is_bookmarked'] ? 1 : 0
             } );
         }
+    }
+
+    function getFavoriteWorks() {
+        var params = {
+            user_id: userID,
+            restrict: publicity,
+        }
+        Pixiv.getBookmarks(token, next_url, params, addFavoriteWork)
     }
 
 
@@ -131,7 +140,7 @@ Page {
             }
             MenuItem {
                 id: changeModeAction
-                visible: userID ? false : true
+                visible: mine
                 text: publicity == 'public' ? qsTr("Private bookmarks") : qsTr("Public bookmarks")
                 onClicked: {
                     if (loginCheck()) {
@@ -139,7 +148,8 @@ Page {
                         currentPage = 1
                         hiddenWork = 0
                         publicity = ( publicity == 'public' ? 'private' : 'public' )
-                        Pixiv.getMyFavoriteWork(token, publicity, currentPage, addFavoriteWork)
+                        next_url = ''
+                        getFavoriteWorks()
                     }
                 }
             }
@@ -150,11 +160,8 @@ Page {
                         favoriteWorkModel.clear()
                         currentPage = 1
                         hiddenWork = 0
-                        if (userID) {
-                            Pixiv.getFavoriteWork(token, userID, currentPage, addFavoriteWork)
-                        } else {
-                            Pixiv.getMyFavoriteWork(token, publicity, currentPage, addFavoriteWork)
-                        }
+                        next_url = ''
+                        getFavoriteWorks()
                     }
                 }
             }
@@ -163,21 +170,16 @@ Page {
         BusyIndicator {
             size: BusyIndicatorSize.Large
             anchors.centerIn: parent
-            running: requestLock || (!favoriteWorkModel.count && (totalWork - hiddenWork) )
+            running: requestLock || !favoriteWorkModel.count
         }
 
         onAtYEndChanged: {
             if (debugOn) console.log('at y end changed')
             if (gridView.atYEnd) {
-                if ( !requestLock && favoriteWorkModel.count < totalWork - hiddenWork
-                        && favoriteWorkModel.count > 0 && loginCheck() ) {
+                if ( !requestLock && next_url && favoriteWorkModel.count > 0 && loginCheck() ) {
                     requestLock = true
                     currentPage += 1
-                    if (userID) {
-                        Pixiv.getFavoriteWork(token, userID, currentPage, addFavoriteWork)
-                    } else {
-                        Pixiv.getMyFavoriteWork(token, publicity, currentPage, addFavoriteWork)
-                    }
+                    getFavoriteWorks()
                 }
             }
         }
@@ -204,11 +206,8 @@ Page {
         if (favoriteWorkModel.count == 0) {
             if(loginCheck()) {
                 currentPage = 1
-                if (userID) {
-                    Pixiv.getFavoriteWork(token, userID, currentPage, addFavoriteWork)
-                } else {
-                    Pixiv.getMyFavoriteWork(token, publicity, currentPage, addFavoriteWork)
-                }
+                next_url = ''
+                getFavoriteWorks()
             } else {
                 // Try again
             }

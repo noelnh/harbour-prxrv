@@ -384,11 +384,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Version 0.16.1</source>
+        <source>Please install harbour-mieru</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Please install harbour-mieru</source>
+        <source>Version 0.16.2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

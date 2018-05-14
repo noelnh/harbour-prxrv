@@ -137,15 +137,27 @@ function toggleIcon(resp_j) {
         getCurrentModel().setProperty(currentIndex, 'favoriteID', 0)
     }
 }
+function toggleIconOn (result) {
+    if (debugOn) console.log('index: ', currentIndex);
+    if (result !== null) {
+        getCurrentModel().setProperty(currentIndex, 'favoriteID', 1)
+    }
+}
+function toggleIconOff (result) {
+    if (debugOn) console.log('index: ', currentIndex);
+    if (result !== null) {
+        getCurrentModel().setProperty(currentIndex, 'favoriteID', 0)
+    }
+}
 
 function toggleBookmarkIcon(workID, favoriteID) {
     if (!loginCheck()) return;
     if (favoriteID) {
-        if (debugOn) console.log("bookmark icon off");
-        Pixiv.unbookmarkWork(token, favoriteID, toggleIcon);
+        if (debugOn) console.log("bookmark icon off", favoriteID, workID);
+        Pixiv.unbookmarkWork(token, workID, toggleIconOff);
     } else {
         if (debugOn) console.log("bookmark icon clicked");
-        Pixiv.bookmarkWork(token, workID, 'public', toggleIcon);
+        Pixiv.bookmarkWork(token, workID, 'public', toggleIconOn);
     }
 }
 

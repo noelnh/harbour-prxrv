@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Mon May 14 2018 Noel Nhato <noelnhato@gmail.com> 0.16.2-1
+- Fix bookmarks
+
 * Sat Jul 22 2017 Noel Nhato <noelnhato@gmail.com> 0.16.1-1
 - Fix filename
 

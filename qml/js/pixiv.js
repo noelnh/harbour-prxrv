@@ -1,7 +1,8 @@
 .pragma library
 
 var base_url = 'https://public-api.secure.pixiv.net/v1'
-var app_url = 'https://app-api.pixiv.net/v1'
+var app_url_v1 = 'https://app-api.pixiv.net/v1'
+var app_url_v2 = 'https://app-api.pixiv.net/v2'
 
 function checkToken(token, msg) {
     //console.log('Token for ' + msg + '(): ' + token);
@@ -37,8 +38,8 @@ function sendRequest(method, token, url, params, callback) {
                 typeof(callback) === 'function' && callback(null);
             } else if (xmlhttp.status == 200) {
                 var resp_j = JSON.parse(xmlhttp.responseText);
-                if (token == '' || resp_j['status'] == 'success' || resp_j['illusts']) {
-                    //var resp = resp_j['response'];
+                //console.log('resp_j', JSON.stringify(resp_j))
+                if (token == '' || resp_j) {
                     typeof(callback) === 'function' && callback(resp_j);
                 }
             } else { // if (xmlhttp.status == 0) {   // or 404
@@ -182,7 +183,7 @@ function getRankingWork(token, type, mode, page, callback) {
 //
 function getRecommendation(token, page, callback) {
     if (!checkToken(token, 'getRecommendation')) return;
-    var url = app_url + '/illust/recommended';
+    var url = app_url_v1 + '/illust/recommended';
     var params = {
         'content_type': 'illust',
         'include_ranking_label': 'true',
@@ -346,24 +347,34 @@ function getMyFavoriteWork(token, publicity, page, callback) {
 
 // Bookmark Work
 //
-function bookmarkWork(token, work_id, publicity, callback) {
+function getBookmarks(token, url, params, callback) {
+    if (!url) {
+        url = app_url_v1 + '/user/bookmarks/illust'
+        params['filter'] = 'for_ios'
+        sendRequest('GET', token, url, params, callback);
+    } else {
+        sendRequest('GET', token, url, {}, callback);
+    }
+}
+
+function bookmarkWork(token, illust_id, publicity, callback) {
     if (!checkToken(token, 'bookmarkWork')) return;
-    var url = base_url + '/me/favorite_works.json';
+    var url = app_url_v2 + '/illust/bookmark/add';
     var postdata = {
-        'work_id': work_id,
-        'publicity': publicity
+        'illust_id': illust_id,
+        'restrict': publicity
+        // 'tags': 'TODO'
     };
     sendRequest('POST', token, url, postdata, callback);
 }
 
-// favorite_id is not work_id
-function unbookmarkWork(token, favorite_id, callback) {
+function unbookmarkWork(token, illust_id, callback) {
     if (!checkToken(token, 'unbookmarkWork')) return;
-    var url = base_url + '/me/favorite_works.json';
-    var params = {
-        'ids': favorite_id
+    var url = app_url_v1 + '/illust/bookmark/delete';
+    var postdata = {
+        'illust_id': illust_id
     };
-    sendRequest('DELETE', token, url, params, callback);
+    sendRequest('POST', token, url, postdata, callback);
 }
 
 
