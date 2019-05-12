@@ -336,13 +336,13 @@ Page {
             Item {
                 id: authorBar
                 width: parent.width - 60
-                height: 80
+                height: Theme.fontSizeMedium * 2.5
                 anchors.top: image.bottom
                 anchors.topMargin: Theme.paddingMedium
                 anchors.horizontalCenter: parent.horizontalCenter
                 Image {
                     id: authorIcon
-                    width: 80
+                    width: Theme.fontSizeMedium * 2.5
                     height: width
                     anchors.top: parent.top
                     anchors.left: parent.left
@@ -365,7 +365,7 @@ Page {
                 }
                 Column {
                     width: 400
-                    height: 80
+                    height: Theme.fontSizeMedium * 2.5
                     anchors.top: parent.top
                     anchors.left: authorIcon.right
                     anchors.leftMargin: Theme.paddingMedium

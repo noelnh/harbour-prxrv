@@ -65,6 +65,7 @@ ApplicationWindow
     property bool booruEnabled: checkBooruEnabled()
     property bool toReloadAccounts: true
     property bool loadSample: false
+    property string currentDomain: ''
     property string currentSite: ''
     property string currentUsername: ''
     property string currentPasshash: ''
