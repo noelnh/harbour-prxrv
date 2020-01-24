@@ -139,7 +139,6 @@ Page {
             TextSwitch {
                 id: rememberSwitch
                 text: qsTr("Remember me")
-                visible: false  // TODO refresh_token api is broken
                 checked: rememberMe
                 onCheckedChanged: {
                     rememberMe = checked;

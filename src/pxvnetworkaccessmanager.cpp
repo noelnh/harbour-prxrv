@@ -10,7 +10,11 @@ QNetworkReply *PxvNetworkAccessManager::createRequest(Operation op, const QNetwo
     QNetworkRequest rqst(request);
     QString url = rqst.url().toString();
 
-    if (url.contains("pximg.net") || url.contains("pixiv.net"))
+    if (url.contains("oauth.secure."))
+    {
+        Utils::setHeaders(rqst, "", true);
+    }
+    else if (url.contains("pximg.net") || url.contains("pixiv.net"))
     {
         Utils::setHeaders(rqst);
     }

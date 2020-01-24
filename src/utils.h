@@ -12,9 +12,10 @@ public:
 
 public slots:
     QString sha1(const QString & data);
+    QString md5(const QString & data);
 
 public:
-    static void setHeaders(QNetworkRequest & request, const QString & token = "");
+    static void setHeaders(QNetworkRequest & request, const QString & token = "", bool auth = false);
 
     Q_INVOKABLE static bool checkBooruInstalled();
 };
