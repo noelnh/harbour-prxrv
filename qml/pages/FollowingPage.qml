@@ -45,7 +45,7 @@ Page {
         header: PageHeader {
             id: pageHeader
             width: parent.width
-            title: (userName ? userName + "'s " : "My") + "Following"
+            title: (userName ? userName + "'s " : "My ") + "Following"
         }
 
         PullDownMenu {
@@ -87,9 +87,10 @@ Page {
 
             Image {
                 id: authorIcon
-                width: 80
+                width: Theme.itemSizeSmall
                 height: width
                 anchors.top: parent.top
+                anchors.topMargin: Theme.itemSizeMedium / 2 - Theme.itemSizeSmall / 2
                 anchors.left: parent.left
                 anchors.leftMargin: Theme.paddingLarge
                 source: userIcon
@@ -99,15 +100,16 @@ Page {
                 width: parent.width - 80 - Theme.paddingLarge
                 height: 80
                 anchors.top: parent.top
+                anchors.topMargin: Theme.itemSizeMedium / 2 - Theme.itemSizeSmall / 2
                 anchors.left: authorIcon.right
                 anchors.leftMargin: Theme.paddingMedium
-                Text {
+                Label {
                     width: parent.width
                     color: Theme.highlightColor
                     horizontalAlignment: Text.AlignLeft
                     text: userName
                 }
-                Text {
+                Label {
                     width: parent.width
                     color: Theme.secondaryColor
                     horizontalAlignment: Text.AlignLeft

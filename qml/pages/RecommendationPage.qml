@@ -80,6 +80,8 @@ Page {
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
                     source: favoriteID ? "../images/btn-done.svg" : "../images/btn-like.svg"
+                    width: Theme.iconSizeSmall
+                    height: Theme.iconSizeSmall
 
                     MouseArea {
                         anchors.fill: parent

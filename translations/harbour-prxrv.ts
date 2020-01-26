@@ -388,7 +388,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Version 0.16.2</source>
+        <source>Version 0.16.3</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

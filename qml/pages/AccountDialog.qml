@@ -21,7 +21,7 @@ Page {
     property bool rememberMe: true
 
     // Active
-    property bool isActive: false
+    property bool isActive: true
 
     function setTokenAndConfig(resp_j) {
         var extraOptions = {
@@ -113,7 +113,7 @@ Page {
 
             TextField {
                 id: nameField
-                width: 480
+                width: parent.width
                 text: username
                 label: qsTr("Username")
                 placeholderText: label
@@ -126,7 +126,7 @@ Page {
 
             TextField {
                 id: passField
-                width: 480
+                width: parent.width
                 echoMode: TextInput.PasswordEchoOnEdit
                 text: password
                 label: qsTr("Password")

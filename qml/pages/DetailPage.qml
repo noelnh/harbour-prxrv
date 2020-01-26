@@ -335,7 +335,7 @@ Page {
 
             Item {
                 id: authorBar
-                width: parent.width - 60
+                width: parent.width - Theme.paddingLarge * 2
                 height: Theme.fontSizeMedium * 2.5
                 anchors.top: image.bottom
                 anchors.topMargin: Theme.paddingMedium
@@ -364,7 +364,7 @@ Page {
                     }
                 }
                 Column {
-                    width: 400
+                    width: parent.width - authorIcon.width - Theme.paddingMedium
                     height: Theme.fontSizeMedium * 2.5
                     anchors.top: parent.top
                     anchors.left: authorIcon.right
@@ -387,10 +387,11 @@ Page {
 
             Label {
                 id: caption
-                width: parent.width - leftPadding*2
+                width: parent.width - Theme.paddingLarge * 2
                 anchors.top: authorBar.bottom
                 anchors.topMargin: Theme.paddingMedium
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: Theme.paddingLarge
                 wrapMode: Text.WordWrap
                 onLinkActivated: {
                     if (link.indexOf('/member.php?id=') > 0) {
@@ -416,7 +417,7 @@ Page {
 
             Label {
                 id: updateTime
-                width: parent.width - leftPadding*2
+                width: parent.width - Theme.paddingLarge * 2
                 anchors.top: caption.bottom
                 anchors.topMargin: 10
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -436,7 +437,7 @@ Page {
                     width: parent.width
                     height: Theme.itemSizeSmall
                     Label {
-                        width: parent.width - leftPadding*2
+                        width: parent.width - Theme.paddingLarge * 2
                         anchors.centerIn: parent
                         color: Theme.secondaryHighlightColor
                         text: tag

@@ -159,17 +159,17 @@ Page {
 
             Item {
                 id: authorBar
-                width: parent.width
-                height: 80
+                width: parent.width - Theme.paddingLarge * 2
+                height: Theme.itemSizeSmall
                 anchors.top: parent.top
                 anchors.topMargin: Theme.paddingLarge
+                anchors.horizontalCenter: parent.horizontalCenter
                 Image {
                     id: authorIcon
-                    width: 80
-                    height: width
+                    width: parent.height
+                    height: parent.height
                     anchors.top: parent.top
                     anchors.left: parent.left
-                    anchors.leftMargin: leftPadding
                     source: authorIconSrc
                     MouseArea {
                         anchors.fill: parent
@@ -182,18 +182,18 @@ Page {
                     }
                 }
                 Column {
-                    width: parent.width - 80
-                    height: 80
+                    width: parent.width - parent.height - Theme.paddingMedium
+                    height: parent.height
                     anchors.top: parent.top
                     anchors.left: authorIcon.right
                     anchors.leftMargin: Theme.paddingMedium
-                    Text {
+                    Label {
                         width: parent.width
                         color: Theme.highlightColor
                         horizontalAlignment: Text.AlignLeft
                         text: userAccount || userName
                     }
-                    Text {
+                    Label {
                         width: parent.width
                         color: Theme.secondaryColor
                         horizontalAlignment: Text.AlignLeft
@@ -212,7 +212,7 @@ Page {
                     id: userWorkLabel
                     color: parent.highlighted ? Theme.highlightColor : Theme.primaryColor
                     anchors.left: parent.left
-                    anchors.leftMargin: leftPadding
+                    anchors.leftMargin: Theme.paddingLarge
                     anchors.verticalCenter: parent.verticalCenter
                     text: "Works"
                 }
@@ -237,7 +237,7 @@ Page {
                     id: favoriteWorkLabel
                     color: parent.highlighted ? Theme.highlightColor : Theme.primaryColor
                     anchors.left: parent.left
-                    anchors.leftMargin: leftPadding
+                    anchors.leftMargin: Theme.paddingLarge
                     anchors.verticalCenter: parent.verticalCenter
                     text: "Bookmarks"
                 }
@@ -258,7 +258,7 @@ Page {
                     id: latestWorkLabel
                     color: parent.highlighted ? Theme.highlightColor : Theme.primaryColor
                     anchors.left: parent.left
-                    anchors.leftMargin: leftPadding
+                    anchors.leftMargin: Theme.paddingLarge
                     anchors.verticalCenter: parent.verticalCenter
                     text: "Following"
                 }
@@ -282,7 +282,7 @@ Page {
 //                    id: userFeedLabel
 //                    color: parent.highlighted ? Theme.highlightColor : Theme.primaryColor
 //                    anchors.left: parent.left
-//                    anchors.leftMargin: leftPadding
+//                    anchors.leftMargin: Theme.paddingLarge
 //                    anchors.verticalCenter: parent.verticalCenter
 //                    text: "Feed"
 //                }
@@ -310,7 +310,7 @@ Page {
 
                 Label {
                     id: profileTitle
-                    width: parent.width - leftPadding*2
+                    width: parent.width - Theme.paddingLarge*2
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.topMargin: Theme.paddingLarge
 
@@ -321,7 +321,7 @@ Page {
                 }
                 Label {
                     id: profileContent
-                    width: parent.width - leftPadding*2
+                    width: parent.width - Theme.paddingLarge*2
                     anchors.top: profileTitle.bottom
                     anchors.horizontalCenter: parent.horizontalCenter
 

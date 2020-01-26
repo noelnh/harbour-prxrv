@@ -155,7 +155,7 @@ Page {
                     width: parent.width
                     anchors {
                         left: parent.left
-                        leftMargin: leftPadding
+                        leftMargin: Theme.paddingLarge
                         verticalCenter: parent.verticalCenter
                     }
                     text: cacheSized ? qsTr("Click to clear cache: ") + (cacheSize || 0) + "KB" : qsTr("Click to get cache size")
@@ -176,10 +176,10 @@ Page {
 
             Label {
                 id: versionLabel
-                width: parent.width - 60
+                width: parent.width - Theme.paddingLarge * 2
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: Theme.secondaryColor
-                text: qsTr("Version 0.16.2")
+                text: qsTr("Version 0.16.3")
             }
 
         }

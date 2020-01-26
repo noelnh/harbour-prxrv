@@ -55,10 +55,11 @@ Page {
             }
 
             Label {
-                width: parent.width
+                id: msgLabel
+                width: parent.width - Theme.paddingLarge * 2
                 anchors {
                     left: parent.left
-                    leftMargin: leftPadding
+                    leftMargin: Theme.paddingLarge
                 }
                 visible: activeCount !== 1
                 text: qsTr("Set one account as active!")
@@ -84,13 +85,14 @@ Page {
                             source: userIconSrc
                             anchors {
                                 left: parent.left
-                                leftMargin: leftPadding
+                                leftMargin: Theme.paddingLarge
                                 verticalCenter: parent.verticalCenter
                             }
                         }
                         Label {
-                            width: parent.width - leftPadding*3 - Theme.itemSizeSmall
-                            anchors.right: parent.right
+                            width: parent.width - Theme.paddingLarge * 3 - parent.height
+                            anchors.left: userIcon.right
+                            anchors.leftMargin: Theme.paddingLarge
                             anchors.verticalCenter: parent.verticalCenter
                             color: isActive ? Theme.highlightColor : Theme.secondaryHighlightColor
                             text: name === account ? account : name + " (" + account + ")"
@@ -134,13 +136,14 @@ Page {
                     source: "image://theme/icon-m-add"
                     anchors {
                         left: parent.left
-                        leftMargin: leftPadding
+                        leftMargin: Theme.paddingLarge
                         verticalCenter: parent.verticalCenter
                     }
                 }
                 Label {
-                    width: parent.width - leftPadding*3 - Theme.itemSizeSmall
-                    anchors.right: parent.right
+                    width: parent.width - Theme.paddingLarge * 3 - userAddIcon.width
+                    anchors.left: userAddIcon.right
+                    anchors.leftMargin: Theme.paddingLarge
                     anchors.verticalCenter: parent.verticalCenter
                     text: qsTr("Add account")
                 }
