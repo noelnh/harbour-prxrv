@@ -158,14 +158,14 @@ ApplicationWindow
             // Re-login
             if (!requestLock) {
                 requestLock = true
-                if (account.remember && account.password) {
-                    // Use password
-                    if (debugOn) console.log("Using password")
-                    Pixiv.login(username, account.password, setToken)
-                } else if (refresh_token) {
+                if (account.remember && refresh_token) {
                     // Use refresh token
                     if (debugOn) console.log("Using refresh_token")
                     Pixiv.relogin(refresh_token, setToken)
+                } else if (account.remember && account.password) {
+                    // Use password
+                    if (debugOn) console.log("Using password")
+                    Pixiv.login(username, account.password, setToken)
                 } else {
                     // Invalid account
                     if (debugOn) console.log("Failed to login with password or refresh_token")

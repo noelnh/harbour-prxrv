@@ -50,14 +50,10 @@ Page {
             Accounts.update(username, password, rememberMe, isActive)
             // Check active user
             if (isActive) {
-                if (user['account'] !== username) {
-                    if (!requestLock) {
-                        clearCurrentAccount()
-                        requestLock = true
-                        Pixiv.login(username, password, setTokenAndConfig)
-                    }
-                } else {
-                    loginCheck(username)
+                if (!requestLock) {
+                    clearCurrentAccount()
+                    requestLock = true
+                    Pixiv.login(username, password, setTokenAndConfig)
                 }
             } else {
                 currentAccount()
