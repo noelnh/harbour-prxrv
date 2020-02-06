@@ -342,6 +342,38 @@ Page {
                     }
 
                 }
+
+                Rectangle {
+                    visible: pageCount > 1
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.leftMargin: Theme.paddingLarge
+                    width: parent.width
+                    height: parent.width / 16
+                    color: 'transparent'
+
+                    Image {
+                        id: pageCountImg
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.topMargin: Theme.paddingSmall
+                        anchors.leftMargin: Theme.paddingSmall
+                        source: "../images/page-count.svg"
+                        width: parent.height - Theme.paddingSmall * 2
+                        height: width
+                    }
+
+                    Text {
+                        anchors.top: parent.top
+                        anchors.topMargin: Theme.paddingSmall / 2
+                        anchors.left: pageCountImg.right
+                        anchors.leftMargin: Theme.paddingSmall
+                        text: pageCount
+                        color: 'white'
+                        font.bold: true
+                    }
+                }
+
                 onClicked: {
                     if (slideModel.count > 0) {
                         pageStack.push(morePage)

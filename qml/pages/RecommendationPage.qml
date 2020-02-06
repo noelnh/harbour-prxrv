@@ -74,6 +74,8 @@ Page {
                     visible: isManga
                     anchors.left: parent.left
                     anchors.top: parent.top
+                    width: parent.width / 6
+                    height: width
                     source: "../images/manga-icon.svg"
                 }
                 Image {
