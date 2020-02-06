@@ -153,7 +153,7 @@ Page {
                 var pn = '_p' + i + '_'
                 slideModel.append( { imgUrl: p0.replace('_p0_', pn) } )
             }
-            pageStack.pushAttached(morePage)
+            // TODO pageStack.pushAttached(relatedPage)
         }
     }
 
@@ -224,7 +224,7 @@ Page {
 
                 model: slideModel
 
-                delegate: Item {
+                delegate: BackgroundItem {
                     width: parent.width
                     height: moreImage.height
                     Separator {
@@ -241,6 +241,11 @@ Page {
                         id: moreImage
                         anchors.horizontalCenter: parent.horizontalCenter
                         source: imgUrl
+                    }
+                    onClicked: {
+                        pageStack.push("PreviewPage.qml", {
+                            url: imgUrl.replace(/\/.\/480x960/, '')
+                        })
                     }
                 }
             }
@@ -321,15 +326,30 @@ Page {
             height: childrenRect.height
             anchors.top: pageHeader.bottom
 
-            Image {
-                id: image
-                anchors.horizontalCenter: parent.horizontalCenter
+            BackgroundItem {
+                id: imageItem
+                width: parent.width
+                height: image.height || Theme.itemSizeSmall
+                Image {
+                    id: image
+                    anchors.horizontalCenter: parent.horizontalCenter
 
-                source: work.master480
+                    source: work.master480
 
-                BusyIndicator {
-                    anchors.centerIn: parent
-                    running: image.status == Image.Loading
+                    BusyIndicator {
+                        anchors.centerIn: parent
+                        running: image.status === Image.Loading
+                    }
+
+                }
+                onClicked: {
+                    if (slideModel.count > 0) {
+                        pageStack.push(morePage)
+                    } else {
+                        pageStack.push("PreviewPage.qml", {
+                            url: work.master480.replace(/\/.\/480x960/, '')
+                        })
+                    }
                 }
             }
 
@@ -337,7 +357,7 @@ Page {
                 id: authorBar
                 width: parent.width - Theme.paddingLarge * 2
                 height: Theme.fontSizeMedium * 2.5
-                anchors.top: image.bottom
+                anchors.top: imageItem.bottom
                 anchors.topMargin: Theme.paddingMedium
                 anchors.horizontalCenter: parent.horizontalCenter
                 Image {
@@ -430,7 +450,7 @@ Page {
                 anchors.top: updateTime.bottom
                 anchors.topMargin: 10
                 width: parent.width
-                height: childrenRect.height
+                height: childrenRect.height + Theme.itemSizeSmall
 
                 model: tagModel
                 delegate: ListItem {
@@ -486,7 +506,7 @@ Page {
         id: panel
 
         width: parent.width
-        height: 72
+        height: Theme.itemSizeSmall
 
         dock: Dock.Bottom
         open: true
