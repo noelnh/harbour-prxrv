@@ -233,3 +233,23 @@ function getIcon(icon_url) {
 function getThumb(thumb_url, size) {
     return getImage(thumb_url, 'thumbnails/' + size);
 }
+
+function isPixivLink (link) {
+    if (!link || link.indexOf('pixiv.net') < 0) {
+        return false
+    }
+    var member_id, illust_id
+    if (link.indexOf('/users/') > 0) {
+        member_id = link.substring(link.indexOf('/users/') + 7)
+        return !isNaN(member_id) && [0, member_id]
+    } else if (link.indexOf('/artworks/') > 0) {
+        illust_id = link.substring(link.indexOf('/artworks/') + 10)
+        return !isNaN(illust_id) && [1, illust_id]
+    } else if (link.indexOf('/member.php?id=') > 0) { // Old user url
+        member_id = link.substring(link.indexOf('id=') + 3)
+        return !isNaN(member_id) && [0, member_id]
+    } else if (link.indexOf('illust_id=') > 0) { // Old illust url
+        illust_id = link.substring(link.indexOf('_id=') + 4)
+        return !isNaN(illust_id) && [1, illust_id]
+    }
+}

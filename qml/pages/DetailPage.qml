@@ -446,18 +446,15 @@ Page {
                 anchors.leftMargin: Theme.paddingLarge
                 wrapMode: Text.WordWrap
                 onLinkActivated: {
-                    if (link.indexOf('/member.php?id=') > 0) {
-                        var member_id = link.substring(link.indexOf('id=') + 3)
-                        if (!isNaN(member_id)) {
+                    var isPxvLink = Prxrv.isPixivLink(link)
+                    if (isPxvLink) {
+                        if (isPxvLink[0]) {
+                            var _props0 = {"workID": isPxvLink[1], "authorID": "", "currentIndex": -1}
+                            pageStack.push("DetailPage.qml", _props0)
+                        } else {
                             currentModel.push("userWorkModel")
-                            var _props = {"authorName": "", "authorID": member_id}
-                            pageStack.push("UserWorkPage.qml", _props)
-                        }
-                    } else if (link.indexOf('illust_id=') > 0) {
-                        var illust_id = link.substring(link.indexOf('_id=') + 4)
-                        if (!isNaN(illust_id)) {
-                            var _props = {"workID": illust_id, "authorID": "", "currentIndex": -1}
-                            pageStack.push("DetailPage.qml", _props)
+                            var _props1 = {"authorName": "", "authorID": isPxvLink[1]}
+                            pageStack.push("UserWorkPage.qml", _props1)
                         }
                     } else {
                         Qt.openUrlExternally(link)
