@@ -157,7 +157,7 @@ Page {
         }
     }
 
-    function download() {
+    function download(pageIndex) {
         // %a: authorID, %u: work.authorAccount, %n: work.authorName, %i: workID, %t: work.title
         if (debugOn) console.log('custom filename', '%a:', authorID, '%u:', work.authorAccount, '%n:', work.authorName,
                                  '%i:', workID, '%t:', work.title)
@@ -165,6 +165,9 @@ Page {
         var filename = _filename
         var pn, src_large, thumb
         for (var i = 0; i < pageCount; i++) {
+            if ((pageIndex || pageIndex === 0) && pageIndex !== i) {
+                continue
+            }
             pn = '_p' + i
             src_large = work.large.replace('_p0.', pn+'.')
             thumb = work.square128.replace('_p0_', pn+'_')
@@ -214,6 +217,13 @@ Page {
 
         Page {
             SilicaListView {
+                PullDownMenu {
+                    MenuItem {
+                        text: qsTr("Download all")
+                        onClicked: download()
+                    }
+                }
+
                 anchors.fill: parent
 
                 header: PageHeader {
@@ -224,9 +234,9 @@ Page {
 
                 model: slideModel
 
-                delegate: BackgroundItem {
+                delegate: ListItem {
                     width: parent.width
-                    height: moreImage.height
+                    contentHeight: moreImage.height || Theme.itemSizeSmall
                     Separator {
                         id: sepLine
                         width: parent.width
@@ -242,6 +252,13 @@ Page {
                         anchors.horizontalCenter: parent.horizontalCenter
                         source: imgUrl
                     }
+                    menu: ContextMenu {
+                        MenuItem {
+                            text: qsTr("Download")
+                            onClicked: download(index)
+                        }
+                    }
+
                     onClicked: {
                         pageStack.push("PreviewPage.qml", {
                             url: imgUrl.replace(/\/.\/480x960/, '')
