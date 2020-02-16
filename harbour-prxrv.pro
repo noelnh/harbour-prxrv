@@ -39,9 +39,6 @@ OTHER_FILES += qml/harbour-prxrv.qml \
     qml/pages/*.qml \
     qml/js/*.js \
     qml/images/* \
-    qml/booru/pages/*.qml \
-    qml/booru/js/*.js \
-    qml/booru/images/* \
     qml/fonts/fontawesome-webfont.ttf \
     rpm/harbour-prxrv.yaml \
     rpm/harbour-prxrv.changes \

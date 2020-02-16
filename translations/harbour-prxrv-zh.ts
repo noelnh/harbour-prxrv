@@ -104,6 +104,14 @@
         <source>Bookmark</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Download all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Related works</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DownloadsPage</name>
@@ -303,6 +311,21 @@
     </message>
     <message>
         <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>RelatedWorksPage</name>
+    <message>
+        <source>Related Works</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No more works</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

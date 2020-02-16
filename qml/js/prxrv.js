@@ -91,6 +91,9 @@ function getCurrentModel() {
             case 'recommendationModel':
                 if (debugOn) console.log('choose recommendationModel');
                 return worksModelStack[worksModelStack.length - 1];
+            case 'relatedWorksModel':
+                if (debugOn) console.log('choose relatedWorksModel');
+                return worksModelStack[worksModelStack.length - 1];
             case 'feedsModel':
                 if (debugOn) console.log('choose feedsModel');
                 return worksModelStack[worksModelStack.length - 1];

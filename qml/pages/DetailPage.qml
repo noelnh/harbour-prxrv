@@ -153,7 +153,6 @@ Page {
                 var pn = '_p' + i + '_'
                 slideModel.append( { imgUrl: p0.replace('_p0_', pn) } )
             }
-            // TODO pageStack.pushAttached(relatedPage)
         }
     }
 
@@ -283,6 +282,10 @@ Page {
 
         PushUpMenu {
             id: pushUpMenu
+            MenuItem {
+                text: qsTr("Related works")
+                onClicked: pageStack.push("RelatedWorksPage.qml", { fromID: workID })
+            }
             MenuItem {
                 id: openWebViewAction
                 text: qsTr("Open Web Page")
