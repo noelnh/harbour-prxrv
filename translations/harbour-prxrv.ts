@@ -527,6 +527,18 @@
         <source>member ID</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Trending tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trending Tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search %1</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserWorkPage</name>

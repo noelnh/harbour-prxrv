@@ -187,6 +187,18 @@ function getRankingWork(token, type, mode, page, callback) {
 }
 
 
+// Trending tags (App API)
+//
+function getTrendingTags(token, callback) {
+    if (!checkToken(token, 'getTrendingTags')) return;
+    var url = app_url_v1 + '/trending-tags/illust';
+    var params = {
+        'filter': 'for_ios',
+    };
+    sendRequest('GET', token, url, params, callback);
+}
+
+
 // Recommendation (App API)
 //
 function getRecommendation(token, page, callback) {
@@ -200,6 +212,7 @@ function getRecommendation(token, page, callback) {
     };
     sendRequest('GET', token, url, params, callback);
 }
+
 
 // Related works (App API)
 //
