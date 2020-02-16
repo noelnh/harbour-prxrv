@@ -8,6 +8,11 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Feb 16 2020 Noel Nhato <noelnhato@gmail.com> 0.17.0-1
+- Add image preview
+- Add related works page
+- Add trending tags to search page
+
 * Sun Jan 26 2020 Noel Nhato <noelnhato@gmail.com> 0.16.3-1
 - Fix login & styles
 
