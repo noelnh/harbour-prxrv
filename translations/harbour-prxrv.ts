@@ -211,6 +211,29 @@
     </message>
 </context>
 <context>
+    <name>FollowingPage</name>
+    <message>
+        <source>%1&apos;s Following</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>My Following</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Private follows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Public follows</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LatestWorkPage</name>
     <message>
         <source>New Work: Following</source>
@@ -275,6 +298,85 @@
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Works (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bookmarks (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Following (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Male</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Female</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Works</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Following</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Prxrv</name>
+    <message>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Accounts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Works</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recommendation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rankings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bookmarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Moebooru</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RankingPage</name>
@@ -301,6 +403,74 @@
     <message>
         <source>Refresh</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>all</source>
+        <translation>Overall</translation>
+    </message>
+    <message>
+        <source>illust</source>
+        <translation>Illustrations</translation>
+    </message>
+    <message>
+        <source>manga</source>
+        <translation>Manga</translation>
+    </message>
+    <message>
+        <source>ugoira</source>
+        <translation>Ugoira</translation>
+    </message>
+    <message>
+        <source>novel</source>
+        <translation>Novels</translation>
+    </message>
+    <message>
+        <source>daily</source>
+        <translation>Daily</translation>
+    </message>
+    <message>
+        <source>weekly</source>
+        <translation>Weekly</translation>
+    </message>
+    <message>
+        <source>monthly</source>
+        <translation>Monthly</translation>
+    </message>
+    <message>
+        <source>rookie</source>
+        <translation>Rookie</translation>
+    </message>
+    <message>
+        <source>original</source>
+        <translation>Original</translation>
+    </message>
+    <message>
+        <source>male</source>
+        <translation>Male</translation>
+    </message>
+    <message>
+        <source>female</source>
+        <translation>Female</translation>
+    </message>
+    <message>
+        <source>daily_r18</source>
+        <translation>Daily R-18</translation>
+    </message>
+    <message>
+        <source>weekly_r18</source>
+        <translation>Weekly R-18</translation>
+    </message>
+    <message>
+        <source>male_r18</source>
+        <translation>Male R-18</translation>
+    </message>
+    <message>
+        <source>female_r18</source>
+        <translation>Female R-18</translation>
+    </message>
+    <message>
+        <source>r18g</source>
+        <translation>R-18G</translation>
     </message>
 </context>
 <context>

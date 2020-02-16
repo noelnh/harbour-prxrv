@@ -33,9 +33,9 @@ Page {
             userName = _user['name']
             authorIconSrc = _user['profile_image_urls']['px_50x50']
             userAccount = _user['account']
-            userWorkLabel.text = "Works (" + _user['stats']['works'] + ")"
-            favoriteWorkLabel.text = "Bookmarks (" + _user['stats']['favorites'] + ")"
-            latestWorkLabel.text = "Following (" + _user['stats']['following'] + ")"
+            userWorkLabel.text = qsTr("Works (%1)").arg(_user['stats']['works'])
+            favoriteWorkLabel.text = qsTr("Bookmarks (%1)").arg(_user['stats']['favorites'])
+            latestWorkLabel.text = qsTr("Following (%1)").arg( _user['stats']['following'])
 
             for (var title in _user['profile']) {
                 if (title === 'contacts') {
@@ -58,6 +58,9 @@ Page {
                     var _content = _user['profile'][title]
                     if (title == 'homepage' && _content.indexOf('http') === 0) {
                         _content = '<a href="' + _content + '">' + _content + '</a>'
+                    }
+                    if (title === 'gender') {
+                        _content = _content === 'male' ? qsTr("Male") : _content === 'female' ? qsTr("Female") : _content
                     }
                     profileModel.append( {
                         title: getSubTitle(title),
@@ -214,7 +217,7 @@ Page {
                     anchors.left: parent.left
                     anchors.leftMargin: Theme.paddingLarge
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "Works"
+                    text: qsTr("Works")
                 }
                 onClicked: {
                     if (userID == user['id']) {
@@ -239,7 +242,7 @@ Page {
                     anchors.left: parent.left
                     anchors.leftMargin: Theme.paddingLarge
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "Bookmarks"
+                    text: qsTr("Bookmarks")
                 }
                 onClicked: {
                     currentModel.push("favoriteWorkModel");
@@ -260,7 +263,7 @@ Page {
                     anchors.left: parent.left
                     anchors.leftMargin: Theme.paddingLarge
                     anchors.verticalCenter: parent.verticalCenter
-                    text: "Following"
+                    text: qsTr("Following")
                 }
                 onClicked: {
                     if (debugOn) console.log("goto following users page")

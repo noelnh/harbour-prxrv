@@ -18,6 +18,29 @@ Page {
     property bool refreshRanking: false
     property var typeArray: [0, 0]
 
+    function getTextTr (text) {
+        return {
+            // type
+            all: qsTr("all"),
+            illust: qsTr("illust"),
+            manga: qsTr("manga"),
+            ugoira: qsTr("ugoira"),
+            novel: qsTr("novel"),
+            // mode
+            daily: qsTr("daily"),
+            weekly: qsTr("weekly"),
+            monthly: qsTr("monthly"),
+            rookie: qsTr("rookie"),
+            original: qsTr("original"),
+            male: qsTr("male"),
+            female: qsTr("female"),
+            daily_r18: qsTr("daily_r18"),
+            weekly_r18: qsTr("weekly_r18"),
+            male_r18: qsTr("male_r18"),
+            female_r18: qsTr("female_r18"),
+            r18g: qsTr("r18g"),
+        }[text] || text
+    }
 
     function addRankingWork(resp_j) {
         requestLock = false;
@@ -102,11 +125,11 @@ Page {
                     currentIndex: typeArray[0]
 
                     menu: ContextMenu {
-                        MenuItem { text: "all" }        // all
-                        MenuItem { text: "illust" }     // daily, weekly, monthly, rookie, r18 x5
-                        MenuItem { text: "manga" }      // =illust
-                        MenuItem { text: "ugoira" }     // daily, weekly, r18 x2
-                        MenuItem { text: "novel" }      // daily, weekly, rookie, male, female, r18 x5
+                        MenuItem { text: getTextTr("all") }        // all
+                        MenuItem { text: getTextTr("illust") }     // daily, weekly, monthly, rookie, r18 x5
+                        MenuItem { text: getTextTr("manga") }      // =illust
+                        MenuItem { text: getTextTr("ugoira") }     // daily, weekly, r18 x2
+                        MenuItem { text: getTextTr("novel") }      // daily, weekly, rookie, male, female, r18 x5
                     }
 
                     onValueChanged: {
@@ -122,18 +145,18 @@ Page {
                     currentIndex: typeArray[1]
 
                     menu: ContextMenu {
-                        MenuItem { text: "daily" }
-                        MenuItem { text: "weekly" }
-                        MenuItem { text: "monthly" }
-                        MenuItem { text: "rookie" }
-                        MenuItem { text: "original" }
-                        MenuItem { text: "male" }
-                        MenuItem { text: "female" }
-                        MenuItem { text: "daily_r18" }
-                        MenuItem { text: "weekly_r18" }
-                        MenuItem { text: "male_r18" }
-                        MenuItem { text: "female_r18" }
-                        MenuItem { text: "r18g" }
+                        MenuItem { text: getTextTr("daily") }
+                        MenuItem { text: getTextTr("weekly") }
+                        MenuItem { text: getTextTr("monthly") }
+                        MenuItem { text: getTextTr("rookie") }
+                        MenuItem { text: getTextTr("original") }
+                        MenuItem { text: getTextTr("male") }
+                        MenuItem { text: getTextTr("female") }
+                        MenuItem { text: getTextTr("daily_r18") }
+                        MenuItem { text: getTextTr("weekly_r18") }
+                        MenuItem { text: getTextTr("male_r18") }
+                        MenuItem { text: getTextTr("female_r18") }
+                        MenuItem { text: getTextTr("r18g") }
                     }
 
                     onValueChanged: {
@@ -219,7 +242,7 @@ Page {
         delegate: rankingWorkDelegate
 
         header: PageHeader {
-            title: qsTr("Ranking: ") + rankingMode + ' | ' + rankingType
+            title: qsTr("Ranking: ") + getTextTr(rankingMode) + ' | ' + getTextTr(rankingType)
         }
 
         PullDownMenu {

@@ -45,7 +45,7 @@ Page {
         header: PageHeader {
             id: pageHeader
             width: parent.width
-            title: (userName ? userName + "'s " : "My ") + "Following"
+            title: userName ? qsTr("%1's Following").arg(userName) : qsTr("My Following")
         }
 
         PullDownMenu {
@@ -53,7 +53,7 @@ Page {
             MenuItem {
                 id: changeModeAction
                 visible: userID ? false : true
-                text: publicity == 'public' ? "Private follows" : "Public follows"
+                text: publicity == 'public' ? qsTr("Private follows") : qsTr("Public follows")
                 onClicked: {
                     if (loginCheck()) {
                         followingModel.clear()
@@ -64,7 +64,7 @@ Page {
                 }
             }
             MenuItem {
-                text: "Refresh"
+                text: qsTr("Refresh")
                 onClicked: {
                     if (loginCheck()) {
                         followingModel.clear()

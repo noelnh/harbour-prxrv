@@ -50,4 +50,4 @@ OTHER_FILES += qml/harbour-prxrv.qml \
 # following CONFIG line
 CONFIG += sailfishapp_i18n
 
-TRANSLATIONS += translations/harbour-prxrv-zh.ts
+TRANSLATIONS += translations/harbour-prxrv-zh_CN.ts

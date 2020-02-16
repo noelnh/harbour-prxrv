@@ -23,20 +23,20 @@ Page {
             id: pullDownMenu
             MenuItem {
                 // TODO
-                text: "About"
+                text: qsTr("About")
                 onClicked: {
                     pageStack.push("AboutPage.qml")
                 }
                 visible: false
             }
             MenuItem {
-                text: "Accounts"
+                text: qsTr("Accounts")
                 onClicked: {
                     pageStack.push("AccountsPage.qml")
                 }
             }
             MenuItem {
-                text: "Settings"
+                text: qsTr("Settings")
                 onClicked: {
                     pageStack.push("SettingsPage.qml")
                 }
@@ -50,47 +50,47 @@ Page {
 
         model: ListModel {
 //            ListElement {
-//                label: "Stacc"
+//                label: qsTr("Stacc")
 //                model: "activityModel"
 //                page: "StaccPage.qml"
 //            }
             ListElement {
-                label: "New Works"
+                label: qsTr("New Works")
                 model: "latestWorkModel"
                 page: "LatestWorkPage.qml"
             }
             ListElement {
-                label: "Recommendation"
+                label: qsTr("Recommendation")
                 model: "recommendationModel"
                 page: "RecommendationPage.qml"
             }
             ListElement {
-                label: "Rankings"
+                label: qsTr("Rankings")
                 model: "rankingWorkModel"
                 page: "RankingPage.qml"
             }
             ListElement {
-                label: "Bookmarks"
+                label: qsTr("Bookmarks")
                 model: "favoriteWorkModel"
                 page: "FavoriteWorkPage.qml"
             }
             ListElement {
-                label: "Search"
+                label: qsTr("Search")
                 model: ""
                 page: "TrendsPage.qml"
             }
             ListElement {
-                label: "Profile"
+                label: qsTr("Profile")
                 model: ""
                 page: "ProfilePage.qml"
             }
             ListElement {
-                label: "Downloads"
+                label: qsTr("Downloads")
                 model: "downloadsModel"
                 page: "DownloadsPage.qml"
             }
             ListElement {
-                label: "Moebooru"
+                label: qsTr("Moebooru")
                 model: "booruModel"
                 page: "/usr/share/harbour-mieru/qml/pages/MainPage.qml"
             }
