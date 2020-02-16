@@ -104,6 +104,14 @@
         <source>Bookmark</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Download all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Related works</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DownloadsPage</name>
@@ -307,6 +315,21 @@
     </message>
 </context>
 <context>
+    <name>RelatedWorksPage</name>
+    <message>
+        <source>Related Works</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No more works</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Behaviour</source>
@@ -388,7 +411,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Version 0.16.3</source>
+        <source>Version %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -502,6 +525,18 @@
     </message>
     <message>
         <source>member ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trending tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trending Tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -5,24 +5,43 @@ import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
 
 Page {
-    id: recommendationPage
+    id: relatedWorksPage
 
     property int currentPage: 1
     property int currentIndex: -1
+    property string fromID: ''
 
+    property bool isEmpty: false
     property bool isNewModel: true
+    property var workIds: ({})
+    property var seedIds: []
 
-    function addRecommendedWork(resp_j) {
+    ListModel { id: relatedWorksModel }
+
+    function addRelatedWorks(resp_j) {
 
         requestLock = false;
 
-        if (!resp_j) return;
+        if (!resp_j) {
+            isEmpty = true
+            if (currentPage > 0) {
+                currentPage -= 1;
+            }
+            return;
+        };
 
         var works = resp_j['illusts'];
         if (debugOn) console.log('found works:', works.length);
+        isEmpty = !works.length
 
-        if (debugOn) console.log('adding works to recommendationModel');
+        if (debugOn) console.log('adding works to relatedWorksModel');
         for (var i in works) {
+            var workId = works[i]['id']
+            if (workId in workIds) {
+                if (debugOn) console.log('duplicate id:', workId)
+                continue
+            }
+            workIds[workId] = true
 
             var square128 = works[i]['image_urls']['px_128x128'],
                     master480 = works[i]['image_urls']['px_480mw'],
@@ -35,8 +54,8 @@ Page {
             if (!authorIcon50 && authorIconM)
                 authorIcon50 = authorIconM.replace('_170.', '_50.');
 
-            recommendationModel.append({
-                workID: works[i]['id'],
+            relatedWorksModel.append({
+                workID: workId,
                 title: works[i]['title'],
                 headerText: works[i]['title'],
                 square128: square128,
@@ -53,12 +72,20 @@ Page {
     }
 
     function getWork() {
-        Pixiv.getRecommendation(token, currentPage, addRecommendedWork);
+        if (!isEmpty) {
+            var _seedIds = seedIds[0] ? seedIds.slice(0, 3) : seedIds.slice(1, 4)
+            if (debugOn) console.log('seed IDs:', JSON.stringify(_seedIds))
+            Pixiv.getRelatedWorks(token, fromID, _seedIds, currentPage, addRelatedWorks);
+        } else {
+            requestLock = false
+            if (debugOn) console.log('No more works', isEmpty)
+            showErrorMessage(qsTr("No more works"))
+        }
     }
 
 
     Component {
-        id: recommendationDelegate
+        id: relatedWorksDelegate
 
         BackgroundItem {
             width: gridView.cellWidth
@@ -89,6 +116,9 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             currentIndex = index
+                            if (!favoriteID) {
+                                seedIds.splice(0, 0, workID)
+                            }
                             Prxrv.toggleBookmarkIcon(workID, favoriteID)
                         }
                     }
@@ -97,6 +127,13 @@ Page {
 
             onClicked: {
                 var _props = {"workID": workID, "authorID": authorID, "currentIndex": index}
+                if (seedIds.length) {
+                    seedIds.splice(1, 0, workID)
+                } else {
+                    seedIds.splice(0, 0, 0, workID)
+                }
+                currentPage = 0
+                isEmpty = false
                 pageStack.push("DetailPage.qml", _props)
             }
         }
@@ -109,11 +146,11 @@ Page {
         cellWidth: width / 3
         cellHeight: cellWidth
 
-        model: recommendationModel
-        delegate: recommendationDelegate
+        model: relatedWorksModel
+        delegate: relatedWorksDelegate
 
         header: PageHeader {
-            title: qsTr("Recommendation")
+            title: qsTr("Related Works")
         }
 
         PullDownMenu {
@@ -122,8 +159,11 @@ Page {
                 text: qsTr("Refresh")
                 onClicked: {
                     if (loginCheck()) {
-                        recommendationModel.clear()
+                        relatedWorksModel.clear()
+                        workIds = {}
+                        seedIds = []
                         currentPage = 1
+                        isEmpty = false
                         getWork()
                     }
                 }
@@ -133,27 +173,39 @@ Page {
         BusyIndicator {
             size: BusyIndicatorSize.Large
             anchors.centerIn: parent
-            running: requestLock || !recommendationModel.count
+            running: (requestLock || !relatedWorksModel.count) && !isEmpty
         }
 
         onAtYEndChanged: {
             if (gridView.atYEnd) {
-                if ( !requestLock && recommendationModel.count > 0 && loginCheck() ) {
+                if ( !requestLock && relatedWorksModel.count > 0 && loginCheck() ) {
                     requestLock = true
                     currentPage += 1
                     getWork()
                 }
             }
         }
+    }
 
+    onStatusChanged: {
+        if (status == PageStatus.Deactivating) {
+            if (_navigation == PageNavigation.Back) {
+                if (currentModel[currentModel.length-1] == "relatedWorksModel") {
+                    worksModelStack.pop()
+                    currentModel.pop()
+                    if (debugOn) console.log("pop model: relatedWorksModel")
+                }
+            }
+        }
     }
 
     Component.onCompleted: {
         if (isNewModel) {
-            worksModelStack.push(recommendationModel)
+            currentModel.push("relatedWorksModel")
+            worksModelStack.push(relatedWorksModel)
             isNewModel = false
         }
-        if (recommendationModel.count == 0) {
+        if (relatedWorksModel.count == 0) {
             if(loginCheck()) {
                 currentPage = 1
                 getWork()
@@ -162,5 +214,4 @@ Page {
             }
         }
     }
-
 }

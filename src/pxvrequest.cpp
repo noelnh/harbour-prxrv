@@ -41,7 +41,9 @@ void PxvRequest::get(QNetworkAccessManager &qnam, QString url, QString path, QSt
     this->rqurl.setUrl(url);
 
     this->qnrq = new QNetworkRequest(rqurl);
-    Utils::setHeaders(*this->qnrq, this->token);
+    if (!this->token.isEmpty()) {
+        Utils::setHeaders(*this->qnrq, this->token);
+    }
 
     this->qnr = qnam.get(*qnrq);
 

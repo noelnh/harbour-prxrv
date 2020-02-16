@@ -104,6 +104,14 @@
         <source>Bookmark</source>
         <translation>书签</translation>
     </message>
+    <message>
+        <source>Download all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Related works</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DownloadsPage</name>
@@ -307,6 +315,21 @@
     </message>
 </context>
 <context>
+    <name>RelatedWorksPage</name>
+    <message>
+        <source>Related Works</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No more works</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SettingsPage</name>
     <message>
         <source>Behaviour</source>
@@ -391,8 +414,8 @@
         <translation>请安装 harbour-mieru</translation>
     </message>
     <message>
-        <source>Version 0.16.3</source>
-        <translation>版本 0.16.3</translation>
+        <source>Version %1</source>
+        <translation>版本 %1</translation>
     </message>
 </context>
 <context>
@@ -506,6 +529,18 @@
     <message>
         <source>member ID</source>
         <translation>用户ID</translation>
+    </message>
+    <message>
+        <source>Trending tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trending Tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

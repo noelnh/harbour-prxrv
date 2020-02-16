@@ -153,11 +153,10 @@ Page {
                 var pn = '_p' + i + '_'
                 slideModel.append( { imgUrl: p0.replace('_p0_', pn) } )
             }
-            pageStack.pushAttached(morePage)
         }
     }
 
-    function download() {
+    function download(pageIndex) {
         // %a: authorID, %u: work.authorAccount, %n: work.authorName, %i: workID, %t: work.title
         if (debugOn) console.log('custom filename', '%a:', authorID, '%u:', work.authorAccount, '%n:', work.authorName,
                                  '%i:', workID, '%t:', work.title)
@@ -165,6 +164,9 @@ Page {
         var filename = _filename
         var pn, src_large, thumb
         for (var i = 0; i < pageCount; i++) {
+            if ((pageIndex || pageIndex === 0) && pageIndex !== i) {
+                continue
+            }
             pn = '_p' + i
             src_large = work.large.replace('_p0.', pn+'.')
             thumb = work.square128.replace('_p0_', pn+'_')
@@ -214,6 +216,13 @@ Page {
 
         Page {
             SilicaListView {
+                PullDownMenu {
+                    MenuItem {
+                        text: qsTr("Download all")
+                        onClicked: download()
+                    }
+                }
+
                 anchors.fill: parent
 
                 header: PageHeader {
@@ -224,9 +233,9 @@ Page {
 
                 model: slideModel
 
-                delegate: Item {
+                delegate: ListItem {
                     width: parent.width
-                    height: moreImage.height
+                    contentHeight: moreImage.height || Theme.itemSizeSmall
                     Separator {
                         id: sepLine
                         width: parent.width
@@ -241,6 +250,18 @@ Page {
                         id: moreImage
                         anchors.horizontalCenter: parent.horizontalCenter
                         source: imgUrl
+                    }
+                    menu: ContextMenu {
+                        MenuItem {
+                            text: qsTr("Download")
+                            onClicked: download(index)
+                        }
+                    }
+
+                    onClicked: {
+                        pageStack.push("PreviewPage.qml", {
+                            url: imgUrl.replace(/\/.\/480x960/, '')
+                        })
                     }
                 }
             }
@@ -261,6 +282,10 @@ Page {
 
         PushUpMenu {
             id: pushUpMenu
+            MenuItem {
+                text: qsTr("Related works")
+                onClicked: pageStack.push("RelatedWorksPage.qml", { fromID: workID })
+            }
             MenuItem {
                 id: openWebViewAction
                 text: qsTr("Open Web Page")
@@ -321,15 +346,62 @@ Page {
             height: childrenRect.height
             anchors.top: pageHeader.bottom
 
-            Image {
-                id: image
-                anchors.horizontalCenter: parent.horizontalCenter
+            BackgroundItem {
+                id: imageItem
+                width: parent.width
+                height: image.height || Theme.itemSizeSmall
+                Image {
+                    id: image
+                    anchors.horizontalCenter: parent.horizontalCenter
 
-                source: work.master480
+                    source: work.master480
 
-                BusyIndicator {
-                    anchors.centerIn: parent
-                    running: image.status == Image.Loading
+                    BusyIndicator {
+                        anchors.centerIn: parent
+                        running: image.status === Image.Loading
+                    }
+
+                }
+
+                Rectangle {
+                    visible: pageCount > 1
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.leftMargin: Theme.paddingLarge
+                    width: parent.width
+                    height: parent.width / 16
+                    color: 'transparent'
+
+                    Image {
+                        id: pageCountImg
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.topMargin: Theme.paddingSmall
+                        anchors.leftMargin: Theme.paddingSmall
+                        source: "../images/page-count.svg"
+                        width: parent.height - Theme.paddingSmall * 2
+                        height: width
+                    }
+
+                    Text {
+                        anchors.top: parent.top
+                        anchors.topMargin: Theme.paddingSmall / 2
+                        anchors.left: pageCountImg.right
+                        anchors.leftMargin: Theme.paddingSmall
+                        text: pageCount
+                        color: 'white'
+                        font.bold: true
+                    }
+                }
+
+                onClicked: {
+                    if (slideModel.count > 0) {
+                        pageStack.push(morePage)
+                    } else {
+                        pageStack.push("PreviewPage.qml", {
+                            url: work.master480.replace(/\/.\/480x960/, '')
+                        })
+                    }
                 }
             }
 
@@ -337,7 +409,7 @@ Page {
                 id: authorBar
                 width: parent.width - Theme.paddingLarge * 2
                 height: Theme.fontSizeMedium * 2.5
-                anchors.top: image.bottom
+                anchors.top: imageItem.bottom
                 anchors.topMargin: Theme.paddingMedium
                 anchors.horizontalCenter: parent.horizontalCenter
                 Image {
@@ -394,18 +466,15 @@ Page {
                 anchors.leftMargin: Theme.paddingLarge
                 wrapMode: Text.WordWrap
                 onLinkActivated: {
-                    if (link.indexOf('/member.php?id=') > 0) {
-                        var member_id = link.substring(link.indexOf('id=') + 3)
-                        if (!isNaN(member_id)) {
+                    var isPxvLink = Prxrv.isPixivLink(link)
+                    if (isPxvLink) {
+                        if (isPxvLink[0]) {
+                            var _props0 = {"workID": isPxvLink[1], "authorID": "", "currentIndex": -1}
+                            pageStack.push("DetailPage.qml", _props0)
+                        } else {
                             currentModel.push("userWorkModel")
-                            var _props = {"authorName": "", "authorID": member_id}
-                            pageStack.push("UserWorkPage.qml", _props)
-                        }
-                    } else if (link.indexOf('illust_id=') > 0) {
-                        var illust_id = link.substring(link.indexOf('_id=') + 4)
-                        if (!isNaN(illust_id)) {
-                            var _props = {"workID": illust_id, "authorID": "", "currentIndex": -1}
-                            pageStack.push("DetailPage.qml", _props)
+                            var _props1 = {"authorName": "", "authorID": isPxvLink[1]}
+                            pageStack.push("UserWorkPage.qml", _props1)
                         }
                     } else {
                         Qt.openUrlExternally(link)
@@ -430,7 +499,7 @@ Page {
                 anchors.top: updateTime.bottom
                 anchors.topMargin: 10
                 width: parent.width
-                height: childrenRect.height
+                height: childrenRect.height + Theme.itemSizeSmall
 
                 model: tagModel
                 delegate: ListItem {
@@ -486,7 +555,7 @@ Page {
         id: panel
 
         width: parent.width
-        height: 72
+        height: Theme.itemSizeSmall
 
         dock: Dock.Bottom
         open: true

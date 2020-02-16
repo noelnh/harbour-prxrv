@@ -7,7 +7,7 @@ RequestMgr::RequestMgr(QObject *parent) : QObject(parent) {
 }
 
 void RequestMgr::saveImage(QString token, QString url, QString savePath, QString filename, int isCache) {
-    if (token.isEmpty() || url.isEmpty() || savePath.isEmpty() || filename.isEmpty()) {
+    if (url.isEmpty() || savePath.isEmpty() || filename.isEmpty()) {
         emit errorMessage("Invalid request.", nullptr);
         return;
     }

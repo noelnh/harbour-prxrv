@@ -19,7 +19,13 @@ function serialize(obj) {
     var str = [];
     for (var p in obj) {
         if (obj.hasOwnProperty(p)) {
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            if (obj[p] && obj[p] instanceof Array) {
+                for (var i in obj[p]) {
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p][i]));
+                }
+            } else {
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+            }
         }
     }
     return str.join("&");
@@ -181,6 +187,18 @@ function getRankingWork(token, type, mode, page, callback) {
 }
 
 
+// Trending tags (App API)
+//
+function getTrendingTags(token, callback) {
+    if (!checkToken(token, 'getTrendingTags')) return;
+    var url = app_url_v1 + '/trending-tags/illust';
+    var params = {
+        'filter': 'for_ios',
+    };
+    sendRequest('GET', token, url, params, callback);
+}
+
+
 // Recommendation (App API)
 //
 function getRecommendation(token, page, callback) {
@@ -190,6 +208,21 @@ function getRecommendation(token, page, callback) {
         'content_type': 'illust',
         'include_ranking_label': 'true',
         'filter': 'for_ios',
+        'offset': (page-1) * 30,
+    };
+    sendRequest('GET', token, url, params, callback);
+}
+
+
+// Related works (App API)
+//
+function getRelatedWorks(token, illust_id, seed_ids, page, callback) {
+    if (!checkToken(token, 'getRelatedWorks')) return;
+    var url = app_url_v2 + '/illust/related';
+    var params = {
+        'illust_id': illust_id,
+        'filter': 'for_ios',
+        'seed_illust_ids[]': seed_ids,
         'offset': (page-1) * 30,
     };
     sendRequest('GET', token, url, params, callback);
@@ -248,6 +281,14 @@ function getWorkDetails(token, work_id, callback) {
         'caption_format': 'html',
         'image_sizes': 'px_480mw,large',
     };
+    sendRequest('GET', token, url, params, callback);
+}
+function getWorkDetails2(token, illust_id, callback) {
+    if (!checkToken(token, 'getWorkDetails2')) return;
+    var url = app_url_v1 + '/illust/detail';
+    var params = {
+        'illust_id': illust_id
+    }
     sendRequest('GET', token, url, params, callback);
 }
 
@@ -377,6 +418,15 @@ function unbookmarkWork(token, illust_id, callback) {
         'illust_id': illust_id
     };
     sendRequest('POST', token, url, postdata, callback);
+}
+
+function getComments(token, illust_id) {
+    if (!checkToken(token, 'getComments')) return;
+    var url = app_url_v1 + '/illust/comments';
+    var params = {
+        'illust_id': illust_id
+    }
+    sendRequest('GET', token, url, params, callback);
 }
 
 
