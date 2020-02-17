@@ -263,7 +263,7 @@
     <message>
         <location filename="../qml/pages/FollowingPage.qml" line="48"/>
         <source>%1&apos;s Following</source>
-        <translation>%1的关注</translation>
+        <translation>%1 的关注</translation>
     </message>
     <message>
         <location filename="../qml/pages/FollowingPage.qml" line="48"/>
