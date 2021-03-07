@@ -55,9 +55,9 @@ Page {
 //                page: "StaccPage.qml"
 //            }
             ListElement {
-                label: qsTr("New Works")
-                model: "latestWorkModel"
-                page: "LatestWorkPage.qml"
+                label: qsTr("Newest Works")
+                model: "followingWorksModel"
+                page: "FollowingWorksPage.qml"
             }
             ListElement {
                 label: qsTr("Recommendation")
@@ -73,6 +73,11 @@ Page {
                 label: qsTr("Bookmarks")
                 model: "favoriteWorkModel"
                 page: "FavoriteWorkPage.qml"
+            }
+            ListElement {
+                label: qsTr("Latest Works")
+                model: "latestWorkModel"
+                page: "LatestWorkPage.qml"
             }
             ListElement {
                 label: qsTr("Search")

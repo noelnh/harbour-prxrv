@@ -242,6 +242,19 @@ function getLatestWork(token, page, callback) {
     sendRequest('GET', token, url, params, callback);
 }
 
+// Following works (App API)
+//
+function getFollowingWorks(token, url, params, callback) {
+    if (!checkToken(token, 'getFollowingWorks')) return;
+    if (!url) {
+        url = app_url_v2 + '/illust/follow'
+        sendRequest('GET', token, url, params, callback);
+    } else {
+        sendRequest('GET', token, url, params, callback);
+    }
+}
+
+
 // Following Works
 //
 function getFollowingWork(token, page, callback) {

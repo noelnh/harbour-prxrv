@@ -82,6 +82,9 @@ function addActivities(resp_j) {
 function getCurrentModel() {
     if (currentModel) {
         switch (currentModel[currentModel.length - 1]) {
+            case 'followingWorksModel':
+                if (debugOn) console.log('choose followingWorksModel');
+                return worksModelStack[worksModelStack.length - 1];
             case 'favoriteWorkModel':
                 if (debugOn) console.log('choose favoriteWorkModel');
                 return worksModelStack[worksModelStack.length - 1];
