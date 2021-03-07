@@ -47,13 +47,17 @@ Page {
             //     hiddenWork += 1
             //     continue
             // }
+            var largeUrl = favWorks[i]['meta_single_page']['original_image_url']
+            if (!largeUrl && favWorks[i]['meta_pages'].length){
+                largeUrl = favWorks[i]['meta_pages'][0]['image_urls']['original']
+            }
             favoriteWorkModel.append( {
                 workID: favWorks[i]['id'],
                 title:  favWorks[i]['title'],
                 headerText: favWorks[i]['title'],
                 square128: favWorks[i]['image_urls']['square_medium'],
                 master480: favWorks[i]['image_urls']['medium'],
-                large: favWorks[i]['image_urls']['large'],
+                large: largeUrl,
                 authorIcon: favWorks[i]['user']['profile_image_urls']['medium'],
                 authorID: favWorks[i]['user']['id'],
                 authorName: favWorks[i]['user']['name'],
