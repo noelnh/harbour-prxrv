@@ -47,17 +47,14 @@ Page {
             //     hiddenWork += 1
             //     continue
             // }
-            var largeUrl = favWorks[i]['meta_single_page']['original_image_url']
-            if (!largeUrl && favWorks[i]['meta_pages'].length){
-                largeUrl = favWorks[i]['meta_pages'][0]['image_urls']['original']
-            }
+            var imgUrls = Prxrv.getImgUrls(favWorks[i])
             favoriteWorkModel.append( {
                 workID: favWorks[i]['id'],
                 title:  favWorks[i]['title'],
                 headerText: favWorks[i]['title'],
-                square128: favWorks[i]['image_urls']['square_medium'],
-                master480: favWorks[i]['image_urls']['medium'],
-                large: largeUrl,
+                square128: imgUrls.square,
+                master480: imgUrls.master,
+                large: imgUrls.large,
                 authorIcon: favWorks[i]['user']['profile_image_urls']['medium'],
                 authorID: favWorks[i]['user']['id'],
                 authorName: favWorks[i]['user']['name'],

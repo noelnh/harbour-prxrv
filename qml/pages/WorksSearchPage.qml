@@ -34,12 +34,14 @@ Page {
                 hiddenWork += 1
                 continue
             }
+            var imgUrls = Prxrv.getImgUrls(works[i])
             worksSearchModel.append( {
                 workID: works[i]['id'],
                 title:  works[i]['title'],
                 headerText: works[i]['title'],
-                square128: works[i]['image_urls']['px_128x128'],
-                master480: works[i]['image_urls']['px_480mw'],
+                square128: imgUrls.square,
+                master480: imgUrls.master,
+                large: imgUrls.large,
                 authorIcon: works[i]['user']['profile_image_urls']['px_50x50'],
                 authorID: works[i]['user']['id'],
                 authorName: works[i]['user']['name'],

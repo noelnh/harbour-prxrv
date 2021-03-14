@@ -22,13 +22,14 @@ Page {
         if (debugOn) console.log('adding works to latestWorkModel');
         for (var i in works) {
             if (!showR18 && works[i]['age_limit'].indexOf('r18') >= 0) continue;
+            var imgUrls = Prxrv.getImgUrls(works[i])
             latestWorkModel.append({
                 workID: works[i]['id'],
                 title: works[i]['title'],
                 headerText: works[i]['title'],
-                square128: works[i]['image_urls']['px_128x128'],
-                master480: works[i]['image_urls']['px_480mw'],
-                large: works[i]['image_urls']['large'],
+                square128: imgUrls.square,
+                master480: imgUrls.master,
+                large: imgUrls.large,
                 authorIcon: works[i]['user']['profile_image_urls']['px_50x50'],
                 authorID: works[i]['user']['id'],
                 authorName: works[i]['user']['name'],
@@ -40,11 +41,7 @@ Page {
     }
 
     function getWork() {
-        if (showFollowing) {
-            Pixiv.getFollowingWork(token, currentPage, addLatestWork)
-        } else {
-            Pixiv.getLatestWork(token, currentPage, addLatestWork)
-        }
+        Pixiv.getLatestWork(token, currentPage, addLatestWork)
     }
 
     Component {
@@ -103,22 +100,11 @@ Page {
         delegate: latestWorkDelegate
 
         header: PageHeader {
-            title: showFollowing ? qsTr("New Work: Following") : qsTr("New Work: All")
+            title: qsTr("Newest Work: All")
         }
 
         PullDownMenu {
             id: pullDownMenu
-            MenuItem {
-                text: showFollowing ? qsTr("Show all") : qsTr("Show following")
-                onClicked: {
-                    if (loginCheck()) {
-                        latestWorkModel.clear()
-                        currentPage = 1
-                        showFollowing = !showFollowing
-                        getWork()
-                    }
-                }
-            }
             MenuItem {
                 text: qsTr("Refresh")
                 onClicked: {

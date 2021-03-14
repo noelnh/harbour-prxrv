@@ -130,12 +130,13 @@ Page {
         }
 
         if (currentIndex < 0) {
+            var imgUrls = Prxrv.getImgUrls(resp[0])
             work = {
                 'headerText': resp[0]['title'],
                 'title': resp[0]['title'],
-                'master480': resp[0]['image_urls']['px_480mw'],
-                'large': resp[0]['image_urls']['large'],
-                'square128': resp[0]['image_urls']['px_128x128'],
+                square128: imgUrls.square,
+                master480: imgUrls.master,
+                large: imgUrls.large,
                 'authorIcon': resp[0]['user']['profile_image_urls']['px_50x50'],
                 'authorAccount': resp[0]['user']['account'],
                 'authorName': resp[0]['user']['name']
@@ -260,7 +261,7 @@ Page {
 
                     onClicked: {
                         pageStack.push("PreviewPage.qml", {
-                            url: imgUrl.replace(/\/.\/480x960/, '')
+                            url: imgUrl.replace(/\/.\/.*\/img-master/, '/img-master')
                         })
                     }
                 }
@@ -399,7 +400,7 @@ Page {
                         pageStack.push(morePage)
                     } else {
                         pageStack.push("PreviewPage.qml", {
-                            url: work.master480.replace(/\/.\/480x960/, '')
+                            url: work.master480.replace(/\/.\/.*\/img-master/, '/img-master')
                         })
                     }
                 }

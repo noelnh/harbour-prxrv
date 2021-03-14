@@ -250,7 +250,7 @@ function getFollowingWorks(token, url, params, callback) {
         url = app_url_v2 + '/illust/follow'
         sendRequest('GET', token, url, params, callback);
     } else {
-        sendRequest('GET', token, url, params, callback);
+        sendRequest('GET', token, url, {}, callback);
     }
 }
 
@@ -292,7 +292,7 @@ function getWorkDetails(token, work_id, callback) {
     var params = {
         'include_stats': 'true',
         'caption_format': 'html',
-        'image_sizes': 'px_480mw,large',
+        'image_sizes': 'px_128x128,px_480mw,large',
     };
     sendRequest('GET', token, url, params, callback);
 }

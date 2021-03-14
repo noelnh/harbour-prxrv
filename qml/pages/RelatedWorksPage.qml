@@ -43,11 +43,7 @@ Page {
             }
             workIds[workId] = true
 
-            var square128 = works[i]['image_urls']['px_128x128'],
-                    master480 = works[i]['image_urls']['px_480mw'],
-                    squareM = works[i]['image_urls']['square_medium'];
-            if (!square128 && squareM) square128 = squareM.replace("360x360_70", "128x128");
-            if (!master480 && squareM) master480 = squareM.replace("360x360_70", "480x960").replace("square", "master");
+            var imgUrls = Prxrv.getImgUrls(works[i])
 
             var authorIcon50 = works[i]['user']['profile_image_urls']['px_50x50'];
             var authorIconM = works[i]['user']['profile_image_urls']['medium'];
@@ -58,9 +54,9 @@ Page {
                 workID: workId,
                 title: works[i]['title'],
                 headerText: works[i]['title'],
-                square128: square128,
-                master480: master480,
-                large: works[i]['image_urls']['large'],
+                square128: imgUrls.square,
+                master480: imgUrls.master,
+                large: imgUrls.large,
                 authorIcon: authorIcon50,
                 authorID: works[i]['user']['id'],
                 authorName: works[i]['user']['name'],

@@ -234,25 +234,36 @@
     </message>
 </context>
 <context>
-    <name>LatestWorkPage</name>
+    <name>FollowingWorksPage</name>
     <message>
-        <source>New Work: Following</source>
+        <source>Newest works: Following</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New Work: All</source>
+        <source>Go Home</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show all</source>
+        <source>Private following</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Show following</source>
+        <source>Public following</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>LatestWorkPage</name>
+    <message>
+        <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Newest Work: All</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -346,10 +357,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>New Works</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Recommendation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -375,6 +382,14 @@
     </message>
     <message>
         <source>Moebooru</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Newest Works</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Latest Works</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

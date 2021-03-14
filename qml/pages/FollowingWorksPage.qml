@@ -39,17 +39,14 @@ Page {
             //     hiddenWork += 1
             //     continue
             // }
-            var largeUrl = followingWorks[i]['meta_single_page']['original_image_url']
-            if (!largeUrl && followingWorks[i]['meta_pages'].length){
-                largeUrl = followingWorks[i]['meta_pages'][0]['image_urls']['original']
-            }
+            var imgUrls = Prxrv.getImgUrls(followingWorks[i])
             followingWorksModel.append( {
                 workID: followingWorks[i]['id'],
                 title:  followingWorks[i]['title'],
                 headerText: followingWorks[i]['title'],
-                square128: followingWorks[i]['image_urls']['square_medium'],
-                master480: followingWorks[i]['image_urls']['medium'],
-                large: largeUrl,
+                square128: imgUrls.square,
+                master480: imgUrls.master,
+                large: imgUrls.large,
                 authorIcon: followingWorks[i]['user']['profile_image_urls']['medium'],
                 authorID: followingWorks[i]['user']['id'],
                 authorName: followingWorks[i]['user']['name'],
