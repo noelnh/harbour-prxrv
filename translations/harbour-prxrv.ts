@@ -255,6 +255,10 @@
         <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>All works</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>LatestWorkPage</name>
@@ -386,10 +390,6 @@
     </message>
     <message>
         <source>Newest Works</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Latest Works</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

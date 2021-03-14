@@ -135,6 +135,13 @@ Page {
                 }
             }
             MenuItem {
+                text: qsTr("All works")
+                onClicked: {
+                    currentModel.push("latestWorkModel")
+                    pageStack.push("LatestWorkPage.qml")
+                }
+            }
+            MenuItem {
                 id: changeModeAction
                 text: publicity == 'public' ? qsTr("Private following") : qsTr("Public following")
                 onClicked: {

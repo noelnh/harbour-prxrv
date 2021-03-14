@@ -136,6 +136,7 @@ Page {
     }
 
     Component.onCompleted: {
+        worksModelStack.push(latestWorkModel)
         if (latestWorkModel.count == 0) {
             if(loginCheck()) {
                 currentPage = 1

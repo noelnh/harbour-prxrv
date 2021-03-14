@@ -299,17 +299,22 @@
         <translation type="unfinished">返回主页</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FollowingWorksPage.qml" line="139"/>
+        <location filename="../qml/pages/FollowingWorksPage.qml" line="138"/>
+        <source>All works</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/FollowingWorksPage.qml" line="146"/>
         <source>Private following</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/FollowingWorksPage.qml" line="139"/>
+        <location filename="../qml/pages/FollowingWorksPage.qml" line="146"/>
         <source>Public following</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/FollowingWorksPage.qml" line="152"/>
+        <location filename="../qml/pages/FollowingWorksPage.qml" line="159"/>
         <source>Refresh</source>
         <translation type="unfinished">刷新</translation>
     </message>
@@ -459,26 +464,21 @@
     </message>
     <message>
         <location filename="../qml/pages/Prxrv.qml" line="78"/>
-        <source>Latest Works</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/Prxrv.qml" line="83"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Prxrv.qml" line="88"/>
+        <location filename="../qml/pages/Prxrv.qml" line="83"/>
         <source>Profile</source>
         <translation>个人资料</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Prxrv.qml" line="93"/>
+        <location filename="../qml/pages/Prxrv.qml" line="88"/>
         <source>Downloads</source>
         <translation>下载</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Prxrv.qml" line="98"/>
+        <location filename="../qml/pages/Prxrv.qml" line="93"/>
         <source>Moebooru</source>
         <translation>Moebooru</translation>
     </message>

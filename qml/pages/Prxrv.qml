@@ -75,11 +75,6 @@ Page {
                 page: "FavoriteWorkPage.qml"
             }
             ListElement {
-                label: qsTr("Latest Works")
-                model: "latestWorkModel"
-                page: "LatestWorkPage.qml"
-            }
-            ListElement {
                 label: qsTr("Search")
                 model: ""
                 page: "TrendsPage.qml"
