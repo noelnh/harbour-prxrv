@@ -56,7 +56,7 @@ Page {
                 hiddenWork += 1
                 continue
             }
-            var imgUrls = Prxrv.getImgUrls(works[i])
+            var imgUrls = Prxrv.getImgUrls(works[i]['work'])
             rankingWorkModel.append({
                 workID: works[i]['work']['id'],
                 title: works[i]['work']['title'],
