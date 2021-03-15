@@ -29,7 +29,7 @@ void Utils::setHeaders(QNetworkRequest & request, const QString & token, bool au
         request.setRawHeader("X-Client-Hash", timeMd5.toUtf8());
     }
 
-    request.setHeader(QNetworkRequest::UserAgentHeader, "PixivIOSApp/6.7.1 (iOS 10.3.1; iPhone8,1)");
+    request.setHeader(QNetworkRequest::UserAgentHeader, "PixivIOSApp/7.6.2 (iOS 14.4; iPhone9,1)");
     request.setRawHeader("Referer", "https://app-api.pixiv.net/");
     if (!token.isEmpty())
         request.setRawHeader("Authorization", QString("Bearer ").append(token).toStdString().c_str());

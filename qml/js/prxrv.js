@@ -269,8 +269,8 @@ function getImgUrls (work) {
         master = work['image_urls']['px_480mw'].replace(/480x960/, '600x1200_90_webp')
         large = work['image_urls']['large']
     } else {
-        square = work['image_urls']['square_medium'].replace(/360x360_70/, '540x540_10_webp')
-        master = work['image_urls']['large'].replace(/600x1200_90/, '600x1200_90_webp')
+        square = work['image_urls']['square_medium']
+        master = work['image_urls']['large']
         large = work['meta_single_page'] && work['meta_single_page']['original_image_url']
         if (!large && work['meta_pages'] && work['meta_pages'].length){
             large = work['meta_pages'][0]['image_urls']['original']
