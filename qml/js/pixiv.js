@@ -5,6 +5,8 @@ var app_url_v1 = 'https://app-api.pixiv.net/v1'
 var app_url_v2 = 'https://app-api.pixiv.net/v2'
 var client_id = 'MOBrBDS8blbauoSck0ZfDbtuzpyT'
 var client_secret = 'lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj'
+var redirect_uri = "https://app-api.pixiv.net/web/v1/users/auth/pixiv/callback"
+var auth_url = 'https://oauth.secure.pixiv.net/auth/token'
 
 function checkToken(token, msg) {
     //console.log('Token for ' + msg + '(): ' + token);
@@ -446,7 +448,7 @@ function getComments(token, illust_id) {
 // Login
 //
 function login(username, password, callback) {
-    var url = 'https://oauth.secure.pixiv.net/auth/token';
+    var url = auth_url
     var postdata = {
         'grant_type': 'password',
         'get_secure_url': 1,
@@ -459,7 +461,7 @@ function login(username, password, callback) {
 }
 
 function relogin(refresh_token, callback) {
-    var url = 'https://oauth.secure.pixiv.net/auth/token';
+    var url = auth_url
     var postdata = {
         'grant_type': 'refresh_token',
         'get_secure_url': 1,
@@ -470,3 +472,16 @@ function relogin(refresh_token, callback) {
     sendRequest('POST', '', url, postdata, callback);
 }
 
+function authLogin (code, code_verifier, callback) {
+    var url = auth_url
+    var postdata={
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "code": code,
+        "code_verifier": code_verifier,
+        "grant_type": "authorization_code",
+        "include_policy": "true",
+        "redirect_uri": redirect_uri,
+    }
+    sendRequest('POST', '', url, postdata, callback);
+}

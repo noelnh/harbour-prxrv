@@ -179,7 +179,7 @@ Page {
                 width: parent.width - Theme.paddingLarge * 2
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: Theme.secondaryColor
-                text: qsTr("Version %1").arg('0.17.0')
+                text: qsTr("Version %1").arg('0.18.0')
             }
 
         }

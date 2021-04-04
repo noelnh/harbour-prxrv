@@ -4,6 +4,7 @@ import QtWebKit.experimental 1.0
 
 Page {
     property string initUrl: "http://touch.pixiv.net/"
+    property bool isAuth: false
 
     SilicaWebView {
         id: webView
@@ -14,9 +15,8 @@ Page {
 
         anchors.fill: parent
         url: initUrl
-        experimental.userAgent: "Mozilla/5.0 (iPad; CPU OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5355d Safari/8536.25"
-        //experimental.userAgent: "Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30    (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
-        //experimental.deviceWidth: 560
+        experimental.userAgent:  "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.105 Safari/537.36"
+        experimental.transparentBackground: true
 
         BusyIndicator {
             size: BusyIndicatorSize.Large
@@ -32,6 +32,19 @@ Page {
             }
         }
 
+        onLoadingChanged: {
+            if (isAuth) {
+                if (debugOn) console.log('WebView URL change:', webView.url)
+                var url = webView.url.toString() || ''
+                if (url.indexOf('pixiv://') === 0) {
+                    var match = url.match(/code=([^&]*)/)
+                    if (debugOn) console.log('Auth code match:', match && match[1])
+                    if (match && match[1]) {
+                        authCode(match[1])
+                    }
+                }
+            }
+        }
     }
 
     FontLoader {

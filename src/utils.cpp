@@ -1,4 +1,5 @@
 #include <QCryptographicHash>
+#include "cmath"
 
 #include <QDateTime>
 #include <QDir>
@@ -12,6 +13,11 @@ Utils::Utils(QObject *parent) : QObject(parent)
 QString Utils::sha1(const QString & data)
 {
     return QString(QCryptographicHash::hash(data.toUtf8(), QCryptographicHash::Sha1).toHex());
+}
+
+QString Utils::sha256(const QString & data)
+{
+    return QString(QCryptographicHash::hash(data.toUtf8(), QCryptographicHash::Sha256).toHex());
 }
 
 QString Utils::md5(const QString & data)
@@ -40,4 +46,22 @@ bool Utils::checkBooruInstalled()
     QString mieruPath = "/usr/share/harbour-mieru/qml/pages/MainPage.qml";
     QDir dir(".");
     return dir.exists(mieruPath);
+}
+
+QString Utils::createVerifier(int size = 32, int seed = 42)
+{
+    int oneByte = pow(2, 8);
+    QByteArray qb;
+    qb.resize(size);
+    for (int i = 0; i < size; i++) {
+        qsrand(seed + i);
+        qb[i] = qrand() % oneByte;
+    }
+    return qb.toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
+}
+
+QString Utils::createChallenge(QString verifier)
+{
+    QByteArray qb = QCryptographicHash::hash(verifier.toUtf8(), QCryptographicHash::Sha256);
+    return qb.toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
 }

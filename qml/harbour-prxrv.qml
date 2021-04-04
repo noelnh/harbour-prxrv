@@ -22,6 +22,7 @@ ApplicationWindow
     property string savePath: Settings.read('savePath') || "/home/nemo/Pictures"
     property string cachePath: Settings.read('cachePath') || "/home/nemo/.cache/harbour-prxrv"
     property string customName: Settings.read('customName') || '%i'
+    property string codeVerifier: ''
 
     // Account
     property string token: ''
@@ -158,19 +159,12 @@ ApplicationWindow
             // Re-login
             if (!requestLock) {
                 requestLock = true
-                if (account.remember && refresh_token) {
-                    // Use refresh token
+                if (refresh_token) {
                     if (debugOn) console.log("Using refresh_token")
                     Pixiv.relogin(refresh_token, setToken)
-                } else if (account.remember && account.password) {
-                    // Use password
-                    if (debugOn) console.log("Using password")
-                    Pixiv.login(username, account.password, setToken)
                 } else {
-                    // Invalid account
-                    if (debugOn) console.log("Failed to login with password or refresh_token")
-                    requestLock = false
-                    pageStack.push('SettingsPage.qml')
+                    if (debugOn) console.log("Using auth code")
+                    startCodeChallenge()
                 }
             }
             return false
@@ -207,6 +201,27 @@ ApplicationWindow
         user = {}
         token = ""
         expireOn = 0
+    }
+
+    /**
+     * Get OAuth code
+     */
+    function startCodeChallenge () {
+        var verifier = utils.createVerifier(32, Math.round(Math.random() * 10000))
+        var challenge = utils.createChallenge(verifier)
+        if (debugOn) console.log('verifier challenge:', verifier, challenge);
+        codeVerifier = verifier
+        var _props = {"initUrl": "https://app-api.pixiv.net/web/v1/login?code_challenge=" + challenge + "&code_challenge_method=S256&client=pixiv-android", "isAuth": true}
+        pageStack.push("pages/WebViewPage.qml", _props)
+    }
+
+    /**
+     * OAuth login
+     */
+    function authCode (code) {
+        Pixiv.authLogin(code, codeVerifier, function (resp_j) {
+            setToken(resp_j, { password: '', remember: true, isActive: true }, true)
+        })
     }
 
     /**

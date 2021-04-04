@@ -8,6 +8,12 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Apr 04 2021 Noel Nhato <noelnhato@gmail.com> 0.18.0-1
+- OAuth login
+- Add private following works
+- Update api with webp thumbnails
+- Fix bookmarks download size
+
 * Sun Feb 16 2020 Noel Nhato <noelnhato@gmail.com> 0.17.0-1
 - Add image preview
 - Add related works page

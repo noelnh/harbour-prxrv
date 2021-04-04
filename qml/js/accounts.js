@@ -162,9 +162,11 @@ function save(user, data, extraOptions) {
             if (!data.password) {
                 var queryResults = tx.executeSql("SELECT password, remember, isActive FROM accounts WHERE account=?", [data.account]);
                 var user = queryResults.rows.item(0);
-                data.password = user.password;
-                data.remember = user.remember;
-                data.isActive = user.isActive;
+                if (user) {
+                    data.password = user.password;
+                    data.remember = user.remember;
+                    data.isActive = user.isActive;
+                }
             }
             tx.executeSql("INSERT OR REPLACE INTO accounts VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                       [data.id, data.account, data.name, data.password, data.user,

@@ -115,14 +115,6 @@ Page {
                             onClicked: removeAccount(account, reloadAccounts)
                         }
                     }
-                    onClicked: {
-                        pageStack.push("AccountDialog.qml", {
-                                           username: account,
-                                           password: password,
-                                           rememberMe: remember,
-                                           isActive: isActive
-                                       });
-                    }
                 }
             }
 
@@ -148,7 +140,7 @@ Page {
                     text: qsTr("Add account")
                 }
                 onClicked: {
-                    pageStack.push("AccountDialog.qml", {isNew: true})
+                    startCodeChallenge()
                 }
             }
         }

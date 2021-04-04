@@ -2,54 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
-    <name>AccountDialog</name>
-    <message>
-        <location filename="../qml/pages/AccountDialog.qml" line="78"/>
-        <source>Save</source>
-        <translation>保存</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/AccountDialog.qml" line="86"/>
-        <source>Reset</source>
-        <translation>重置</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/AccountDialog.qml" line="91"/>
-        <source>Remove</source>
-        <translation>移除</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/AccountDialog.qml" line="107"/>
-        <source>New Account</source>
-        <translation>新增账户</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/AccountDialog.qml" line="107"/>
-        <source>Edit Account</source>
-        <translation>编辑账户</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/AccountDialog.qml" line="114"/>
-        <source>Username</source>
-        <translation>用户名</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/AccountDialog.qml" line="128"/>
-        <source>Password</source>
-        <translation>密码</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/AccountDialog.qml" line="137"/>
-        <source>Remember me</source>
-        <translation>记住我</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/AccountDialog.qml" line="146"/>
-        <source>Active</source>
-        <translation>活跃</translation>
-    </message>
-</context>
-<context>
     <name>AccountsPage</name>
     <message>
         <location filename="../qml/pages/AccountsPage.qml" line="42"/>
@@ -77,7 +29,7 @@
         <translation>移除</translation>
     </message>
     <message>
-        <location filename="../qml/pages/AccountsPage.qml" line="148"/>
+        <location filename="../qml/pages/AccountsPage.qml" line="140"/>
         <source>Add account</source>
         <translation>添加账户</translation>
     </message>
@@ -969,12 +921,12 @@
 <context>
     <name>harbour-prxrv</name>
     <message>
-        <location filename="../qml/harbour-prxrv.qml" line="224"/>
+        <location filename="../qml/harbour-prxrv.qml" line="239"/>
         <source>Login failed!</source>
         <translation>登录失败！</translation>
     </message>
     <message>
-        <location filename="../qml/harbour-prxrv.qml" line="268"/>
+        <location filename="../qml/harbour-prxrv.qml" line="283"/>
         <source>Downloads finished.</source>
         <translation>已完成下载。</translation>
     </message>

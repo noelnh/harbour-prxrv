@@ -2,45 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1">
 <context>
-    <name>AccountDialog</name>
-    <message>
-        <source>Edit Account</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>New Account</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reset</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remove</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Username</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Remember me</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Active</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>AccountsPage</name>
     <message>
         <source>Accounts</source>
