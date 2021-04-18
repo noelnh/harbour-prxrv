@@ -154,7 +154,7 @@
     <message>
         <location filename="../qml/pages/FavoriteWorkPage.qml" line="29"/>
         <source>%1&apos;s Bookmarks</source>
-        <translation>%1的收藏</translation>
+        <translation>%1 的收藏</translation>
     </message>
     <message>
         <location filename="../qml/pages/FavoriteWorkPage.qml" line="31"/>
@@ -169,12 +169,12 @@
     <message>
         <location filename="../qml/pages/FavoriteWorkPage.qml" line="149"/>
         <source>Private bookmarks</source>
-        <translation>私人的收藏</translation>
+        <translation>私密收藏</translation>
     </message>
     <message>
         <location filename="../qml/pages/FavoriteWorkPage.qml" line="149"/>
         <source>Public bookmarks</source>
-        <translation>公开的收藏</translation>
+        <translation>公开收藏</translation>
     </message>
     <message>
         <location filename="../qml/pages/FavoriteWorkPage.qml" line="162"/>
@@ -187,12 +187,12 @@
     <message>
         <location filename="../qml/pages/FeedsPage.qml" line="156"/>
         <source>by</source>
-        <translation>by</translation>
+        <translation>创作者为</translation>
     </message>
     <message>
         <location filename="../qml/pages/FeedsPage.qml" line="194"/>
         <source> ago</source>
-        <translation>前</translation>
+        <translation> 前</translation>
     </message>
     <message>
         <location filename="../qml/pages/FeedsPage.qml" line="216"/>
@@ -215,7 +215,7 @@
     <message>
         <location filename="../qml/pages/FollowingPage.qml" line="48"/>
         <source>%1&apos;s Following</source>
-        <translation>%1的关注</translation>
+        <translation>%1 的关注</translation>
     </message>
     <message>
         <location filename="../qml/pages/FollowingPage.qml" line="48"/>
@@ -225,12 +225,12 @@
     <message>
         <location filename="../qml/pages/FollowingPage.qml" line="56"/>
         <source>Private follows</source>
-        <translation>私人的关注</translation>
+        <translation>私密关注</translation>
     </message>
     <message>
         <location filename="../qml/pages/FollowingPage.qml" line="56"/>
         <source>Public follows</source>
-        <translation>公开的关注</translation>
+        <translation>公开关注</translation>
     </message>
     <message>
         <location filename="../qml/pages/FollowingPage.qml" line="67"/>
@@ -243,32 +243,32 @@
     <message>
         <location filename="../qml/pages/FollowingWorksPage.qml" line="24"/>
         <source>Newest works: Following</source>
-        <translation type="unfinished"></translation>
+        <translation>最新作品：正在关注</translation>
     </message>
     <message>
         <location filename="../qml/pages/FollowingWorksPage.qml" line="130"/>
         <source>Go Home</source>
-        <translation type="unfinished">返回主页</translation>
+        <translation>返回主页</translation>
     </message>
     <message>
         <location filename="../qml/pages/FollowingWorksPage.qml" line="138"/>
         <source>All works</source>
-        <translation type="unfinished"></translation>
+        <translation>全部作品</translation>
     </message>
     <message>
         <location filename="../qml/pages/FollowingWorksPage.qml" line="146"/>
         <source>Private following</source>
-        <translation type="unfinished"></translation>
+        <translation>私密正在关注</translation>
     </message>
     <message>
         <location filename="../qml/pages/FollowingWorksPage.qml" line="146"/>
         <source>Public following</source>
-        <translation type="unfinished"></translation>
+        <translation>公开正在关注</translation>
     </message>
     <message>
         <location filename="../qml/pages/FollowingWorksPage.qml" line="159"/>
         <source>Refresh</source>
-        <translation type="unfinished">刷新</translation>
+        <translation>刷新</translation>
     </message>
 </context>
 <context>
@@ -276,7 +276,7 @@
     <message>
         <location filename="../qml/pages/LatestWorkPage.qml" line="103"/>
         <source>Newest Work: All</source>
-        <translation type="unfinished"></translation>
+        <translation>最新作品：全部</translation>
     </message>
     <message>
         <location filename="../qml/pages/LatestWorkPage.qml" line="109"/>
@@ -299,7 +299,7 @@
     <message>
         <location filename="../qml/pages/ProfilePage.qml" line="38"/>
         <source>Following (%1)</source>
-        <translation>关注 (%1)</translation>
+        <translation>正在关注 (%1)</translation>
     </message>
     <message>
         <location filename="../qml/pages/ProfilePage.qml" line="63"/>
@@ -397,7 +397,7 @@
     <message>
         <location filename="../qml/pages/Prxrv.qml" line="58"/>
         <source>Newest Works</source>
-        <translation type="unfinished"></translation>
+        <translation>最新作品</translation>
     </message>
     <message>
         <location filename="../qml/pages/Prxrv.qml" line="63"/>
@@ -698,12 +698,12 @@
     <message>
         <location filename="../qml/pages/StaccListPage.qml" line="63"/>
         <source>by </source>
-        <translation>by</translation>
+        <translation>作者为</translation>
     </message>
     <message>
         <location filename="../qml/pages/StaccListPage.qml" line="145"/>
         <source> ago</source>
-        <translation>签</translation>
+        <translation> 前</translation>
     </message>
     <message>
         <location filename="../qml/pages/StaccListPage.qml" line="167"/>
@@ -936,52 +936,52 @@
     <message>
         <location filename="../qml/js/prxrv.js" line="21"/>
         <source>add bookmark</source>
-        <translation type="unfinished"></translation>
+        <translation>添加收藏</translation>
     </message>
     <message>
         <location filename="../qml/js/prxrv.js" line="23"/>
         <source>add illust</source>
-        <translation type="unfinished"></translation>
+        <translation>添加插画</translation>
     </message>
     <message>
         <location filename="../qml/js/prxrv.js" line="25"/>
         <source>add favorite</source>
-        <translation type="unfinished"></translation>
+        <translation>添加收藏</translation>
     </message>
     <message>
         <location filename="../qml/js/prxrv.js" line="181"/>
         <source> years</source>
-        <translation type="unfinished"></translation>
+        <translation> 年</translation>
     </message>
     <message>
         <location filename="../qml/js/prxrv.js" line="183"/>
         <source> months</source>
-        <translation type="unfinished"></translation>
+        <translation> 月</translation>
     </message>
     <message>
         <location filename="../qml/js/prxrv.js" line="185"/>
         <source> weeks</source>
-        <translation type="unfinished"></translation>
+        <translation> 周</translation>
     </message>
     <message>
         <location filename="../qml/js/prxrv.js" line="187"/>
         <source> days</source>
-        <translation type="unfinished"></translation>
+        <translation> 天</translation>
     </message>
     <message>
         <location filename="../qml/js/prxrv.js" line="189"/>
         <source> hours</source>
-        <translation type="unfinished"></translation>
+        <translation> 小时</translation>
     </message>
     <message>
         <location filename="../qml/js/prxrv.js" line="191"/>
         <source> minutes</source>
-        <translation type="unfinished"></translation>
+        <translation> 分钟</translation>
     </message>
     <message>
         <location filename="../qml/js/prxrv.js" line="193"/>
         <source> seconds</source>
-        <translation type="unfinished"></translation>
+        <translation> 秒</translation>
     </message>
 </context>
 </TS>
