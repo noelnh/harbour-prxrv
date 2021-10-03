@@ -154,14 +154,14 @@ Page {
                 id: modeCombo
                 width: parent.width
 
-                property var values: ['tag', 'caption', 'text', 'illust_id', 'member_id']
+                property var values: ['tag', 'partial_tag', 'text', 'illust_id', 'member_id']
 
                 currentIndex: values.indexOf(searchParams.mode)
 
                 label: qsTr("Search in")
                 menu: ContextMenu {
                     MenuItem { text: qsTr("tag") }
-                    MenuItem { text: qsTr("caption") }
+                    MenuItem { text: qsTr("partial tag") }
                     MenuItem { text: qsTr("text") }
                     MenuItem { text: qsTr("illust ID") }
                     MenuItem { text: qsTr("member ID") }
@@ -175,7 +175,7 @@ Page {
                 id: periodCombo
                 width: parent.width
 
-                property var values: ['all', 'month', 'week', 'day']
+                property var values: ['all', 'within_last_month', 'within_last_week', 'within_last_day']
 
                 currentIndex: values.indexOf(searchParams.period)
 

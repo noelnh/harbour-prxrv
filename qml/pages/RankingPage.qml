@@ -12,33 +12,31 @@ Page {
     property int totalWork: 500
     property int hiddenWork: 0
 
-    property string rankingType: "all"
-    property string rankingMode: "daily"
+    property string rankingType: "illust"
+    property string rankingMode: "day"
 
     property bool refreshRanking: false
     property var typeArray: [0, 0]
+    property int currentRank: 0
 
     function getTextTr (text) {
         return {
             // type
-            all: qsTr("all"),
             illust: qsTr("illust"),
             manga: qsTr("manga"),
-            ugoira: qsTr("ugoira"),
-            novel: qsTr("novel"),
             // mode
-            daily: qsTr("daily"),
-            weekly: qsTr("weekly"),
-            monthly: qsTr("monthly"),
-            rookie: qsTr("rookie"),
-            original: qsTr("original"),
-            male: qsTr("male"),
-            female: qsTr("female"),
-            daily_r18: qsTr("daily_r18"),
-            weekly_r18: qsTr("weekly_r18"),
-            male_r18: qsTr("male_r18"),
-            female_r18: qsTr("female_r18"),
-            r18g: qsTr("r18g"),
+            day: qsTr("daily"),
+            week: qsTr("weekly"),
+            month: qsTr("monthly"),
+            day_male: qsTr("day_male"),
+            day_female: qsTr("day_female"),
+            week_original: qsTr("week_original"),
+            week_rookie: qsTr("week_rookie"),
+            day_r18: qsTr("day_r18"),
+            day_male_r18: qsTr("male_r18"),
+            day_female_r18: qsTr("female_r18"),
+            week_r18: qsTr("week_r18"),
+            week_r18g: qsTr("week_r18g"),
         }[text] || text
     }
 
@@ -46,30 +44,29 @@ Page {
         requestLock = false;
         if (!resp_j) return;
 
-        totalWork = resp_j['pagination']['total']
-
-        var works = resp_j['response'][0]['works'];
+        var works = resp_j['illusts'];
 
         if (debugOn) console.log('adding works to rankingWorkModel');
         for (var i in works) {
-            if (!showR18 && works[i]['work']['age_limit'].indexOf('r18') >= 0) {
+            currentRank += 1
+            if (!showR18 && works[i]['x_restrict'] > 0) {
                 hiddenWork += 1
                 continue
             }
-            var imgUrls = Prxrv.getImgUrls(works[i]['work'])
+            var imgUrls = Prxrv.getImgUrls(works[i])
             rankingWorkModel.append({
-                workID: works[i]['work']['id'],
-                title: works[i]['work']['title'],
-                headerText: works[i]['rank'] + '. ' + works[i]['work']['title'],
+                workID: works[i]['id'],
+                title: works[i]['title'],
+                headerText: currentRank + '. ' + works[i]['title'],
                 square128: imgUrls.square,
                 master480: imgUrls.master,
                 large: imgUrls.large,
-                authorIcon: works[i]['work']['user']['profile_image_urls']['px_50x50'],
-                authorID: works[i]['work']['user']['id'],
-                authorName: works[i]['work']['user']['name'],
-                authorAccount: works[i]['work']['user']['account'],
-                rankUp: works[i]['previous_rank'] - works[i]['rank'],
-                isManga: works[i]['work']['page_count'] > 1
+                authorIcon: works[i]['user']['profile_image_urls']['medium'],
+                authorID: works[i]['user']['id'],
+                authorName: works[i]['user']['name'],
+                authorAccount: works[i]['user']['account'],
+                isBookmarked: works[i]['is_bookmarked'],
+                isManga: works[i]['page_count'] > 1
             });
         }
     }
@@ -80,36 +77,6 @@ Page {
 
         Dialog {
             id: theDialog
-
-            function checkType() {
-                var _illustArray = [0, 1, 2, 3, 7, 8, 11]
-                var _ugoiraArray = [0, 1, 7, 8]
-                var _novelArray = [0, 1, 3, 5, 6, 7, 8, 9, 10, 11]
-                var _warning = qsTr("%1 | %2: not supported").arg(contentCombo.value).arg(modeCombo.value)
-                theDialog.canAccept = true
-                typeWarning.text = ""
-                switch (contentCombo.value) {
-                    case "illust":
-                    case "manga":
-                        if (_illustArray.indexOf(modeCombo.currentIndex)<0) {
-                            typeWarning.text = _warning
-                            theDialog.canAccept = false
-                        }
-                        break
-                    case "ugoira":
-                        if (_ugoiraArray.indexOf(modeCombo.currentIndex)<0) {
-                            typeWarning.text = _warning
-                            theDialog.canAccept = false
-                        }
-                        break
-                    case "novel":
-                        if (_novelArray.indexOf(modeCombo.currentIndex)<0) {
-                            typeWarning.text = _warning
-                            theDialog.canAccept = false
-                        }
-                        break
-                }
-            }
 
             Column {
                 width: parent.width
@@ -124,17 +91,15 @@ Page {
                     label: qsTr("Content")
 
                     currentIndex: typeArray[0]
+                    property var values: ['illust', 'manga']
 
                     menu: ContextMenu {
-                        MenuItem { text: getTextTr("all") }        // all
-                        MenuItem { text: getTextTr("illust") }     // daily, weekly, monthly, rookie, r18 x5
-                        MenuItem { text: getTextTr("manga") }      // =illust
-                        MenuItem { text: getTextTr("ugoira") }     // daily, weekly, r18 x2
-                        MenuItem { text: getTextTr("novel") }      // daily, weekly, rookie, male, female, r18 x5
+                        MenuItem { text: getTextTr("illust") }
+                        MenuItem { text: getTextTr("manga") }
                     }
 
                     onValueChanged: {
-                        checkType()
+                        rankingType = values[currentIndex] || values[0]
                     }
                 }
 
@@ -142,26 +107,57 @@ Page {
                     id: modeCombo
                     width: parent.width
                     label: qsTr("Mode")
+                    visible: rankingType !== 'manga'
 
                     currentIndex: typeArray[1]
 
+                    property var values: [
+                        "day",
+                        "week",
+                        "month",
+                        "day_male",
+                        "day_female",
+                        "week_original",
+                        "week_rookie",
+                        "day_r18",
+                        "day_male_r18",
+                        "day_female_r18",
+                        "week_r18",
+                        "week_r18g",
+                    ]
+
                     menu: ContextMenu {
-                        MenuItem { text: getTextTr("daily") }
-                        MenuItem { text: getTextTr("weekly") }
-                        MenuItem { text: getTextTr("monthly") }
-                        MenuItem { text: getTextTr("rookie") }
-                        MenuItem { text: getTextTr("original") }
-                        MenuItem { text: getTextTr("male") }
-                        MenuItem { text: getTextTr("female") }
-                        MenuItem { text: getTextTr("daily_r18") }
-                        MenuItem { text: getTextTr("weekly_r18") }
-                        MenuItem { text: getTextTr("male_r18") }
-                        MenuItem { text: getTextTr("female_r18") }
-                        MenuItem { text: getTextTr("r18g") }
+                        MenuItem { text: getTextTr("day") }
+                        MenuItem { text: getTextTr("week") }
+                        MenuItem { text: getTextTr("month") }
+                        MenuItem { text: getTextTr("day_male") }
+                        MenuItem { text: getTextTr("day_female") }
+                        MenuItem { text: getTextTr("week_rookie") }
+                        MenuItem { text: getTextTr("week_original") }
+                        MenuItem {
+                            visible: showR18
+                            text: getTextTr("day_r18")
+                        }
+                        MenuItem {
+                            visible: showR18
+                            text: getTextTr("day_male_r18")
+                        }
+                        MenuItem {
+                            visible: showR18
+                            text: getTextTr("day_female_r18")
+                        }
+                        MenuItem {
+                            visible: showR18
+                            text: getTextTr("week_r18")
+                        }
+                        MenuItem {
+                            visible: showR18
+                            text: getTextTr("week_r18g")
+                        }
                     }
 
                     onValueChanged: {
-                        checkType()
+                        rankingMode = values[currentIndex] || values[0]
                     }
                 }
 
@@ -174,13 +170,11 @@ Page {
             }
 
             onAccepted: {
-                if ( rankingMode != modeCombo.value || rankingType != contentCombo.value ) {
+                if ( typeArray[0] !== contentCombo.currentIndex || typeArray[1] !== modeCombo.currentIndex ) {
                     refreshRanking = true
                 }
-                rankingMode = modeCombo.value
-                rankingType = contentCombo.value
                 typeArray = [contentCombo.currentIndex, modeCombo.currentIndex]
-                if (debugOn) console.log('content: ' + contentCombo.value)
+                if (debugOn) console.log('content: ' + rankingType)
                 if (debugOn) console.log('mode: ' + rankingMode)
                 pageStack.popAttached()
             }
@@ -208,21 +202,19 @@ Page {
                     height: width
                     source: "../images/manga-icon.svg"
                 }
-                /*
                 Image {
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
-                    source: favoriteID ? "../images/btn-done.svg" : "../images/btn-like.svg"
+                    source: isBookmarked ? "../images/btn-done.svg" : "../images/btn-like.svg"
 
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
                             currentIndex = index
-                            Prxrv.toggleBookmarkIcon(workID, favoriteID)
+                            Prxrv.toggleBookmarkIcon2(workID, !isBookmarked)
                         }
                     }
                 }
-                */
             }
 
             onClicked: {
@@ -243,7 +235,7 @@ Page {
         delegate: rankingWorkDelegate
 
         header: PageHeader {
-            title: qsTr("Ranking: ") + getTextTr(rankingMode) + ' | ' + getTextTr(rankingType)
+            title: qsTr("Ranking: ") + (rankingType !== 'manga' ? getTextTr(rankingMode) : getTextTr('day')) + ' | ' + getTextTr(rankingType)
         }
 
         PullDownMenu {
@@ -290,6 +282,7 @@ Page {
                 if (debugOn) console.log("mode: " + rankingMode)
                 currentPage = 1
                 hiddenWork = 0
+                currentRank = 0
                 rankingWorkModel.clear()
                 Pixiv.getRankingWork(token, rankingType, rankingMode, currentPage, addRankingWork)
                 refreshRanking = false

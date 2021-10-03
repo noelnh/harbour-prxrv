@@ -35,14 +35,14 @@ Page {
 
         if (debugOn) console.log('adding works to followingWorksModel');
         for (var i in followingWorks) {
-            // if (!showR18 && followingWorks[i]['age_limit'].indexOf('r18') >= 0) {
-            //     hiddenWork += 1
-            //     continue
-            // }
+            if (!showR18 && followingWorks[i]['x_restrict'] > 0) {
+                hiddenWork += 1
+                continue
+            }
             var imgUrls = Prxrv.getImgUrls(followingWorks[i])
             followingWorksModel.append( {
                 workID: followingWorks[i]['id'],
-                title:  followingWorks[i]['title'],
+                title: followingWorks[i]['title'],
                 headerText: followingWorks[i]['title'],
                 square128: imgUrls.square,
                 master480: imgUrls.master,

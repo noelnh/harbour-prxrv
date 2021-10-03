@@ -32,8 +32,8 @@ Page {
         Pixiv.bookmarkWork(token, workID, 'private', setBookmarkOn)
     }
 
-    function toggleIcon(resp_j) {
-        if (resp_j['count'] && resp_j['response'][0]['favorite_id']) {
+    function toggleIcon(resp) {
+        if (resp['is_bookmarked']) {
             Prxrv.toggleIconOn()
         } else {
             Prxrv.toggleIconOff()
@@ -43,10 +43,11 @@ Page {
     function setBookmarkOn() {
         // bookmark added
         if (debugOn) console.log("Bookmark Done")
+        favCount += 1
         favoriteID = 1
         bookmarkIcon.source = '../images/button-bookmark-active.svg'
-        bookmarkAction.text = "Remove bookmark"
-        bookmarkLable.text = " +" + (favCount + 1)
+        bookmarkAction.text = qsTr("Remove bookmark")
+        bookmarkLable.text = " +" + favCount
         Prxrv.toggleIconOn()
 
         if (fromID == workID) {
@@ -58,16 +59,21 @@ Page {
     function setBookmarkOff() {
         // bookmark removed
         if (debugOn) console.log("Bookmark removed")
+        favCount -= 1
         favoriteID = 0
         bookmarkIcon.source = '../images/button-bookmark.svg'
-        bookmarkAction.text = "Bookmark"
-        bookmarkLable.text = " +" + (favCount - 1)
+        bookmarkAction.text = qsTr("Bookmark")
+        bookmarkLable.text = " +" + favCount
         Prxrv.toggleIconOff()
 
         if (fromID == workID) {
             if (debugOn) console.log("set refreshWorkDetails true")
             refreshWorkDetails = true
         }
+    }
+
+    function updateBookmark(resp_j) {
+        // TODO add tags
     }
 
     function setDetails(resp_j) {
@@ -82,41 +88,29 @@ Page {
             return
         }
 
-        var resp = resp_j['response']
-
-        if (resp['count']) {
-            return
-        }
+        var resp = resp_j['illust']
 
         if (debugOn) console.log('authorID', authorID)
-        authorID = authorID || resp[0]['user']['id']
+        authorID = authorID || resp['user']['id']
 
-        if (debugOn) console.log("liked: " + resp[0]['is_liked'])
-        if (debugOn) console.log("fav: " + resp[0]['favorite_id'])
-
-        favoriteID = resp[0]['favorite_id']
-        if (favoriteID > 0) {
+        if (resp['is_bookmarked']) {
             bookmarkIcon.source = '../images/button-bookmark-active.svg'
-            bookmarkAction.text = "Remove bookmark"
+            bookmarkAction.text = qsTr("Remove bookmark")
         }
-        var _counts = resp[0]['stats']['favorited_count']
-        favCount = _counts['public'] + _counts['private']
+        favCount = resp['total_bookmarks']
         bookmarkLable.text = " +" + favCount
 
-        if (resp[0]['is_liked']) {
-            rateIcon.source = '../images/button-rate-active.svg'
-        }
-        rateLabel.text = " +" + resp[0]['stats']['scored_count']
+        rateLabel.text = " " + resp['total_view']
 
-        commentLable.text = " +" + resp[0]['stats']['commented_count']
+        commentLable.text = " +" + resp['total_comments']
 
-        caption.text = resp[0]['caption']
-        updateTime.text = resp[0]['reuploaded_time']
+        caption.text = resp['caption']
+        updateTime.text = Prxrv.getLocalDatetime(resp['create_date'])
 
-        var tags = resp[0]['tags']
+        var tags = resp['tags']
         tagModel.clear()
         for (var i in tags) {
-            tagModel.append( { tag: tags[i] } )
+            tagModel.append( { tag: tags[i]['name'] } )
         }
 
         /*
@@ -126,29 +120,25 @@ Page {
          }
          */
         if (currentIndex >= 0) {
-            toggleIcon(resp_j)
+            toggleIcon(resp)
         }
 
         if (currentIndex < 0) {
-            var imgUrls = Prxrv.getImgUrls(resp[0])
+            var imgUrls = Prxrv.getImgUrls(resp)
             work = {
-                'headerText': resp[0]['title'],
-                'title': resp[0]['title'],
+                'headerText': resp['title'],
+                'title': resp['title'],
                 square128: imgUrls.square,
                 master480: imgUrls.master,
                 large: imgUrls.large,
-                'authorIcon': resp[0]['user']['profile_image_urls']['px_50x50'],
-                'authorAccount': resp[0]['user']['account'],
-                'authorName': resp[0]['user']['name']
+                'authorIcon': resp['user']['profile_image_urls']['medium'],
+                'authorAccount': resp['user']['account'],
+                'authorName': resp['user']['name']
             }
         }
 
-        if (!work.large) {
-            work.large = resp[0]['image_urls']['large']
-        }
-
-        if (resp[0]['is_manga']) {
-            pageCount = resp[0]['page_count'] || 1
+        if (resp['page_count'] > 1) {
+            pageCount = resp['page_count'] || 1
             var p0 = work.master480
             for (var i = 0; i < pageCount; i++) {
                 var pn = '_p' + i + '_'
@@ -208,6 +198,7 @@ Page {
         if (loginCheck()) {
             if (debugOn) console.log('work id: ' + workID)
             Pixiv.getWorkDetails(token, workID, setDetails)
+            Pixiv.getBookmarkDetail(token, workID, updateBookmark)
         }
     }
 
@@ -573,7 +564,8 @@ Page {
                 }
                 Image {
                     id: rateIcon
-                    source: '../images/button-rate.svg'
+                    source: '../images/button-view.svg'
+                    anchors.verticalCenter: parent.verticalCenter
                 }
                 Label {
                     id: rateLabel
@@ -591,6 +583,7 @@ Page {
                 Image {
                     id: bookmarkIcon
                     source: '../images/button-bookmark.svg'
+                    anchors.verticalCenter: parent.verticalCenter
                 }
                 Label {
                     id: bookmarkLable
@@ -608,6 +601,7 @@ Page {
                 Image {
                     id: commentIcon
                     source: '../images/button-comment.svg'
+                    anchors.verticalCenter: parent.verticalCenter
                 }
                 Label {
                     id: commentLable

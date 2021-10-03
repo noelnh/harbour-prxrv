@@ -50,43 +50,46 @@
 <context>
     <name>DetailPage</name>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="222"/>
+        <location filename="../qml/pages/DetailPage.qml" line="213"/>
         <source>Download all</source>
         <translation>下载所有</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="257"/>
-        <location filename="../qml/pages/DetailPage.qml" line="310"/>
+        <location filename="../qml/pages/DetailPage.qml" line="248"/>
+        <location filename="../qml/pages/DetailPage.qml" line="301"/>
         <source>Download</source>
         <translation>下载</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="287"/>
+        <location filename="../qml/pages/DetailPage.qml" line="278"/>
         <source>Related works</source>
         <translation>相关作品</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="292"/>
+        <location filename="../qml/pages/DetailPage.qml" line="283"/>
         <source>Open Web Page</source>
         <translation>打开网页</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="305"/>
+        <location filename="../qml/pages/DetailPage.qml" line="296"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="316"/>
+        <location filename="../qml/pages/DetailPage.qml" line="307"/>
         <source>Bookmark privately</source>
         <translation>私人收藏</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="329"/>
+        <location filename="../qml/pages/DetailPage.qml" line="49"/>
+        <location filename="../qml/pages/DetailPage.qml" line="98"/>
+        <location filename="../qml/pages/DetailPage.qml" line="320"/>
         <source>Remove bookmark</source>
         <translation>移除收藏</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="329"/>
+        <location filename="../qml/pages/DetailPage.qml" line="65"/>
+        <location filename="../qml/pages/DetailPage.qml" line="320"/>
         <source>Bookmark</source>
         <translation>收藏</translation>
     </message>
@@ -395,42 +398,42 @@
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Prxrv.qml" line="58"/>
+        <location filename="../qml/pages/Prxrv.qml" line="53"/>
         <source>Newest Works</source>
         <translation>最新作品</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Prxrv.qml" line="63"/>
+        <location filename="../qml/pages/Prxrv.qml" line="58"/>
         <source>Recommendation</source>
         <translation>推荐作品</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Prxrv.qml" line="68"/>
+        <location filename="../qml/pages/Prxrv.qml" line="63"/>
         <source>Rankings</source>
         <translation>排行榜</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Prxrv.qml" line="73"/>
+        <location filename="../qml/pages/Prxrv.qml" line="68"/>
         <source>Bookmarks</source>
         <translation>收藏</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Prxrv.qml" line="78"/>
+        <location filename="../qml/pages/Prxrv.qml" line="73"/>
         <source>Search</source>
         <translation>搜索</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Prxrv.qml" line="83"/>
+        <location filename="../qml/pages/Prxrv.qml" line="78"/>
         <source>Profile</source>
         <translation>个人资料</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Prxrv.qml" line="88"/>
+        <location filename="../qml/pages/Prxrv.qml" line="83"/>
         <source>Downloads</source>
         <translation>下载</translation>
     </message>
     <message>
-        <location filename="../qml/pages/Prxrv.qml" line="93"/>
+        <location filename="../qml/pages/Prxrv.qml" line="88"/>
         <source>Moebooru</source>
         <translation>Moebooru</translation>
     </message>
@@ -438,24 +441,14 @@
 <context>
     <name>RankingPage</name>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="88"/>
-        <source>%1 | %2: not supported</source>
-        <translation>%1 | %2: 不受支持</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/RankingPage.qml" line="118"/>
+        <location filename="../qml/pages/RankingPage.qml" line="85"/>
         <source>Choose</source>
         <translation>选择</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="124"/>
+        <location filename="../qml/pages/RankingPage.qml" line="91"/>
         <source>Content</source>
         <translation>内容</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/RankingPage.qml" line="24"/>
-        <source>all</source>
-        <translation>综合</translation>
     </message>
     <message>
         <location filename="../qml/pages/RankingPage.qml" line="25"/>
@@ -468,87 +461,77 @@
         <translation>漫画</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="27"/>
-        <source>ugoira</source>
-        <translation>动图</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/RankingPage.qml" line="28"/>
-        <source>novel</source>
-        <translation>小说</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/RankingPage.qml" line="144"/>
+        <location filename="../qml/pages/RankingPage.qml" line="109"/>
         <source>Mode</source>
         <translation>模式</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="30"/>
+        <location filename="../qml/pages/RankingPage.qml" line="28"/>
         <source>daily</source>
         <translation>今日</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="31"/>
+        <location filename="../qml/pages/RankingPage.qml" line="29"/>
         <source>weekly</source>
         <translation>本周</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="32"/>
+        <location filename="../qml/pages/RankingPage.qml" line="30"/>
         <source>monthly</source>
         <translation>本月</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="33"/>
-        <source>rookie</source>
-        <translation>新人</translation>
-    </message>
-    <message>
         <location filename="../qml/pages/RankingPage.qml" line="34"/>
-        <source>original</source>
-        <translation>原创</translation>
+        <source>week_rookie</source>
+        <translation>本周新人</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="35"/>
-        <source>male</source>
+        <location filename="../qml/pages/RankingPage.qml" line="33"/>
+        <source>week_original</source>
+        <translation>本周原创</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/RankingPage.qml" line="31"/>
+        <source>day_male</source>
         <translation>受男性欢迎</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="36"/>
-        <source>female</source>
+        <location filename="../qml/pages/RankingPage.qml" line="32"/>
+        <source>day_female</source>
         <translation>受女性欢迎</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="37"/>
-        <source>daily_r18</source>
+        <location filename="../qml/pages/RankingPage.qml" line="35"/>
+        <source>day_r18</source>
         <translation>今日R-18</translation>
     </message>
     <message>
         <location filename="../qml/pages/RankingPage.qml" line="38"/>
-        <source>weekly_r18</source>
+        <source>week_r18</source>
         <translation>本周R-18</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="39"/>
+        <location filename="../qml/pages/RankingPage.qml" line="36"/>
         <source>male_r18</source>
         <translation>受男性欢迎R-18</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="40"/>
+        <location filename="../qml/pages/RankingPage.qml" line="37"/>
         <source>female_r18</source>
         <translation>受女性欢迎R-18</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="41"/>
-        <source>r18g</source>
-        <translation>R-18G</translation>
+        <location filename="../qml/pages/RankingPage.qml" line="39"/>
+        <source>week_r18g</source>
+        <translation>本周R-18G</translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="246"/>
+        <location filename="../qml/pages/RankingPage.qml" line="238"/>
         <source>Ranking: </source>
         <translation>排行榜: </translation>
     </message>
     <message>
-        <location filename="../qml/pages/RankingPage.qml" line="252"/>
+        <location filename="../qml/pages/RankingPage.qml" line="244"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
@@ -771,8 +754,8 @@
     </message>
     <message>
         <location filename="../qml/pages/TrendsPage.qml" line="164"/>
-        <source>caption</source>
-        <translation>文字说明</translation>
+        <source>partial tag</source>
+        <translation>部分标签</translation>
     </message>
     <message>
         <location filename="../qml/pages/TrendsPage.qml" line="165"/>
@@ -853,34 +836,28 @@
 <context>
     <name>UserWorkPage</name>
     <message>
-        <location filename="../qml/pages/UserWorkPage.qml" line="41"/>
-        <source>Unfollow</source>
-        <translation>取消关注</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/UserWorkPage.qml" line="43"/>
-        <location filename="../qml/pages/UserWorkPage.qml" line="228"/>
-        <location filename="../qml/pages/UserWorkPage.qml" line="231"/>
+        <location filename="../qml/pages/UserWorkPage.qml" line="230"/>
+        <location filename="../qml/pages/UserWorkPage.qml" line="233"/>
         <source>Follow</source>
         <translation>关注</translation>
     </message>
     <message>
-        <location filename="../qml/pages/UserWorkPage.qml" line="116"/>
+        <location filename="../qml/pages/UserWorkPage.qml" line="118"/>
         <source>Unfollow %1?</source>
         <translation>是否取消关注 %1 ?</translation>
     </message>
     <message>
-        <location filename="../qml/pages/UserWorkPage.qml" line="141"/>
+        <location filename="../qml/pages/UserWorkPage.qml" line="143"/>
         <source>Follow privately</source>
         <translation>私人关注</translation>
     </message>
     <message>
-        <location filename="../qml/pages/UserWorkPage.qml" line="219"/>
+        <location filename="../qml/pages/UserWorkPage.qml" line="221"/>
         <source>Go Home</source>
         <translation>返回主页</translation>
     </message>
     <message>
-        <location filename="../qml/pages/UserWorkPage.qml" line="242"/>
+        <location filename="../qml/pages/UserWorkPage.qml" line="244"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
@@ -949,37 +926,37 @@
         <translation>添加收藏</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="181"/>
+        <location filename="../qml/js/prxrv.js" line="205"/>
         <source> years</source>
         <translation> 年</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="183"/>
+        <location filename="../qml/js/prxrv.js" line="207"/>
         <source> months</source>
         <translation> 月</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="185"/>
+        <location filename="../qml/js/prxrv.js" line="209"/>
         <source> weeks</source>
         <translation> 周</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="187"/>
+        <location filename="../qml/js/prxrv.js" line="211"/>
         <source> days</source>
         <translation> 天</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="189"/>
+        <location filename="../qml/js/prxrv.js" line="213"/>
         <source> hours</source>
         <translation> 小时</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="191"/>
+        <location filename="../qml/js/prxrv.js" line="215"/>
         <source> minutes</source>
         <translation> 分钟</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="193"/>
+        <location filename="../qml/js/prxrv.js" line="217"/>
         <source> seconds</source>
         <translation> 秒</translation>
     </message>

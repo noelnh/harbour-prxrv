@@ -49,11 +49,6 @@ Page {
         }
 
         model: ListModel {
-//            ListElement {
-//                label: qsTr("Stacc")
-//                model: "activityModel"
-//                page: "StaccPage.qml"
-//            }
             ListElement {
                 label: qsTr("Newest Works")
                 model: "followingWorksModel"

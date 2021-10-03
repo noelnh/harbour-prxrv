@@ -130,6 +130,7 @@ function getModelItem(index) {
     return _model;
 }
 
+// Deprecated
 function toggleIcon(resp_j) {
     if (debugOn) console.log('index: ', currentIndex);
     if (resp_j['count'] && currentModel[currentModel.length - 1] != "activityModel") {
@@ -143,12 +144,14 @@ function toggleIcon(resp_j) {
         getCurrentModel().setProperty(currentIndex, 'favoriteID', 0)
     }
 }
+// Deprecated
 function toggleIconOn (result) {
     if (debugOn) console.log('index: ', currentIndex);
     if (result !== null) {
         getCurrentModel().setProperty(currentIndex, 'favoriteID', 1)
     }
 }
+// Deprecated
 function toggleIconOff (result) {
     if (debugOn) console.log('index: ', currentIndex);
     if (result !== null) {
@@ -156,6 +159,7 @@ function toggleIconOff (result) {
     }
 }
 
+// Deprecated
 function toggleBookmarkIcon(workID, favoriteID) {
     if (!loginCheck()) return;
     if (favoriteID) {
@@ -166,6 +170,26 @@ function toggleBookmarkIcon(workID, favoriteID) {
         Pixiv.bookmarkWork(token, workID, 'public', toggleIconOn);
     }
 }
+
+function toggleIconOn2 () {
+    if (debugOn) console.log('index: ', currentIndex);
+    getCurrentModel().setProperty(currentIndex, 'isBookmarked', true)
+}
+function toggleIconOff2 () {
+    if (debugOn) console.log('index: ', currentIndex);
+    getCurrentModel().setProperty(currentIndex, 'isBookmarked', false)
+}
+function toggleBookmarkIcon2(workID, isAdd) {
+    if (!loginCheck()) return;
+    if (isAdd) {
+        if (debugOn) console.log("bookmark icon clicked", workID);
+        Pixiv.bookmarkWork(token, workID, 'public', toggleIconOn2);
+    } else {
+        if (debugOn) console.log("bookmark icon off", workID);
+        Pixiv.unbookmarkWork(token, workID, toggleIconOff2);
+    }
+}
+
 
 function getDuration(time_str) {
     var time = parseInt(time_str);
@@ -191,6 +215,18 @@ function getDuration(time_str) {
         return (seconds / 60 | 0) + qsTr(" minutes");
     }
     return (seconds) + qsTr(" seconds");
+}
+
+function paddingZero (num, len) {
+    if (!len) {
+        len = 2
+    }
+    return ('000000' + num).substr(-len)
+}
+function getLocalDatetime (time_str) {
+    var d = time_str ? new Date(time_str) : new Date();
+    return [d.getFullYear(), paddingZero(d.getMonth() + 1), paddingZero(d.getDate())].join('-') + ' '
+            + [paddingZero(d.getHours()), paddingZero(d.getMinutes()), paddingZero(d.getSeconds())].join(':');
 }
 
 
@@ -241,13 +277,16 @@ function getThumb(thumb_url, size) {
 }
 
 function isPixivLink (link) {
-    if (!link || link.indexOf('pixiv.net') < 0) {
+    if (!link || (link.indexOf('pixiv.net') < 0 && link.indexOf('pixiv://') < 0)) {
         return false
     }
     var member_id, illust_id
     if (link.indexOf('/users/') > 0) {
         member_id = link.substring(link.indexOf('/users/') + 7)
         return !isNaN(member_id) && [0, member_id]
+    } else if (link.indexOf('/illusts/') > 0) {
+        illust_id = link.substring(link.indexOf('/illusts/') + 9)
+        return !isNaN(illust_id) && [1, illust_id]
     } else if (link.indexOf('/artworks/') > 0) {
         illust_id = link.substring(link.indexOf('/artworks/') + 10)
         return !isNaN(illust_id) && [1, illust_id]

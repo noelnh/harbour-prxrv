@@ -34,15 +34,17 @@ Page {
         }
     }
 
+    function afterFollow() {
+        followAction.text = 'Unfollow'
+    }
+
+    function afterUnFollow() {
+        followAction.text = 'Follow'
+    }
+
     // Set following status
     function setStatus(resp_j) {
-        if (resp_j && resp_j['msg'] && resp_j['msg'] == 'ok') {
-            if (resp_j['count']) {
-                followAction.text = qsTr("Unfollow")
-            } else {
-                followAction.text = qsTr("Follow")
-            }
-        } else if (resp_j && resp_j['response']) {
+        if (resp_j && resp_j['response']) {
             if (resp_j['response'][0]['is_following']) {
                 followAction.text = 'Unfollow'
                 // TODO set user details
@@ -119,7 +121,7 @@ Page {
             onDone: {
                 if (result == DialogResult.Accepted) {
                     if (debugOn) console.log("unfollow user")
-                    Pixiv.unfollowUser(token, authorID, setStatus)
+                    Pixiv.unfollowUser(token, authorID, afterUnFollow)
                 }
             }
         }
@@ -145,7 +147,7 @@ Page {
             onDone: {
                 if (result == DialogResult.Accepted) {
                     if (debugOn) console.log("follow user " + publicity + "ly")
-                    Pixiv.followUser(token, authorID, publicity, setStatus)
+                    Pixiv.followUser(token, authorID, publicity, afterFollow)
                 }
             }
         }

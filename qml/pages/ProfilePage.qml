@@ -276,26 +276,6 @@ Page {
                 }
             }
 
-//            ListItem {
-//                id: userFeedItem
-//                width: parent.width
-//                anchors.top: latestWorkItem.bottom
-//                contentHeight: Theme.itemSizeMedium
-//                Label {
-//                    id: userFeedLabel
-//                    color: parent.highlighted ? Theme.highlightColor : Theme.primaryColor
-//                    anchors.left: parent.left
-//                    anchors.leftMargin: Theme.paddingLarge
-//                    anchors.verticalCenter: parent.verticalCenter
-//                    text: "Feed"
-//                }
-//                onClicked: {
-//                    if (debugOn) console.log("goto user feed page")
-//                    currentModel.push("feedsModel");
-//                    pageStack.push("FeedsPage.qml", {"userID": userID, "userName": userName})
-//                    goForward()
-//                }
-//            }
         }
 
         ListView {

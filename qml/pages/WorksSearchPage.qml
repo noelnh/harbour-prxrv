@@ -12,7 +12,7 @@ Page {
 
     property int currentPage: 1
     property int currentIndex: -1
-    property int totalWork: 20
+    property bool allLoaded: false
     property int hiddenWork: 0
 
     property bool isNewModel: true
@@ -25,12 +25,12 @@ Page {
         requestLock = false;
         if (!resp_j) return;
 
-        totalWork = resp_j['pagination']['total'];
-        var works = resp_j['response'];
+        var works = resp_j['illusts'];
+        allLoaded = works.length === 0;
 
         if (debugOn) console.log('adding works to worksSearchModel');
         for (var i in works) {
-            if (!showR18 && works[i]['age_limit'].indexOf('r18') >= 0) {
+            if (!showR18 && works[i]['x_restrict'] > 0) {
                 hiddenWork += 1
                 continue
             }
@@ -42,12 +42,12 @@ Page {
                 square128: imgUrls.square,
                 master480: imgUrls.master,
                 large: imgUrls.large,
-                authorIcon: works[i]['user']['profile_image_urls']['px_50x50'],
+                authorIcon: works[i]['user']['profile_image_urls']['medium'],
                 authorID: works[i]['user']['id'],
                 authorName: works[i]['user']['name'],
                 authorAccount: works[i]['user']['account'],
-                isManga: works[i]['is_manga'],
-                favoriteID: works[i]['favorite_id']
+                isManga: works[i]['type'] === 'manga',
+                isBookmarked: works[i]['is_bookmarked']
             } );
         }
     }
@@ -76,7 +76,7 @@ Page {
                 Image {
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
-                    source: favoriteID ? "../images/btn-done.svg" : "../images/btn-like.svg"
+                    source: isBookmarked ? "../images/btn-done.svg" : "../images/btn-like.svg"
                     width: Theme.iconSizeSmall
                     height: Theme.iconSizeSmall
 
@@ -84,7 +84,7 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             currentIndex = index
-                            Prxrv.toggleBookmarkIcon(workID, favoriteID)
+                            Prxrv.toggleBookmarkIcon2(workID, !isBookmarked)
                         }
                     }
                 }
@@ -167,12 +167,12 @@ Page {
         BusyIndicator {
             size: BusyIndicatorSize.Large
             anchors.centerIn: parent
-            running: requestLock || ( !worksSearchModel.count && (totalWork - hiddenWork) )
+            running: requestLock
         }
 
         onAtYEndChanged: {
             if (gridView.atYEnd) {
-                if ( !requestLock && worksSearchModel.count < totalWork - hiddenWork
+                if ( !requestLock && !allLoaded
                         && worksSearchModel.count > 0 && loginCheck() ) {
                     requestLock = true
                     currentPage += 1

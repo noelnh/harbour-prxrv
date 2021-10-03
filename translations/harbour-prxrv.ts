@@ -357,10 +357,6 @@
 <context>
     <name>RankingPage</name>
     <message>
-        <source>%1 | %2: not supported</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Choose</source>
         <translation type="unfinished"></translation>
     </message>
@@ -381,24 +377,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>all</source>
-        <translation>Overall</translation>
-    </message>
-    <message>
         <source>illust</source>
         <translation>Illustrations</translation>
     </message>
     <message>
         <source>manga</source>
         <translation>Manga</translation>
-    </message>
-    <message>
-        <source>ugoira</source>
-        <translation>Ugoira</translation>
-    </message>
-    <message>
-        <source>novel</source>
-        <translation>Novels</translation>
     </message>
     <message>
         <source>daily</source>
@@ -413,30 +397,6 @@
         <translation>Monthly</translation>
     </message>
     <message>
-        <source>rookie</source>
-        <translation>Rookie</translation>
-    </message>
-    <message>
-        <source>original</source>
-        <translation>Original</translation>
-    </message>
-    <message>
-        <source>male</source>
-        <translation>Male</translation>
-    </message>
-    <message>
-        <source>female</source>
-        <translation>Female</translation>
-    </message>
-    <message>
-        <source>daily_r18</source>
-        <translation>Daily R-18</translation>
-    </message>
-    <message>
-        <source>weekly_r18</source>
-        <translation>Weekly R-18</translation>
-    </message>
-    <message>
         <source>male_r18</source>
         <translation>Male R-18</translation>
     </message>
@@ -445,8 +405,32 @@
         <translation>Female R-18</translation>
     </message>
     <message>
-        <source>r18g</source>
-        <translation>R-18G</translation>
+        <source>day_male</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>day_female</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week_original</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week_rookie</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>day_r18</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week_r18</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>week_r18g</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -614,10 +598,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>caption</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>text</source>
         <translation type="unfinished"></translation>
     </message>
@@ -685,15 +665,15 @@
         <source>Search %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>partial tag</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>UserWorkPage</name>
     <message>
         <source>Go Home</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unfollow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

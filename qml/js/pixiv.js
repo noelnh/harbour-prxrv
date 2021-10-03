@@ -100,32 +100,41 @@ function sendRequest(method, token, url, params, callback) {
 
 // Search
 //
-// params: q, mode, sort, order, period
+// params: q, mode, sort, order, period, start_date, end_date
 //
-//     mode: tag, caption, text
+//     mode: tag, partial_tag, text
 //     sort: date, popular
 //     order: desc, asc
 //     period: day, week, month, all
-//     types: illustration, manga, ugoira
 //
-// sort-by-popular only works with 'asc' order,
+// sort-by-popular only works with 'desc' order,
 // and returns at most 20 items for non-premium user
 //
 function searchWorks(token, params, page, callback) {
     if (!checkToken(token, 'search')) return;
 
-    var url = base_url + '/search/works.json';
+    var url = app_url_v1 + '/search/illust'
+    var searchTargets = {tag: 'exact_match_for_tags', partial_tag: 'partial_match_for_tags', text: 'title_and_caption'}
 
-    if (params.sort === 'popular') {
-        params.order = 'desc';
+    var query = {
+        word: params.q,
+        search_target: searchTargets[params.mode] || searchTargets.tag,
+        sort: params.sort + '_' + params.order,
+        offset: (page - 1) * 30,
+        filter: 'for_ios',
     }
-    params.types = 'illustration,manga,ugoira';
-    params.page = page
-    params.per_page = 20;
-    params.include_stats = 'true';
-    params.image_sizes = 'px_128x128,large,px_480mw';
+    if (params.period && params.period !== 'all') {
+        query.duration = params.period
+    }
+    if (params.start_date) {
+        query.start_date = params.start_date;
+    }
+    if (params.end_date) {
+        query.end_date = params.end_date;
+    }
 
-    sendRequest('GET', token, url, params, callback);
+    console.log(JSON.stringify(params), JSON.stringify(query))
+    sendRequest('GET', token, url, query, callback);
 }
 
 // TODO
@@ -136,55 +145,21 @@ function searchNovel(token, params, page, callback) {
 }
 
 
-// Feeds
-//
-function getFeeds(token, user_id, show_r18, callback, max_id) {
-    if (!checkToken(token, 'getFeeds')) return;
-    var url = base_url + '/users/' + user_id + '/feeds.json';
-    var params = {
-        'relation': 'all',
-        'type': 'touch_nottext',
-        'show_r18': show_r18 || false,
-    };
-
-    if (typeof(max_id) === 'number') {
-        params['max_id'] = max_id.toString();
-    } else if (typeof(max_id) !== 'undefined') {
-        console.log('Type of max_id error: ' + typeof(max_id));
-    }
-    sendRequest('GET', token, url, params, callback);
-}
-
-function getStacc(token, show_r18, callback, max_id) {
-    if (!checkToken(token, 'getStacc')) return;
-    var url = base_url + '/me/feeds.json';
-    // here show_r18 only can be 1 or 0, true or false not work
-    var params = {
-        'relation': 'all',
-        'type': 'touch_nottext',
-        'show_r18': show_r18 ? '1' : '0',
-    };
-
-    if (typeof(max_id) === 'number') {
-        params['max_id'] = max_id.toString();
-    } else if (typeof(max_id) !== 'undefined') {
-        console.log('Type of max_id error: ' + typeof(max_id));
-    }
-    sendRequest('GET', token, url, params, callback);
-}
-
-
 // Ranking
+// TODO params.date
 //
 function getRankingWork(token, type, mode, page, callback) {
     if (!checkToken(token, 'getRankingWork: ' + type + '|' + mode)) return;
-    var url = base_url + '/ranking/' + type + '.json';
+    var url = app_url_v1 + '/illust/ranking';
     var params = {
         'mode': mode,
-        'page': page,
-        'include_stats': 'true',
-        'image_sizes': 'px_128x128,large,px_480mw',
+        'offset': (page - 1) * 30,
+        'filter': 'for_ios',
     };
+    if (type === 'manga') {
+        params.mode = 'day_manga'
+    }
+
     sendRequest('GET', token, url, params, callback);
 }
 
@@ -288,19 +263,20 @@ function getUserWork(token, user, page, callback) {
 
 // Work Details
 //
-function getWorkDetails(token, work_id, callback) {
-    if (!checkToken(token, 'getWorkDetails')) return;
-    var url = base_url + '/works/' + work_id + '.json';
-    var params = {
-        'include_stats': 'true',
-        'caption_format': 'html',
-        'image_sizes': 'px_128x128,px_480mw,large',
-    };
-    sendRequest('GET', token, url, params, callback);
-}
-function getWorkDetails2(token, illust_id, callback) {
+function getWorkDetails(token, illust_id, callback) {
     if (!checkToken(token, 'getWorkDetails2')) return;
     var url = app_url_v1 + '/illust/detail';
+    var params = {
+        'illust_id': illust_id
+    }
+    sendRequest('GET', token, url, params, callback);
+}
+
+// Bookmark Detail
+//
+function getBookmarkDetail(token, illust_id, callback) {
+    if (!checkToken(token, 'getWorkDetails2')) return;
+    var url = app_url_v2 + '/illust/bookmark/detail';
     var params = {
         'illust_id': illust_id
     }
@@ -357,21 +333,21 @@ function getMyFollowing1(token, publicity, callback) {
 
 function followUser(token, user_id, publicity, callback) {
     if (!checkToken(token, 'followUser')) return;
-    var url = base_url + '/me/favorite-users.json';
+    var url = app_url_v1 + '/user/follow/add';
     var postdata = {
-        'target_user_id': user_id,
-        'publicity': publicity
+        'user_id': user_id,
+        'restrict': publicity
     };
     sendRequest('POST', token, url, postdata, callback);
 }
 
 function unfollowUser(token, user_id, callback) {
     if (!checkToken(token, 'unfollowUser')) return;
-    var url = base_url + '/me/favorite-users.json';
+    var url = app_url_v1 + '/user/follow/delete';
     var params = {
-        'delete_ids': user_id
+        'user_id': user_id,
     };
-    sendRequest('DELETE', token, url, params, callback);
+    sendRequest('POST', token, url, params, callback);
 }
 
 
