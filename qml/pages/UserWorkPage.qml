@@ -185,7 +185,7 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             currentIndex = index
-                            Prxrv.toggleBookmarkIcon2(workID, !isBookmarked)
+                            Prxrv.toggleBookmarkIcon(workID, !isBookmarked)
                             if (fromID == workID) {
                                 refreshWorkDetails = true
                             }

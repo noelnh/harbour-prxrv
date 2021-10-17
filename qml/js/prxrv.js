@@ -74,63 +74,22 @@ function getModelItem(index) {
     return _model;
 }
 
-// Deprecated
-function toggleIcon(resp_j) {
-    if (debugOn) console.log('index: ', currentIndex);
-    if (resp_j['count'] && currentModel[currentModel.length - 1] != "activityModel") {
-        if (resp_j['response'][0]['title']) {
-            getCurrentModel().setProperty(currentIndex, 'favoriteID', resp_j['response'][0]['favorite_id'])
-        } else {
-            getCurrentModel().setProperty(currentIndex, 'favoriteID', resp_j['response'][0]['id'])
-        }
-        if (debugOn) console.log('model fav id: ', getCurrentModel().get(currentIndex).favoriteID);
-    } else {
-        getCurrentModel().setProperty(currentIndex, 'favoriteID', 0)
-    }
-}
-// Deprecated
-function toggleIconOn (result) {
-    if (debugOn) console.log('index: ', currentIndex);
-    if (result !== null) {
-        getCurrentModel().setProperty(currentIndex, 'favoriteID', 1)
-    }
-}
-// Deprecated
-function toggleIconOff (result) {
-    if (debugOn) console.log('index: ', currentIndex);
-    if (result !== null) {
-        getCurrentModel().setProperty(currentIndex, 'favoriteID', 0)
-    }
-}
-
-// Deprecated
-function toggleBookmarkIcon(workID, favoriteID) {
-    if (!loginCheck()) return;
-    if (favoriteID) {
-        if (debugOn) console.log("bookmark icon off", favoriteID, workID);
-        Pixiv.unbookmarkWork(token, workID, toggleIconOff);
-    } else {
-        if (debugOn) console.log("bookmark icon clicked");
-        Pixiv.bookmarkWork(token, workID, 'public', toggleIconOn);
-    }
-}
-
-function toggleIconOn2 () {
+function toggleIconOn () {
     if (debugOn) console.log('index: ', currentIndex);
     getCurrentModel().setProperty(currentIndex, 'isBookmarked', true)
 }
-function toggleIconOff2 () {
+function toggleIconOff () {
     if (debugOn) console.log('index: ', currentIndex);
     getCurrentModel().setProperty(currentIndex, 'isBookmarked', false)
 }
-function toggleBookmarkIcon2(workID, isAdd) {
+function toggleBookmarkIcon(workID, isAdd) {
     if (!loginCheck()) return;
     if (isAdd) {
         if (debugOn) console.log("bookmark icon clicked", workID);
-        Pixiv.bookmarkWork(token, workID, 'public', toggleIconOn2);
+        Pixiv.bookmarkWork(token, workID, 'public', toggleIconOn);
     } else {
         if (debugOn) console.log("bookmark icon off", workID);
-        Pixiv.unbookmarkWork(token, workID, toggleIconOff2);
+        Pixiv.unbookmarkWork(token, workID, toggleIconOff);
     }
 }
 

@@ -60,7 +60,7 @@ Page {
                 authorName: favWorks[i]['user']['name'],
                 authorAccount: favWorks[i]['user']['account'],
                 isManga: favWorks[i]['page_count'] > 1,
-                favoriteID: favWorks[i]['is_bookmarked'] ? 1 : 0
+                isBookmarked: favWorks[i]['is_bookmarked'],
             } );
         }
     }
@@ -98,7 +98,7 @@ Page {
                 Image {
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
-                    source: favoriteID ? '../images/btn-done.svg' : '../images/btn-like.svg'
+                    source: isBookmarked ? '../images/btn-done.svg' : '../images/btn-like.svg'
                     width: Theme.iconSizeSmall
                     height: Theme.iconSizeSmall
 
@@ -106,7 +106,7 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             currentIndex = index
-                            Prxrv.toggleBookmarkIcon(workID, favoriteID)
+                            Prxrv.toggleBookmarkIcon(workID, !isBookmarked)
                         }
                     }
                 }

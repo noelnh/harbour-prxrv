@@ -62,7 +62,7 @@ Page {
                 authorName: works[i]['user']['name'],
                 authorAccount: works[i]['user']['account'],
                 isManga: works[i]['is_manga'] || false,
-                favoriteID: works[i]['favorite_id'] || 0
+                isBookmarked: works[i]['is_bookmarked'],
             });
         }
     }
@@ -104,7 +104,7 @@ Page {
                 Image {
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
-                    source: favoriteID ? "../images/btn-done.svg" : "../images/btn-like.svg"
+                    source: isBookmarked ? "../images/btn-done.svg" : "../images/btn-like.svg"
                     width: Theme.iconSizeSmall
                     height: Theme.iconSizeSmall
 
@@ -112,10 +112,10 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             currentIndex = index
-                            if (!favoriteID) {
+                            if (!isBookmarked) {
                                 seedIds.splice(0, 0, workID)
                             }
-                            Prxrv.toggleBookmarkIcon(workID, favoriteID)
+                            Prxrv.toggleBookmarkIcon(workID, !isBookmarked)
                         }
                     }
                 }

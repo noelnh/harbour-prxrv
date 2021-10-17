@@ -50,46 +50,46 @@
 <context>
     <name>DetailPage</name>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="213"/>
+        <location filename="../qml/pages/DetailPage.qml" line="214"/>
         <source>Download all</source>
         <translation>下载所有</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="248"/>
-        <location filename="../qml/pages/DetailPage.qml" line="301"/>
+        <location filename="../qml/pages/DetailPage.qml" line="249"/>
+        <location filename="../qml/pages/DetailPage.qml" line="302"/>
         <source>Download</source>
         <translation>下载</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="278"/>
+        <location filename="../qml/pages/DetailPage.qml" line="279"/>
         <source>Related works</source>
         <translation>相关作品</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="283"/>
+        <location filename="../qml/pages/DetailPage.qml" line="284"/>
         <source>Open Web Page</source>
         <translation>打开网页</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="296"/>
+        <location filename="../qml/pages/DetailPage.qml" line="297"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
     <message>
-        <location filename="../qml/pages/DetailPage.qml" line="307"/>
+        <location filename="../qml/pages/DetailPage.qml" line="308"/>
         <source>Bookmark privately</source>
         <translation>私人收藏</translation>
     </message>
     <message>
         <location filename="../qml/pages/DetailPage.qml" line="49"/>
-        <location filename="../qml/pages/DetailPage.qml" line="98"/>
-        <location filename="../qml/pages/DetailPage.qml" line="320"/>
+        <location filename="../qml/pages/DetailPage.qml" line="99"/>
+        <location filename="../qml/pages/DetailPage.qml" line="321"/>
         <source>Remove bookmark</source>
         <translation>移除收藏</translation>
     </message>
     <message>
         <location filename="../qml/pages/DetailPage.qml" line="65"/>
-        <location filename="../qml/pages/DetailPage.qml" line="320"/>
+        <location filename="../qml/pages/DetailPage.qml" line="321"/>
         <source>Bookmark</source>
         <translation>收藏</translation>
     </message>
@@ -843,37 +843,37 @@
         <translation>添加收藏</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="149"/>
+        <location filename="../qml/js/prxrv.js" line="108"/>
         <source> years</source>
         <translation> 年</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="151"/>
+        <location filename="../qml/js/prxrv.js" line="110"/>
         <source> months</source>
         <translation> 月</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="153"/>
+        <location filename="../qml/js/prxrv.js" line="112"/>
         <source> weeks</source>
         <translation> 周</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="155"/>
+        <location filename="../qml/js/prxrv.js" line="114"/>
         <source> days</source>
         <translation> 天</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="157"/>
+        <location filename="../qml/js/prxrv.js" line="116"/>
         <source> hours</source>
         <translation> 小时</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="159"/>
+        <location filename="../qml/js/prxrv.js" line="118"/>
         <source> minutes</source>
         <translation> 分钟</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="161"/>
+        <location filename="../qml/js/prxrv.js" line="120"/>
         <source> seconds</source>
         <translation> 秒</translation>
     </message>

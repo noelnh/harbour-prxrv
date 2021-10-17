@@ -14,7 +14,7 @@ Page {
     property int pageCount: 1
 
     property int currentIndex: -1
-    property int favoriteID: 0
+    property bool isBookmarked: false
     property string fromID: '-1'
     property string fromTag: ''
 
@@ -44,7 +44,7 @@ Page {
         // bookmark added
         if (debugOn) console.log("Bookmark Done")
         favCount += 1
-        favoriteID = 1
+        isBookmarked = true
         bookmarkIcon.source = '../images/button-bookmark-active.svg'
         bookmarkAction.text = qsTr("Remove bookmark")
         bookmarkLable.text = " +" + favCount
@@ -60,7 +60,7 @@ Page {
         // bookmark removed
         if (debugOn) console.log("Bookmark removed")
         favCount -= 1
-        favoriteID = 0
+        isBookmarked = false
         bookmarkIcon.source = '../images/button-bookmark.svg'
         bookmarkAction.text = qsTr("Bookmark")
         bookmarkLable.text = " +" + favCount
@@ -93,6 +93,7 @@ Page {
         if (debugOn) console.log('authorID', authorID)
         authorID = authorID || resp['user']['id']
 
+        isBookmarked = resp['is_bookmarked']
         if (resp['is_bookmarked']) {
             bookmarkIcon.source = '../images/button-bookmark-active.svg'
             bookmarkAction.text = qsTr("Remove bookmark")
@@ -307,8 +308,8 @@ Page {
                 text: qsTr("Bookmark privately")
                 onClicked: {
                     if (loginCheck()) {
-                        if (favoriteID > 0) {
-                            Pixiv.unbookmarkWork(token, favoriteID, privBookmark)
+                        if (isBookmarked) {
+                            Pixiv.unbookmarkWork(token, workID, privBookmark)
                         } else {
                             privBookmark()
                         }
@@ -317,11 +318,11 @@ Page {
             }
             MenuItem {
                 id: bookmarkAction
-                text: favoriteID > 0 ? qsTr("Remove bookmark") : qsTr("Bookmark")
+                text: isBookmarked ? qsTr("Remove bookmark") : qsTr("Bookmark")
                 onClicked: {
                     if (loginCheck()) {
-                        if (favoriteID > 0) {
-                            if (debugOn) console.log("Removing bookmark:", favoriteID, workID)
+                        if (isBookmarked) {
+                            if (debugOn) console.log("Removing bookmark:", workID)
                             Pixiv.unbookmarkWork(token, workID, setBookmarkOff)
                         } else {
                             if (debugOn) console.log("Adding bookmark:", workID)
