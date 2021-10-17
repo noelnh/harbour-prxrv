@@ -149,29 +149,6 @@
     </message>
 </context>
 <context>
-    <name>FeedsPage</name>
-    <message>
-        <source>Go Home</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>by</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> ago</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&apos;s Activity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>FollowingPage</name>
     <message>
         <source>%1&apos;s Following</source>
@@ -182,15 +159,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Private follows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Public follows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Private following</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Public following</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -214,21 +191,6 @@
     </message>
     <message>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All works</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>LatestWorkPage</name>
-    <message>
-        <source>Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Newest Work: All</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -542,44 +504,6 @@
     </message>
     <message>
         <source>Sanity Level</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>StaccListPage</name>
-    <message>
-        <source>by </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> ago</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All Activity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Grid View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>StaccPage</name>
-    <message>
-        <source>All Activity</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>List View</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Refresh</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

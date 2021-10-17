@@ -20,7 +20,7 @@ Page {
         requestLock = false;
         if (!resp_j) return;
 
-        if (debugOn) console.log("set following", JSON.stringify(resp_j));
+        if (debugOn) console.log("set following");
         var users = resp_j['user_previews'];
         allLoaded = users.length === 0;
 

@@ -28,56 +28,6 @@ function getActionName(activity_type) {
     }
 }
 
-/**
- * Add activities to activityModel
- * Used as callback in StaccPage and StaccListPage
- */
-function addActivities(resp_j) {
-
-    requestLock = false;
-
-    if (!resp_j) return;
-
-    var activities = resp_j['response'];
-
-    if (debugOn) console.log('adding activities to activityModel');
-    for (var i in activities) {
-
-        var activityID = parseInt(activities[i]['id']);
-        if (activityID < minActivityID || minActivityID == 0)
-            minActivityID = activityID;
-
-        var activity_type = activities[i]['type'];
-        if (activity_type != 'add_illust' && activity_type != 'add_bookmark') continue;
-
-        var work_id = activities[i]['ref_work']['id'];
-        if (illustArray.indexOf(work_id) > -1) {
-            if (debugOn) console.log('Already in pool: ' + work_id);
-            continue;
-        }
-
-        var username = activities[i]['user']['name'];
-        var title = activities[i]['ref_work']['title'];
-
-        illustArray.push(work_id);
-
-        activityModel.append({
-            workID: work_id,
-            title: title,
-            headerText: username + ' ' + getActionName(activity_type),
-            square128: activities[i]['ref_work']['image_urls']['px_128x128'],
-            master480: activities[i]['ref_work']['image_urls']['px_480mw'],
-            master240: activities[i]['ref_work']['image_urls']['max_240x240'],
-            authorIcon: activities[i]['ref_work']['user']['profile_image_urls']['px_50x50'],
-            authorID: activities[i]['ref_work']['user']['id'],
-            authorName: activities[i]['ref_work']['user']['name'],
-            activityTime: activities[i]['post_time'],
-            activityType: activities[i]['type'],
-            userIcon: activities[i]['user']['profile_image_urls']['px_50x50'],
-            userName: activities[i]['user']['name'],
-        });
-    }
-}
 
 function getCurrentModel() {
     if (currentModel) {
@@ -97,15 +47,9 @@ function getCurrentModel() {
             case 'relatedWorksModel':
                 if (debugOn) console.log('choose relatedWorksModel');
                 return worksModelStack[worksModelStack.length - 1];
-            case 'feedsModel':
-                if (debugOn) console.log('choose feedsModel');
-                return worksModelStack[worksModelStack.length - 1];
             case 'worksSearchModel':
                 if (debugOn) console.log('choose worksSearchModel', worksModelStack.length);
                 return worksModelStack[worksModelStack.length - 1];
-            case 'latestWorkModel':
-                if (debugOn) console.log('choose latestWorkModel');
-                return latestWorkModel;
             case 'activityModel':
                 if (debugOn) console.log('choose activityModel');
                 return activityModel;

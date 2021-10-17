@@ -186,34 +186,6 @@
     </message>
 </context>
 <context>
-    <name>FeedsPage</name>
-    <message>
-        <location filename="../qml/pages/FeedsPage.qml" line="156"/>
-        <source>by</source>
-        <translation>创作者为</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/FeedsPage.qml" line="194"/>
-        <source> ago</source>
-        <translation> 前</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/FeedsPage.qml" line="216"/>
-        <source>&apos;s Activity</source>
-        <translation>的动态</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/FeedsPage.qml" line="226"/>
-        <source>Go Home</source>
-        <translation>返回主页</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/FeedsPage.qml" line="234"/>
-        <source>Refresh</source>
-        <translation>刷新</translation>
-    </message>
-</context>
-<context>
     <name>FollowingPage</name>
     <message>
         <location filename="../qml/pages/FollowingPage.qml" line="48"/>
@@ -254,35 +226,17 @@
         <translation>返回主页</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FollowingWorksPage.qml" line="138"/>
-        <source>All works</source>
-        <translation>全部作品</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/FollowingWorksPage.qml" line="146"/>
+        <location filename="../qml/pages/FollowingWorksPage.qml" line="139"/>
         <source>Private following</source>
         <translation>私密正在关注</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FollowingWorksPage.qml" line="146"/>
+        <location filename="../qml/pages/FollowingWorksPage.qml" line="139"/>
         <source>Public following</source>
         <translation>公开正在关注</translation>
     </message>
     <message>
-        <location filename="../qml/pages/FollowingWorksPage.qml" line="159"/>
-        <source>Refresh</source>
-        <translation>刷新</translation>
-    </message>
-</context>
-<context>
-    <name>LatestWorkPage</name>
-    <message>
-        <location filename="../qml/pages/LatestWorkPage.qml" line="103"/>
-        <source>Newest Work: All</source>
-        <translation>最新作品：全部</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/LatestWorkPage.qml" line="109"/>
+        <location filename="../qml/pages/FollowingWorksPage.qml" line="152"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
@@ -678,52 +632,6 @@
     </message>
 </context>
 <context>
-    <name>StaccListPage</name>
-    <message>
-        <location filename="../qml/pages/StaccListPage.qml" line="63"/>
-        <source>by </source>
-        <translation>作者为</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/StaccListPage.qml" line="145"/>
-        <source> ago</source>
-        <translation> 前</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/StaccListPage.qml" line="167"/>
-        <source>All Activity</source>
-        <translation>全部动态</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/StaccListPage.qml" line="178"/>
-        <source>Grid View</source>
-        <translation>网格视图</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/StaccListPage.qml" line="186"/>
-        <source>Refresh</source>
-        <translation>刷新</translation>
-    </message>
-</context>
-<context>
-    <name>StaccPage</name>
-    <message>
-        <location filename="../qml/pages/StaccPage.qml" line="44"/>
-        <source>All Activity</source>
-        <translation>全部动态</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/StaccPage.qml" line="51"/>
-        <source>List View</source>
-        <translation>列表视图</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/StaccPage.qml" line="59"/>
-        <source>Refresh</source>
-        <translation>刷新</translation>
-    </message>
-</context>
-<context>
     <name>TrendsPage</name>
     <message>
         <location filename="../qml/pages/TrendsPage.qml" line="55"/>
@@ -907,12 +815,12 @@
 <context>
     <name>harbour-prxrv</name>
     <message>
-        <location filename="../qml/harbour-prxrv.qml" line="240"/>
+        <location filename="../qml/harbour-prxrv.qml" line="233"/>
         <source>Login failed!</source>
         <translation>登录失败！</translation>
     </message>
     <message>
-        <location filename="../qml/harbour-prxrv.qml" line="284"/>
+        <location filename="../qml/harbour-prxrv.qml" line="277"/>
         <source>Downloads finished.</source>
         <translation>已完成下载。</translation>
     </message>
@@ -935,37 +843,37 @@
         <translation>添加收藏</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="205"/>
+        <location filename="../qml/js/prxrv.js" line="149"/>
         <source> years</source>
         <translation> 年</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="207"/>
+        <location filename="../qml/js/prxrv.js" line="151"/>
         <source> months</source>
         <translation> 月</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="209"/>
+        <location filename="../qml/js/prxrv.js" line="153"/>
         <source> weeks</source>
         <translation> 周</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="211"/>
+        <location filename="../qml/js/prxrv.js" line="155"/>
         <source> days</source>
         <translation> 天</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="213"/>
+        <location filename="../qml/js/prxrv.js" line="157"/>
         <source> hours</source>
         <translation> 小时</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="215"/>
+        <location filename="../qml/js/prxrv.js" line="159"/>
         <source> minutes</source>
         <translation> 分钟</translation>
     </message>
     <message>
-        <location filename="../qml/js/prxrv.js" line="217"/>
+        <location filename="../qml/js/prxrv.js" line="161"/>
         <source> seconds</source>
         <translation> 秒</translation>
     </message>

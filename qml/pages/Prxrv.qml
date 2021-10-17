@@ -116,11 +116,7 @@ Page {
                 } else if (token) {
                     if (model) currentModel = [model,]
                     coverIndex = [0,]
-                    if (label === 'Stacc' && staccListMode) {
-                        pageStack.push('StaccListPage.qml')
-                    } else {
-                        pageStack.push(page)
-                    }
+                    pageStack.push(page)
                 }
             }
         }

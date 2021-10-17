@@ -46,10 +46,6 @@ ApplicationWindow
     // Activity
     property var illustArray: []
     property int minActivityID: 0
-    property bool staccListMode: Settings.read('staccListMode')
-
-    // LatestWork
-    property bool showFollowing: true
 
     // Cover
     property var coverIndex: [0, ]
@@ -78,8 +74,6 @@ ApplicationWindow
     ListModel { id: accountModel }
 
     ListModel { id: activityModel }
-
-    ListModel { id: latestWorkModel }
 
     ListModel { id: recommendationModel }
 
@@ -197,7 +191,6 @@ ApplicationWindow
      */
     function clearCurrentAccount() {
         activityModel.clear()
-        latestWorkModel.clear()
         recommendationModel.clear()
         user = {}
         token = ""

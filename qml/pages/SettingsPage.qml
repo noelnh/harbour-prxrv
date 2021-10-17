@@ -222,7 +222,6 @@ Page {
             if (showR18_ !== limitSwitch.checked) {
                 showR18 = limitSwitch.checked
                 activityModel.clear()
-                latestWorkModel.clear()
                 rankingWorkModel.clear()
                 if (debugOn) console.log('showR18', showR18, showR18_)
             }

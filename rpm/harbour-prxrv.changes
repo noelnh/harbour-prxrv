@@ -8,6 +8,9 @@
 # * date Author's Name <author's email> version-release
 # - Summary of changes
 
+* Sun Oct 17 2021 Noel Nhato <noelnhato@gmail.com> 0.18.3-1
+- Fix api
+
 * Sun Oct  3 2021 Noel Nhato <noelnhato@gmail.com> 0.18.1-1
 - Fix api
 

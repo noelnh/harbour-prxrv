@@ -136,13 +136,6 @@ function searchWorks(token, params, page, callback) {
     sendRequest('GET', token, url, query, callback);
 }
 
-// TODO
-function searchNovel(token, params, page, callback) {
-    if (!checkToken(token, 'search')) return;
-    var url = base_url + '/search/novels.json';
-    sendRequest('GET', token, url, params, callback);
-}
-
 
 // Ranking
 // TODO params.date
@@ -200,20 +193,6 @@ function getRelatedWorks(token, illust_id, seed_ids, page, callback) {
         'filter': 'for_ios',
         'seed_illust_ids[]': seed_ids,
         'offset': (page-1) * 30,
-    };
-    sendRequest('GET', token, url, params, callback);
-}
-
-// Latest Works
-//
-function getLatestWork(token, page, callback) {
-    if (!checkToken(token, 'getLatestWork')) return;
-    var url = base_url + '/works.json';
-    var params = {
-        'include_stats': 'true',
-        'image_sizes': 'px_128x128,px_480mw,large',
-        'page': page,
-        'per_page': '50',
     };
     sendRequest('GET', token, url, params, callback);
 }
