@@ -227,12 +227,12 @@
     </message>
     <message>
         <location filename="../qml/pages/FollowingPage.qml" line="56"/>
-        <source>Private follows</source>
+        <source>Private following</source>
         <translation>私密关注</translation>
     </message>
     <message>
         <location filename="../qml/pages/FollowingPage.qml" line="56"/>
-        <source>Public follows</source>
+        <source>Public following</source>
         <translation>公开关注</translation>
     </message>
     <message>
@@ -290,92 +290,88 @@
 <context>
     <name>ProfilePage</name>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="36"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="39"/>
         <source>Works (%1)</source>
         <translation>作品 (%1)</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="37"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="40"/>
         <source>Bookmarks (%1)</source>
         <translation>收藏 (%1)</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="38"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="41"/>
         <source>Following (%1)</source>
         <translation>正在关注 (%1)</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="63"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="53"/>
         <source>Male</source>
         <translation>男</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="63"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="53"/>
         <source>Female</source>
         <translation>女</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="92"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="88"/>
         <source>Twitter</source>
         <translation>Twitter</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="95"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="90"/>
+        <source>Pawoo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/ProfilePage.qml" line="92"/>
         <source>Job</source>
         <translation>工作</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="97"/>
-        <source>Introduction</source>
-        <translation>简介</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="99"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="94"/>
         <source>Location</source>
-        <translation>位置</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="101"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="96"/>
         <source>Gender</source>
         <translation>性别</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="104"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="98"/>
         <source>Homepage</source>
         <translation>主页</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="106"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="100"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="102"/>
         <source>Birthday</source>
         <translation>生日</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="108"/>
-        <source>Blood type</source>
-        <translation>血型</translation>
-    </message>
-    <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="132"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="126"/>
         <source>Open Web Page</source>
         <translation>打开网页</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="143"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="137"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="220"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="214"/>
         <source>Works</source>
         <translation>作品</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="245"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="239"/>
         <source>Bookmarks</source>
         <translation>收藏</translation>
     </message>
     <message>
-        <location filename="../qml/pages/ProfilePage.qml" line="266"/>
+        <location filename="../qml/pages/ProfilePage.qml" line="260"/>
         <source>Following</source>
         <translation>关注</translation>
     </message>
@@ -570,47 +566,47 @@
 <context>
     <name>SettingsPage</name>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="22"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="23"/>
         <source>Invalid custom filename!</source>
         <translation>自定义文件名无效！</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="30"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="31"/>
         <source>Invalid save path!</source>
         <translation>保存路径无效！</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="48"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="49"/>
         <source>Reset all settings and accounts?</source>
         <translation>是否重置全部设置及账户?</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="68"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="69"/>
         <source>Reset</source>
         <translation>重置</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="75"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="76"/>
         <source>Save</source>
         <translation>保存</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="89"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="90"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="93"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="94"/>
         <source>Download</source>
         <translation>下载</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="100"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="101"/>
         <source>Save to</source>
         <translation>保存到</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="109"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="110"/>
         <source>Custom filename, e.g. %a_%u/%i_%t
 %a: artist ID, %u: artist username,
 %n: artist name, %i: work ID, %t: title,
@@ -621,57 +617,62 @@
 %i 是必需的。</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="110"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="111"/>
         <source>Custom filename, e.g. %a_%u/%i_%t</source>
         <translation>自定义文件名, 例如 %a_%u/%i_%t</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="115"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="116"/>
         <source>Behaviour</source>
         <translation>行为</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="120"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="127"/>
+        <source>Sanity Level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/SettingsPage.qml" line="147"/>
         <source>Show R-18 works</source>
         <translation>显示 R-18 作品</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="129"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="156"/>
         <source>Debug mode</source>
         <translation>调试模式</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="138"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="165"/>
         <source>Moebooru support (Beta)</source>
         <translation>Moebooru 支持（测试）</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="144"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="171"/>
         <source>Please install harbour-mieru</source>
         <translation>请安装 harbour-mieru</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="148"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="175"/>
         <source>Cache</source>
         <translation>缓存</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="161"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="188"/>
         <source>Click to clear cache: </source>
         <translation>点击以清空缓存:</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="161"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="188"/>
         <source>Click to get cache size</source>
         <translation>点击以获取缓存大小</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="174"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="201"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../qml/pages/SettingsPage.qml" line="182"/>
+        <location filename="../qml/pages/SettingsPage.qml" line="209"/>
         <source>Version %1</source>
         <translation>版本 %1</translation>
     </message>
@@ -836,10 +837,18 @@
 <context>
     <name>UserWorkPage</name>
     <message>
+        <location filename="../qml/pages/UserWorkPage.qml" line="52"/>
+        <location filename="../qml/pages/UserWorkPage.qml" line="71"/>
         <location filename="../qml/pages/UserWorkPage.qml" line="230"/>
         <location filename="../qml/pages/UserWorkPage.qml" line="233"/>
         <source>Follow</source>
         <translation>关注</translation>
+    </message>
+    <message>
+        <location filename="../qml/pages/UserWorkPage.qml" line="50"/>
+        <location filename="../qml/pages/UserWorkPage.qml" line="71"/>
+        <source>Unfollow</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/pages/UserWorkPage.qml" line="118"/>
@@ -898,12 +907,12 @@
 <context>
     <name>harbour-prxrv</name>
     <message>
-        <location filename="../qml/harbour-prxrv.qml" line="239"/>
+        <location filename="../qml/harbour-prxrv.qml" line="240"/>
         <source>Login failed!</source>
         <translation>登录失败！</translation>
     </message>
     <message>
-        <location filename="../qml/harbour-prxrv.qml" line="283"/>
+        <location filename="../qml/harbour-prxrv.qml" line="284"/>
         <source>Downloads finished.</source>
         <translation>已完成下载。</translation>
     </message>

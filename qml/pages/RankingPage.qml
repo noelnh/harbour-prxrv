@@ -49,7 +49,7 @@ Page {
         if (debugOn) console.log('adding works to rankingWorkModel');
         for (var i in works) {
             currentRank += 1
-            if (!showR18 && works[i]['x_restrict'] > 0) {
+            if ((!showR18 && works[i]['x_restrict'] > 0) || works[i]['sanity_level'] > sanityLevel) {
                 hiddenWork += 1
                 continue
             }

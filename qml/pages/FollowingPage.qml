@@ -13,23 +13,23 @@ Page {
     property string publicity: 'public'
 
     property int currentPage: 0
-    property int totalFollowing: 0
+    property bool allLoaded: false
 
     function setFollowing(resp_j) {
 
         requestLock = false;
         if (!resp_j) return;
 
-        if (debugOn) console.log("set following");
-        totalFollowing = resp_j['pagination']['total'];
-        var users = resp_j['response'];
+        if (debugOn) console.log("set following", JSON.stringify(resp_j));
+        var users = resp_j['user_previews'];
+        allLoaded = users.length === 0;
 
         for (var i in users) {
             followingModel.append( {
-                userID: users[i]['id'],
-                userName: users[i]['name'],
-                userAccount: users[i]['account'],
-                userIcon: users[i]['profile_image_urls']['px_50x50']
+                userID: users[i]['user']['id'],
+                userName: users[i]['user']['name'],
+                userAccount: users[i]['user']['account'],
+                userIcon: users[i]['user']['profile_image_urls']['medium']
             } );
         }
     }
@@ -53,13 +53,13 @@ Page {
             MenuItem {
                 id: changeModeAction
                 visible: userID ? false : true
-                text: publicity == 'public' ? qsTr("Private follows") : qsTr("Public follows")
+                text: publicity == 'public' ? qsTr("Private following") : qsTr("Public following")
                 onClicked: {
                     if (loginCheck()) {
                         followingModel.clear()
                         currentPage = 1
                         publicity = ( publicity == 'public' ? 'private' : 'public' )
-                        Pixiv.getMyFollowing(token, publicity, currentPage, setFollowing)
+                        Pixiv.getMyFollowing(token, user.id, publicity, currentPage, setFollowing)
                     }
                 }
             }
@@ -72,7 +72,7 @@ Page {
                         if (userID) {
                             Pixiv.getFollowing(token, userID, currentPage, setFollowing)
                         } else {
-                            Pixiv.getMyFollowing(token, publicity, currentPage, setFollowing)
+                            Pixiv.getMyFollowing(token, user.id, publicity, currentPage, setFollowing)
                         }
                     }
                 }
@@ -129,20 +129,19 @@ Page {
 
         BusyIndicator {
             anchors.centerIn: parent
-            running: requestLock || ( !followingModel.count && totalFollowing )
+            running: requestLock || ( !followingModel.count && !allLoaded )
         }
 
         onAtYEndChanged: {
             if (followingListView.atYEnd) {
                 if (debugOn) console.log('gridView at end')
-                if ( !requestLock && followingModel.count > 0 &&
-                        followingModel.count < totalFollowing && loginCheck() ) {
+                if ( !requestLock && followingModel.count > 0 && !allLoaded && loginCheck() ) {
                     requestLock = true
                     currentPage += 1
                     if (userID) {
                         Pixiv.getFollowing(token, userID, currentPage, setFollowing)
                     } else {
-                        Pixiv.getMyFollowing(token, publicity, currentPage, setFollowing)
+                        Pixiv.getMyFollowing(token, user.id, publicity, currentPage, setFollowing)
                     }
                 }
             }
@@ -157,7 +156,7 @@ Page {
             if (userID) {
                 Pixiv.getFollowing(token, userID, currentPage, setFollowing)
             } else {
-                Pixiv.getMyFollowing(token, publicity, currentPage, setFollowing)
+                Pixiv.getMyFollowing(token, user.id, publicity, currentPage, setFollowing)
             }
         }
     }

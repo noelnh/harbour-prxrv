@@ -133,7 +133,6 @@ function searchWorks(token, params, page, callback) {
         query.end_date = params.end_date;
     }
 
-    console.log(JSON.stringify(params), JSON.stringify(query))
     sendRequest('GET', token, url, query, callback);
 }
 
@@ -232,31 +231,17 @@ function getFollowingWorks(token, url, params, callback) {
 }
 
 
-// Following Works
-//
-function getFollowingWork(token, page, callback) {
-    if (!checkToken(token, 'getFollowingWork')) return;
-    var url = base_url + '/me/following/works.json';
-    var params = {
-        'include_stats': 'true',
-        'image_sizes': 'px_128x128,px_480mw,large',
-        'page': page,
-        'per_page': '50',
-    };
-    sendRequest('GET', token, url, params, callback);
-}
-
 // User Works
 //
-function getUserWork(token, user, page, callback) {
+function getUserWork(token, user_id, page, callback) {
     if (!checkToken(token, 'getUserWork')) return;
-    var url = base_url + '/users/' + user + '/works.json';
+    var url = app_url_v1 + '/user/illusts';
     var params = {
-        'include_stats': 'true',
-        'image_sizes': 'px_128x128,px_480mw,large',
-        'page': page,
-        'per_page': '50',
+        user_id: user_id,
+        offset: (page-1) * 30,
+        filter: 'for_ios',
     };
+    // TODO type: illust, manga
     sendRequest('GET', token, url, params, callback);
 }
 
@@ -287,12 +272,10 @@ function getBookmarkDetail(token, illust_id, callback) {
 //
 function getUser(token, user_id, callback) {
     if (!checkToken(token, 'getUser')) return;
-    var url = base_url + '/users/' + user_id + '.json';
+    var url = app_url_v1 + '/user/detail';
     var params = {
-        'include_stats': '1',
-        'include_profile': '1',
-        'include_workspace': '1',
-        'include_contacts': '1',
+        user_id: user_id,
+        filter: 'for_ios',
     };
     sendRequest('GET', token, url, params, callback);
 }
@@ -302,31 +285,22 @@ function getUser(token, user_id, callback) {
 //
 function getFollowing(token, user_id, page, callback) {
     if (!checkToken(token, 'getFollowing')) return;
-    var url = base_url + '/users/' + user_id + '/following.json';
+    var url = app_url_v1 + '/user/following';
     var params = {
-        'per_page': '20',
-        'page': page
+        user_id: user_id,
+        offset: (page-1) * 30,
+        restrict: 'public',
     };
     sendRequest('GET', token, url, params, callback);
 }
 
-function getMyFollowing(token, publicity, page, callback) {
+function getMyFollowing(token, user_id, publicity, page, callback) {
     if (!checkToken(token, 'getMyFollowing')) return;
-    var url = base_url + '/me/following.json';
+    var url = app_url_v1 + '/user/following';
     var params = {
-        'publicity': publicity,
-        'page': page,
-        'per_page': '20',
-    };
-    sendRequest('GET', token, url, params, callback);
-}
-
-// This returns only one user per page :(
-function getMyFollowing1(token, publicity, callback) {
-    if (!checkToken(token, 'getMyFollowing2')) return;
-    var url = base_url + '/me/favorite-users.json';
-    var params = {
-        'publicity': publicity
+        user_id: user_id,
+        offset: (page-1) * 30,
+        restrict: publicity,
     };
     sendRequest('GET', token, url, params, callback);
 }
@@ -348,34 +322,6 @@ function unfollowUser(token, user_id, callback) {
         'user_id': user_id,
     };
     sendRequest('POST', token, url, params, callback);
-}
-
-
-// Favorite Works
-//
-function getFavoriteWork(token, user_id, page, callback) {
-    if (!checkToken(token, 'getFavoriteWork')) return;
-    var url = base_url + '/users/' + user_id + '/favorite_works.json';
-    var params = {
-        'include_stats': 'true',
-        'image_sizes': 'px_128x128,px_480mw,large',
-        'page': page,
-        'per_page': '50',
-    };
-    sendRequest('GET', token, url, params, callback);
-}
-
-function getMyFavoriteWork(token, publicity, page, callback) {
-    if (!checkToken(token, 'getMyFavoriteWork')) return;
-    var url = base_url + '/me/favorite_works.json';
-    var params = {
-        'publicity': publicity,
-        'include_stats': 'true',
-        'image_sizes': 'px_128x128,px_480mw,large',
-        'page': page,
-        'per_page': '50',
-    };
-    sendRequest('GET', token, url, params, callback);
 }
 
 

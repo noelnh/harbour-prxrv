@@ -13,7 +13,7 @@ Page {
     property string authorID: ''
     property string authorName: ''
 
-    property int totalWork: 50
+    property bool allLoaded: false
     property int hiddenWork: 0
 
     property bool isNewModel: true
@@ -25,11 +25,11 @@ Page {
     ListModel { id: userWorkModel }
 
 
-    function addProfilePage() {
+    function addProfilePage(detail) {
         if (authorID && !profilePageAttached) {
             if (debugOn) console.log("attach profile page")
             profilePageAttached = true
-            var _props = {"userID": authorID, "userName": authorName}
+            var _props = {"userID": authorID, "userName": authorName, "userDetail": detail}
             pageStack.pushAttached("ProfilePage.qml", _props)
         }
     }
@@ -43,14 +43,16 @@ Page {
     }
 
     // Set following status
-    function setStatus(resp_j) {
-        if (resp_j && resp_j['response']) {
-            if (resp_j['response'][0]['is_following']) {
-                followAction.text = 'Unfollow'
-                // TODO set user details
+    function setDetail(resp_j) {
+        var author = resp_j && resp_j['user']
+        if (author) {
+            if (author['is_followed']) {
+                followAction.text = qsTr('Unfollow')
             } else {
-                followAction.text = 'Follow'
+                followAction.text = qsTr('Follow')
             }
+            authorName = author['name']
+            addProfilePage(resp_j)
         }
     }
 
@@ -59,28 +61,26 @@ Page {
 
         requestLock = false
 
-        // TODO show info: 404, 0, ...
-        if (!resp_j) {
-            totalWork = 0
-            return
+        var works = resp_j['illusts']
+
+        allLoaded = works.length === 0;
+
+        var author = {}
+        if (works.length) {
+            author = works[0]['user']
+            followAction.text = author['is_followed'] ? qsTr('Unfollow') : qsTr('Follow')
+
+            // authorName is empty if this page is directly loaded from link or id
+            if (authorName === '') {
+                authorName = author['name']
+            }
         }
 
-        addProfilePage()
-
-        // authorName is empty if this page is directly loaded from link or id
-        if (authorName === '' && resp_j['count']) {
-            authorName = resp_j['response'][0]['user']['name']
-        }
-
-        totalWork = resp_j['pagination']['total']
-
-        var works = resp_j['response']
-
-        Pixiv.getUser(token, authorID, setStatus)
+        Pixiv.getUser(token, authorID, setDetail)
 
         if (debugOn) console.log('adding works to userWorkModel')
         for (var i in works) {
-            if (!showR18 && works[i]['age_limit'].indexOf('r18') >= 0) {
+            if ((!showR18 && works[i]['x_restrict'] > 0) || works[i]['sanity_level'] > sanityLevel) {
                 hiddenWork += 1
                 continue
             }
@@ -92,12 +92,12 @@ Page {
                 square128: imgUrls.square,
                 master480: imgUrls.master,
                 large: imgUrls.large,
-                authorIcon: works[i]['user']['profile_image_urls']['px_50x50'],
+                authorIcon: works[i]['user']['profile_image_urls']['medium'],
                 authorID: works[i]['user']['id'],
                 authorName: works[i]['user']['name'],
                 authorAccount: works[i]['user']['account'],
-                isManga: works[i]['is_manga'],
-                favoriteID: works[i]['favorite_id']
+                isManga: works[i]['type'] === 'manga',
+                isBookmarked: works[i]['is_bookmarked']
             } )
         }
     }
@@ -177,7 +177,7 @@ Page {
                 Image {
                     anchors.right: parent.right
                     anchors.bottom: parent.bottom
-                    source: favoriteID ? "../images/btn-done.svg" : "../images/btn-like.svg"
+                    source: isBookmarked ? "../images/btn-done.svg" : "../images/btn-like.svg"
                     width: Theme.iconSizeSmall
                     height: Theme.iconSizeSmall
 
@@ -185,7 +185,7 @@ Page {
                         anchors.fill: parent
                         onClicked: {
                             currentIndex = index
-                            Prxrv.toggleBookmarkIcon(workID, favoriteID)
+                            Prxrv.toggleBookmarkIcon2(workID, !isBookmarked)
                             if (fromID == workID) {
                                 refreshWorkDetails = true
                             }
@@ -256,12 +256,12 @@ Page {
         BusyIndicator {
             size: BusyIndicatorSize.Large
             anchors.centerIn: parent
-            running: requestLock || ( !userWorkModel.count && (totalWork - hiddenWork) )
+            running: requestLock || ( !userWorkModel.count && !allLoaded )
         }
 
         onAtYEndChanged: {
             if (gridView.atYEnd) {
-                if ( !requestLock && userWorkModel.count < totalWork - hiddenWork
+                if ( !requestLock && !allLoaded
                         && userWorkModel.count > 0 && loginCheck() ) {
                     requestLock = true
                     currentPage += 1

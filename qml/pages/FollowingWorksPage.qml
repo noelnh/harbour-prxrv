@@ -35,7 +35,7 @@ Page {
 
         if (debugOn) console.log('adding works to followingWorksModel');
         for (var i in followingWorks) {
-            if (!showR18 && followingWorks[i]['x_restrict'] > 0) {
+            if ((!showR18 && followingWorks[i]['x_restrict'] > 0) || followingWorks[i]['sanity_level'] > sanityLevel) {
                 hiddenWork += 1
                 continue
             }
@@ -132,13 +132,6 @@ Page {
                     while (currentModel.length) currentModel.pop()
                     while (worksModelStack.length) worksModelStack.pop()
                     pageStack.pop(firstPage)
-                }
-            }
-            MenuItem {
-                text: qsTr("All works")
-                onClicked: {
-                    currentModel.push("latestWorkModel")
-                    pageStack.push("LatestWorkPage.qml")
                 }
             }
             MenuItem {

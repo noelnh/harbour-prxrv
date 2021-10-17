@@ -10,6 +10,7 @@ Page {
     property string userID: ""
     property string userName: ""
     property string userAccount: ""
+    property var userDetail: null
 
     property string authorIconSrc: ""
 
@@ -28,48 +29,41 @@ Page {
         if (debugOn) console.log("set profile")
         profileModel.clear()
 
-        if (resp_j['count'] > 0) {
-            var _user = resp_j['response'][0]
+        var _user = resp_j['user']
+        var _profile = resp_j['profile']
+        if (_user && _profile) {
+            var total_works = _profile['total_illusts'] + _profile['total_manga']
             userName = _user['name']
-            authorIconSrc = _user['profile_image_urls']['px_50x50']
+            authorIconSrc = _user['profile_image_urls']['medium']
             userAccount = _user['account']
-            userWorkLabel.text = qsTr("Works (%1)").arg(_user['stats']['works'])
-            favoriteWorkLabel.text = qsTr("Bookmarks (%1)").arg(_user['stats']['favorites'])
-            latestWorkLabel.text = qsTr("Following (%1)").arg( _user['stats']['following'])
+            userWorkLabel.text = qsTr("Works (%1)").arg(total_works)
+            favoriteWorkLabel.text = qsTr("Bookmarks (%1)").arg(_profile['total_illust_bookmarks_public'])
+            followingLabel.text = qsTr("Following (%1)").arg(_profile['total_follow_users'])
 
-            for (var title in _user['profile']) {
-                if (title === 'contacts') {
-                    var contacts = _user['profile']['contacts']
-                    if (contacts) {
-                        for (var contact in contacts) {
-                            if (contacts[contact]) {
-                                profileModel.append( {
-                                    title: getSubTitle(contact),
-                                    content: getContactAddr(contacts[contact], contact)
-                                } )
-                            }
-                        }
-                    }
-                } else if (title === 'workspace') {
-                    // skip
-                } else {
-                    if (typeof(_user['profile'][title]) !== 'string') continue
-                    if (debugOn) console.log("append", title)
-                    var _content = _user['profile'][title]
-                    if (title == 'homepage' && _content.indexOf('http') === 0) {
-                        _content = '<a href="' + _content + '">' + _content + '</a>'
-                    }
-                    if (title === 'gender') {
-                        _content = _content === 'male' ? qsTr("Male") : _content === 'female' ? qsTr("Female") : _content
-                    }
-                    profileModel.append( {
-                        title: getSubTitle(title),
-                        content: _content
-                    } )
+            for (var title in _profile) {
+                if (!_profile[title] || typeof(_profile[title]) !== 'string') continue
+                if (title === 'twitter_url' || title === 'background_image_url') continue
+                if (title === 'birth_day' && _profile['birth']) continue
+
+                if (debugOn) console.log("append", title)
+                var _content = _profile[title]
+                if (title === 'webpage' && _content.indexOf('http') === 0) {
+                    _content = '<a href="' + _content + '">' + _content + '</a>'
+                } else if (title === 'gender') {
+                    _content = _content === 'male' ? qsTr("Male") : _content === 'female' ? qsTr("Female") : _content
+                } else if (title === 'twitter_account') {
+                    _content = getContactAddr(_profile[title], 'twitter')
+                } else if (title === 'pawoo_url') {
+                    _content = getContactAddr(_profile[title], 'pawoo')
                 }
+
+                profileModel.append( {
+                    title: getSubTitle(title),
+                    content: _content
+                } )
             }
 
-            if (_user['stats']['works'] == 0) {
+            if (total_works === 0) {
                 if (debugOn) console.log('nav forward')
                 pageStack.navigateForward()
             }
@@ -77,10 +71,12 @@ Page {
     }
 
     function getContactAddr(addr, site, text) {
-        text = text || addr
         if (site === 'twitter') {
+            text = text || addr
             addr = 'https://mobile.twitter.com/' + addr
             return '<a href="' + addr + '">' + text + '</a>'
+        } else if (site === 'pawoo') {
+            return '<a href="' + addr + '">' + userName + '</a>'
         } else {
             return addr
         }
@@ -88,24 +84,22 @@ Page {
 
     function getSubTitle(title) {
         switch (title) {
-            case 'twitter':
+            case 'twitter_account':
                 return qsTr("Twitter")
-            // TODO other accounts
+            case 'pawoo_url':
+                return qsTr("Pawoo")
             case 'job':
                 return qsTr("Job")
-            case 'introduction':
-                return qsTr("Introduction")
-            case 'location':
+            case 'region':
                 return qsTr("Location")
             case 'gender':
                 return qsTr("Gender")
-            // case 'tags'
-            case 'homepage':
+            case 'webpage':
                 return qsTr("Homepage")
-            case 'birth_date':
+            case 'birth':
                 return qsTr("Birthday")
-            case 'blood_type':
-                return qsTr("Blood type")
+            case 'birth_day':
+                return qsTr("Birthday")
             default:
                 return title
         }
@@ -151,7 +145,7 @@ Page {
         Item {
             id: column
             width: parent.width
-            height: authorBar.height + userWorkItem.height + favoriteWorkItem.height + latestWorkItem.height
+            height: authorBar.height + userWorkItem.height + favoriteWorkItem.height + followingItem.height
             anchors.top: pageHeader.bottom
             anchors.horizontalCenter: parent.horizontalCenter
 
@@ -177,7 +171,7 @@ Page {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            if (currentModel[currentModel.length-1] == "userWorkModel") {
+                            if (currentModel[currentModel.length-1] === "userWorkModel") {
                                 if (debugOn) console.log('nav back to user work page ' + userID)
                                 pageStack.navigateBack()
                             }
@@ -220,7 +214,7 @@ Page {
                     text: qsTr("Works")
                 }
                 onClicked: {
-                    if (userID == user['id']) {
+                    if (userID === user['id']) {
                         currentModel.push("userWorkModel")
                         var _props = {"authorName": userName, "authorID": userID}
                         pageStack.push("UserWorkPage.qml", _props)
@@ -253,12 +247,12 @@ Page {
             }
 
             ListItem {
-                id: latestWorkItem
+                id: followingItem
                 width: parent.width
                 anchors.top: favoriteWorkItem.bottom
                 contentHeight: Theme.itemSizeMedium
                 Label {
-                    id: latestWorkLabel
+                    id: followingLabel
                     color: parent.highlighted ? Theme.highlightColor : Theme.primaryColor
                     anchors.left: parent.left
                     anchors.leftMargin: Theme.paddingLarge
@@ -267,7 +261,7 @@ Page {
                 }
                 onClicked: {
                     if (debugOn) console.log("goto following users page")
-                    if (userID == user['id']) {
+                    if (userID === user['id']) {
                         pageStack.push("FollowingPage.qml")
                     } else {
                         pageStack.push("FollowingPage.qml", {"userID": userID, "userName": userName})
@@ -324,7 +318,9 @@ Page {
     }
 
     Component.onCompleted: {
-        if (loginCheck() && userID) {
+        if (userDetail) {
+            setProfile(userDetail)
+        } else if (loginCheck() && userID) {
             Pixiv.getUser(token, userID, setProfile)
         }
     }

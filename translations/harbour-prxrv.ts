@@ -243,14 +243,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Introduction</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Location</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Gender</source>
         <translation type="unfinished"></translation>
     </message>
@@ -260,10 +252,6 @@
     </message>
     <message>
         <source>Birthday</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Blood type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -304,6 +292,14 @@
     </message>
     <message>
         <source>Following</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pawoo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -544,6 +540,10 @@
         <source>Version %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Sanity Level</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>StaccListPage</name>
@@ -690,6 +690,10 @@
     </message>
     <message>
         <source>Unfollow %1?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unfollow</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
