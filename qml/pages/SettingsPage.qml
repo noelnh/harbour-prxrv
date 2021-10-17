@@ -9,6 +9,7 @@ Page {
     id: settingsPage
 
     property bool showR18_: Settings.read('showR18')
+    property int sanityLevel_: sanityLevel_
 
     property int cacheSize: 0
     property bool cacheSized: false
@@ -115,8 +116,34 @@ Page {
                 text: qsTr("Behaviour")
             }
 
+            ComboBox {
+                id: sanityCombo
+                width: parent.width
+
+                property var values: [3, 5, 7]
+
+                currentIndex: values.indexOf(sanityLevel)
+
+                label: qsTr("Sanity Level")
+                menu: ContextMenu {
+                    MenuItem { text: '3' }
+                    MenuItem { text: '5' }
+                    MenuItem { text: '7' }
+                }
+                onValueChanged: {
+                    sanityLevel_ = values[currentIndex]
+                    Settings.write('sanityLevel', '' + sanityLevel_)
+                    if (sanityLevel_ < 6) {
+                        showR18_ = false
+                        limitSwitch.checked = false
+                        Settings.write('showR18', false)
+                    }
+                }
+            }
+
             TextSwitch {
                 id: limitSwitch
+                visible: sanityLevel_ > 6
                 text: qsTr("Show R-18 works")
                 checked: showR18_
                 onCheckedChanged: {
@@ -191,6 +218,7 @@ Page {
             saveSettings()
             debugOn = debugSwitch.checked
             booruEnabled = booruSwitch.checked
+            sanityLevel = sanityLevel_
             if (showR18_ !== limitSwitch.checked) {
                 showR18 = limitSwitch.checked
                 activityModel.clear()

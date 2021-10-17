@@ -19,6 +19,7 @@ ApplicationWindow
     // Settings
     property bool debugOn: Settings.read('debugOn')
     property bool showR18: Settings.read('showR18')
+    property int sanityLevel: +(Settings.read('sanityLevel') || '3')
     property string savePath: Settings.read('savePath') || "/home/nemo/Pictures"
     property string cachePath: Settings.read('cachePath') || "/home/nemo/.cache/harbour-prxrv"
     property string customName: Settings.read('customName') || '%i'
