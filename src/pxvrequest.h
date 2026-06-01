@@ -4,7 +4,10 @@
 #include <QObject>
 #include <QNetworkReply>
 #include <QUrl>
+#include <QTime>
 
+class QNetworkAccessManager;
+class QNetworkRequest;
 
 class PxvRequest : public QObject
 {
@@ -23,10 +26,10 @@ signals:
     void saveImageSucceeded(PxvRequest*);
     void saveImageFailed(PxvRequest*);
     void errorMessage(QString msg, PxvRequest*);
+    void downloadProgress(const QString &filename, qint64 received, qint64 total);
 
 public slots:
     void writeFile();
-    void emitFailed(QNetworkReply::NetworkError);
     void logProgress(qint64, qint64);
 
 private:
@@ -42,6 +45,7 @@ private:
     QNetworkRequest* qnrq = nullptr;
 
     bool isAborted = false;
+    QString filePath() const;
 
 };
 

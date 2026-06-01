@@ -1,388 +1,215 @@
 .pragma library
 
-var base_url = 'https://public-api.secure.pixiv.net/v1'
-var app_url_v1 = 'https://app-api.pixiv.net/v1'
-var app_url_v2 = 'https://app-api.pixiv.net/v2'
-var client_id = 'MOBrBDS8blbauoSck0ZfDbtuzpyT'
-var client_secret = 'lsACyCD94FhDUtGTXi3QzcFE2uU1hqtDaKeqrdwj'
-var redirect_uri = "https://app-api.pixiv.net/web/v1/users/auth/pixiv/callback"
-var auth_url = 'https://oauth.secure.pixiv.net/auth/token'
+.import "pixiv-request.js" as PixivRequest
+.import "pixiv-auth.js" as PixivAuth
 
-function checkToken(token, msg) {
-    //console.log('Token for ' + msg + '(): ' + token);
-    if (token == '') {
-        console.log('Token is empty');
-        return false;
-    }
-    return true;
+var app_url_v1 = PixivAuth.appUrlV1
+var app_url_v2 = PixivAuth.appUrlV2
+
+var appFilter = "for_ios"
+
+function checkToken(token, context) {
+    return PixivRequest.requireToken(token, context)
 }
 
-function serialize(obj) {
-    var str = [];
-    for (var p in obj) {
-        if (obj.hasOwnProperty(p)) {
-            if (obj[p] && obj[p] instanceof Array) {
-                for (var i in obj[p]) {
-                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p][i]));
-                }
-            } else {
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-            }
-        }
-    }
-    return str.join("&");
+function serialize(params) {
+    return PixivRequest.serialize(params)
 }
 
 function sendRequest(method, token, url, params, callback) {
+    PixivRequest.send(method, token, url, params, callback)
+}
 
-    var xmlhttp = new XMLHttpRequest();
+function authorizedRequest(method, token, context, url, params, callback) {
+    if (!checkToken(token, context)) {
+        return
+    }
 
-    var params_str = serialize(params)
+    sendRequest(method, token, url, params, callback)
+}
 
-    xmlhttp.onreadystatechange = function() {
-        console.log('http ready: ' + xmlhttp.readyState);
-        if (xmlhttp.readyState == 4) {
-            console.log('http status: ' + xmlhttp.status);
-            if (token == '' && xmlhttp.status == 400) {
-                console.error('Login failed!');
-                typeof(callback) === 'function' && callback(null);
-            } else if (xmlhttp.status == 200) {
-                var resp_j = JSON.parse(xmlhttp.responseText);
-                //console.log('resp_j', JSON.stringify(resp_j))
-                if (token == '' || resp_j) {
-                    typeof(callback) === 'function' && callback(resp_j);
-                }
-            } else { // if (xmlhttp.status == 0) {   // or 404
-                console.error('Failed to fetch data from ' + url);
-                typeof(callback) === 'function' && callback(null);
-            }
+function pageOffset(page) {
+    return (page - 1) * 30
+}
+
+function withFilter(params) {
+    var query = {}
+    var source = params || {}
+
+    for (var key in source) {
+        if (source.hasOwnProperty(key)) {
+            query[key] = source[key]
         }
     }
 
-    xmlhttp.ontimeout = function() {
-        console.error('The request for ' + url + ' timed out.');
-        typeof(callback) === 'function' && callback(null);
-    };
-
-    if ((method == 'GET' || method == 'DELETE') && params_str != '') url += '?' + params_str;
-
-    var headers = {
-        'Referer': 'https://app-api.pixiv.net/',
-        'App-OS': 'ios',
-        'App-OS-Version': '14.4',
-        'App-Version': '7.6.2',
-        'User-Agent': 'PixivIOSApp/7.6.2 (iOS 14.4; iPhone9,1)',
-    }
-
-    xmlhttp.open(method, url, true);
-    for (var key in headers) {
-        xmlhttp.setRequestHeader(key, headers[key]);
-    }
-    if (token !== '') xmlhttp.setRequestHeader('Authorization', 'Bearer ' + token);
-
-    // TODO
-    xmlhttp.timeout = 6000;
-
-    switch (method) {
-        case 'POST':
-            xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xmlhttp.send(params_str);
-            break;
-        case 'GET':
-        case 'DELETE':
-            xmlhttp.send();
-            break;
-        default:
-            console.log("Nothing to send OR not supported method " + method);
-    }
+    query.filter = appFilter
+    return query
 }
 
+function continueRequest(token, context, url, callback) {
+    authorizedRequest("GET", token, context, url, {}, callback)
+}
 
-// Search
-//
-// params: q, mode, sort, order, period, start_date, end_date
-//
-//     mode: tag, partial_tag, text
-//     sort: date, popular
-//     order: desc, asc
-//     period: day, week, month, all
-//
-// sort-by-popular only works with 'desc' order,
-// and returns at most 20 items for non-premium user
-//
 function searchWorks(token, params, page, callback) {
-    if (!checkToken(token, 'search')) return;
-
-    var url = app_url_v1 + '/search/illust'
-    var searchTargets = {tag: 'exact_match_for_tags', partial_tag: 'partial_match_for_tags', text: 'title_and_caption'}
+    var searchTargets = {
+        tag: "exact_match_for_tags",
+        partial_tag: "partial_match_for_tags",
+        text: "title_and_caption"
+    }
 
     var query = {
         word: params.q,
         search_target: searchTargets[params.mode] || searchTargets.tag,
-        sort: params.sort + '_' + params.order,
-        offset: (page - 1) * 30,
-        filter: 'for_ios',
+        sort: params.sort + "_" + params.order,
+        offset: pageOffset(page),
+        filter: appFilter
     }
-    if (params.period && params.period !== 'all') {
+
+    if (params.period && params.period !== "all") {
         query.duration = params.period
     }
     if (params.start_date) {
-        query.start_date = params.start_date;
+        query.start_date = params.start_date
     }
     if (params.end_date) {
-        query.end_date = params.end_date;
+        query.end_date = params.end_date
     }
 
-    sendRequest('GET', token, url, query, callback);
+    authorizedRequest("GET", token, "searchWorks", app_url_v1 + "/search/illust", query, callback)
 }
 
-
-// Ranking
-// TODO params.date
-//
 function getRankingWork(token, type, mode, page, callback) {
-    if (!checkToken(token, 'getRankingWork: ' + type + '|' + mode)) return;
-    var url = app_url_v1 + '/illust/ranking';
-    var params = {
-        'mode': mode,
-        'offset': (page - 1) * 30,
-        'filter': 'for_ios',
-    };
-    if (type === 'manga') {
-        params.mode = 'day_manga'
+    var query = withFilter({
+        mode: mode,
+        offset: pageOffset(page)
+    })
+
+    if (type === "manga") {
+        query.mode = "day_manga"
     }
 
-    sendRequest('GET', token, url, params, callback);
+    authorizedRequest("GET", token, "getRankingWork: " + type + "|" + mode, app_url_v1 + "/illust/ranking", query, callback)
 }
 
-
-// Trending tags (App API)
-//
 function getTrendingTags(token, callback) {
-    if (!checkToken(token, 'getTrendingTags')) return;
-    var url = app_url_v1 + '/trending-tags/illust';
-    var params = {
-        'filter': 'for_ios',
-    };
-    sendRequest('GET', token, url, params, callback);
+    authorizedRequest("GET", token, "getTrendingTags", app_url_v1 + "/trending-tags/illust", withFilter({}), callback)
 }
 
-
-// Recommendation (App API)
-//
 function getRecommendation(token, page, callback) {
-    if (!checkToken(token, 'getRecommendation')) return;
-    var url = app_url_v1 + '/illust/recommended';
-    var params = {
-        'content_type': 'illust',
-        'include_ranking_label': 'true',
-        'filter': 'for_ios',
-        'offset': (page-1) * 30,
-    };
-    sendRequest('GET', token, url, params, callback);
+    authorizedRequest("GET", token, "getRecommendation", app_url_v1 + "/illust/recommended", withFilter({
+        content_type: "illust",
+        include_ranking_label: "true",
+        offset: pageOffset(page)
+    }), callback)
 }
 
-
-// Related works (App API)
-//
 function getRelatedWorks(token, illust_id, seed_ids, page, callback) {
-    if (!checkToken(token, 'getRelatedWorks')) return;
-    var url = app_url_v2 + '/illust/related';
-    var params = {
-        'illust_id': illust_id,
-        'filter': 'for_ios',
-        'seed_illust_ids[]': seed_ids,
-        'offset': (page-1) * 30,
-    };
-    sendRequest('GET', token, url, params, callback);
+    authorizedRequest("GET", token, "getRelatedWorks", app_url_v2 + "/illust/related", withFilter({
+        illust_id: illust_id,
+        "seed_illust_ids[]": seed_ids,
+        offset: pageOffset(page)
+    }), callback)
 }
 
-// Following works (App API)
-//
 function getFollowingWorks(token, url, params, callback) {
-    if (!checkToken(token, 'getFollowingWorks')) return;
-    if (!url) {
-        url = app_url_v2 + '/illust/follow'
-        sendRequest('GET', token, url, params, callback);
-    } else {
-        sendRequest('GET', token, url, {}, callback);
+    if (url) {
+        continueRequest(token, "getFollowingWorks", url, callback)
+        return
     }
+
+    authorizedRequest("GET", token, "getFollowingWorks", app_url_v2 + "/illust/follow", params || {}, callback)
 }
 
-
-// User Works
-//
 function getUserWork(token, user_id, page, callback) {
-    if (!checkToken(token, 'getUserWork')) return;
-    var url = app_url_v1 + '/user/illusts';
-    var params = {
+    authorizedRequest("GET", token, "getUserWork", app_url_v1 + "/user/illusts", withFilter({
         user_id: user_id,
-        offset: (page-1) * 30,
-        filter: 'for_ios',
-    };
-    // TODO type: illust, manga
-    sendRequest('GET', token, url, params, callback);
+        offset: pageOffset(page)
+    }), callback)
 }
 
-
-// Work Details
-//
 function getWorkDetails(token, illust_id, callback) {
-    if (!checkToken(token, 'getWorkDetails2')) return;
-    var url = app_url_v1 + '/illust/detail';
-    var params = {
-        'illust_id': illust_id
-    }
-    sendRequest('GET', token, url, params, callback);
+    authorizedRequest("GET", token, "getWorkDetails", app_url_v1 + "/illust/detail", {
+        illust_id: illust_id
+    }, callback)
 }
 
-// Bookmark Detail
-//
 function getBookmarkDetail(token, illust_id, callback) {
-    if (!checkToken(token, 'getWorkDetails2')) return;
-    var url = app_url_v2 + '/illust/bookmark/detail';
-    var params = {
-        'illust_id': illust_id
-    }
-    sendRequest('GET', token, url, params, callback);
+    authorizedRequest("GET", token, "getBookmarkDetail", app_url_v2 + "/illust/bookmark/detail", {
+        illust_id: illust_id
+    }, callback)
 }
 
-// User Details
-//
 function getUser(token, user_id, callback) {
-    if (!checkToken(token, 'getUser')) return;
-    var url = app_url_v1 + '/user/detail';
-    var params = {
-        user_id: user_id,
-        filter: 'for_ios',
-    };
-    sendRequest('GET', token, url, params, callback);
+    authorizedRequest("GET", token, "getUser", app_url_v1 + "/user/detail", withFilter({
+        user_id: user_id
+    }), callback)
 }
 
-
-// Following User
-//
 function getFollowing(token, user_id, page, callback) {
-    if (!checkToken(token, 'getFollowing')) return;
-    var url = app_url_v1 + '/user/following';
-    var params = {
+    authorizedRequest("GET", token, "getFollowing", app_url_v1 + "/user/following", {
         user_id: user_id,
-        offset: (page-1) * 30,
-        restrict: 'public',
-    };
-    sendRequest('GET', token, url, params, callback);
+        offset: pageOffset(page),
+        restrict: "public"
+    }, callback)
 }
 
 function getMyFollowing(token, user_id, publicity, page, callback) {
-    if (!checkToken(token, 'getMyFollowing')) return;
-    var url = app_url_v1 + '/user/following';
-    var params = {
+    authorizedRequest("GET", token, "getMyFollowing", app_url_v1 + "/user/following", {
         user_id: user_id,
-        offset: (page-1) * 30,
-        restrict: publicity,
-    };
-    sendRequest('GET', token, url, params, callback);
+        offset: pageOffset(page),
+        restrict: publicity
+    }, callback)
 }
 
 function followUser(token, user_id, publicity, callback) {
-    if (!checkToken(token, 'followUser')) return;
-    var url = app_url_v1 + '/user/follow/add';
-    var postdata = {
-        'user_id': user_id,
-        'restrict': publicity
-    };
-    sendRequest('POST', token, url, postdata, callback);
+    authorizedRequest("POST", token, "followUser", app_url_v1 + "/user/follow/add", {
+        user_id: user_id,
+        restrict: publicity
+    }, callback)
 }
 
 function unfollowUser(token, user_id, callback) {
-    if (!checkToken(token, 'unfollowUser')) return;
-    var url = app_url_v1 + '/user/follow/delete';
-    var params = {
-        'user_id': user_id,
-    };
-    sendRequest('POST', token, url, params, callback);
+    authorizedRequest("POST", token, "unfollowUser", app_url_v1 + "/user/follow/delete", {
+        user_id: user_id
+    }, callback)
 }
 
-
-// Bookmark Work
-//
 function getBookmarks(token, url, params, callback) {
-    if (!url) {
-        url = app_url_v1 + '/user/bookmarks/illust'
-        params['filter'] = 'for_ios'
-        sendRequest('GET', token, url, params, callback);
-    } else {
-        sendRequest('GET', token, url, {}, callback);
+    if (url) {
+        continueRequest(token, "getBookmarks", url, callback)
+        return
     }
+
+    authorizedRequest("GET", token, "getBookmarks", app_url_v1 + "/user/bookmarks/illust", withFilter(params || {}), callback)
 }
 
 function bookmarkWork(token, illust_id, publicity, callback) {
-    if (!checkToken(token, 'bookmarkWork')) return;
-    var url = app_url_v2 + '/illust/bookmark/add';
-    var postdata = {
-        'illust_id': illust_id,
-        'restrict': publicity
-        // 'tags': 'TODO'
-    };
-    sendRequest('POST', token, url, postdata, callback);
+    authorizedRequest("POST", token, "bookmarkWork", app_url_v2 + "/illust/bookmark/add", {
+        illust_id: illust_id,
+        restrict: publicity
+    }, callback)
 }
 
 function unbookmarkWork(token, illust_id, callback) {
-    if (!checkToken(token, 'unbookmarkWork')) return;
-    var url = app_url_v1 + '/illust/bookmark/delete';
-    var postdata = {
-        'illust_id': illust_id
-    };
-    sendRequest('POST', token, url, postdata, callback);
+    authorizedRequest("POST", token, "unbookmarkWork", app_url_v1 + "/illust/bookmark/delete", {
+        illust_id: illust_id
+    }, callback)
 }
 
-function getComments(token, illust_id) {
-    if (!checkToken(token, 'getComments')) return;
-    var url = app_url_v1 + '/illust/comments';
-    var params = {
-        'illust_id': illust_id
-    }
-    sendRequest('GET', token, url, params, callback);
+function getComments(token, illust_id, callback) {
+    authorizedRequest("GET", token, "getComments", app_url_v1 + "/illust/comments", {
+        illust_id: illust_id
+    }, callback)
 }
 
-
-// Login
-//
 function login(username, password, callback) {
-    var url = auth_url
-    var postdata = {
-        'grant_type': 'password',
-        'get_secure_url': 1,
-        'client_id': client_id,
-        'client_secret': client_secret,
-        'username': username,
-        'password': password,
-    };
-    sendRequest('POST', '', url, postdata, callback);
+    PixivAuth.login(username, password, callback)
 }
 
 function relogin(refresh_token, callback) {
-    var url = auth_url
-    var postdata = {
-        'grant_type': 'refresh_token',
-        'get_secure_url': 1,
-        'client_id': client_id,
-        'client_secret': client_secret,
-        'refresh_token': refresh_token,
-    };
-    sendRequest('POST', '', url, postdata, callback);
+    PixivAuth.relogin(refresh_token, callback)
 }
 
-function authLogin (code, code_verifier, callback) {
-    var url = auth_url
-    var postdata={
-        "client_id": client_id,
-        "client_secret": client_secret,
-        "code": code,
-        "code_verifier": code_verifier,
-        "grant_type": "authorization_code",
-        "include_policy": "true",
-        "redirect_uri": redirect_uri,
-    }
-    sendRequest('POST', '', url, postdata, callback);
+function authLogin(code, code_verifier, callback) {
+    PixivAuth.authLogin(code, code_verifier, callback)
 }

@@ -15,6 +15,7 @@ void RequestMgr::saveImage(QString token, QString url, QString savePath, QString
     PxvRequest *pxvRequest = new PxvRequest(this);
     pxvRequest->setToken(token);
     this->prList.append(pxvRequest);
+    connect(pxvRequest, &PxvRequest::downloadProgress, this, &RequestMgr::downloadProgress);
 
     if (!isCache) {
         connect(pxvRequest, &PxvRequest::saveImageSucceeded, this, &RequestMgr::finishRequest);
@@ -23,9 +24,9 @@ void RequestMgr::saveImage(QString token, QString url, QString savePath, QString
     } else if (isCache > 1) {
         connect(pxvRequest, &PxvRequest::saveImageSucceeded, this, &RequestMgr::finishCacheRequest);
         connect(pxvRequest, &PxvRequest::saveImageFailed, this, &RequestMgr::finishCacheRequest);
-        connect(pxvRequest, &PxvRequest::errorMessage, this, &RequestMgr::ignoreMessage);
     } else {
         connect(pxvRequest, &PxvRequest::saveImageSucceeded, this, &RequestMgr::finishSingleCacheRequest);
+        connect(pxvRequest, &PxvRequest::saveImageFailed, this, &RequestMgr::finishSingleCacheRequest);
     }
 
     pxvRequest->get(this->qnam, url, savePath, filename);
@@ -44,10 +45,6 @@ void RequestMgr::finishRequest(PxvRequest* pxvRequest) {
     delete pxvRequest;
     if (this->prList.isEmpty() || this->prList.length() <= this->cacheCount)
         emit allImagesSaved();
-}
-
-void RequestMgr::ignoreMessage(QString msg, PxvRequest* pxvRequest) {
-    this->finishCacheRequest(pxvRequest);
 }
 
 void RequestMgr::finishSingleCacheRequest(PxvRequest* pxvRequest) {

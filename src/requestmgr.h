@@ -27,7 +27,6 @@ public slots:
     void finishRequest(PxvRequest*);
     void finishSingleCacheRequest(PxvRequest*);
     void finishCacheRequest(PxvRequest*);
-    void ignoreMessage(QString msg, PxvRequest*);
     void cancelRequest(QString filename);
     bool checkFile(QString filePath);
 

@@ -5,7 +5,6 @@
 #include <QDir>
 
 #include "utils.h"
-#include "requestmgr.h"
 
 PxvRequest::PxvRequest(QObject *parent) : QObject(parent) {}
 PxvRequest::~PxvRequest() {
@@ -13,6 +12,10 @@ PxvRequest::~PxvRequest() {
         delete this->qnrq;
     if (this->qnr)
         this->qnr->deleteLater();
+}
+
+QString PxvRequest::filePath() const {
+    return this->path + this->filename;
 }
 
 void PxvRequest::get(QNetworkAccessManager &qnam, QString url, QString path, QString filename) {
@@ -29,14 +32,15 @@ void PxvRequest::get(QNetworkAccessManager &qnam, QString url, QString path, QSt
     if (!path.endsWith('/'))
         path.append('/');
     this->path = path;
+    this->filename = filename;
 
     // Check file path
-    QFileInfo checkFile(path.append(filename));
+    QFileInfo checkFile(this->filePath());
     if (checkFile.exists()) {
         emit errorMessage("File exits: " + filename, this);
+        emit saveImageFailed(this);
         return;
     }
-    this->filename = filename;
 
     this->rqurl.setUrl(url);
 
@@ -44,11 +48,8 @@ void PxvRequest::get(QNetworkAccessManager &qnam, QString url, QString path, QSt
     if (!this->token.isEmpty()) {
         Utils::setHeaders(*this->qnrq, this->token);
     }
-
     this->qnr = qnam.get(*qnrq);
-
     connect(this->qnr, &QNetworkReply::finished, this, &PxvRequest::writeFile);
-    //connect(this->qnr, &QNetworkReply::error(QNetworkReply::NetworkError), this, &PxvRequest::emitFailed(QNetworkReply::NetworkError));
     connect(this->qnr, &QNetworkReply::downloadProgress, this, &PxvRequest::logProgress);
 
 }
@@ -61,7 +62,8 @@ void PxvRequest::setToken(QString token, QString ref_token, int expires_in) {
 
 void PxvRequest::abort() {
     this->isAborted = true;
-    this->qnr->abort();
+    if (this->qnr)
+        this->qnr->abort();
 }
 
 QString PxvRequest::getFilename() {
@@ -69,33 +71,34 @@ QString PxvRequest::getFilename() {
 }
 
 void PxvRequest::writeFile() {
+    if (!this->qnr) {
+        emit saveImageFailed(this);
+        return;
+    }
     if (this->qnr->error() != QNetworkReply::NoError) {
         qDebug() << "Error occurred:" << this->qnr->error() << ", url:" << this->rqurl.toString();
+        emit errorMessage("Failed to download: " + this->filename, this);
+        emit saveImageFailed(this);
         return;
     }
     if (this->isAborted) {
         qDebug() << "Abort writing ...";
+        emit saveImageFailed(this);
         return;
     }
-    QFile* file = new QFile(path.append(filename));
-    if (file->open(QIODevice::WriteOnly)) {
-        file->write(qnr->readAll());
-        file->close();
-        //qDebug() << filename.append(" finished");
-        delete file;
+
+    QFile file(this->filePath());
+    if (file.open(QIODevice::WriteOnly)) {
+        file.write(qnr->readAll());
+        file.close();
         emit saveImageSucceeded(this);
     } else {
-        qDebug() << filename.append(" failed");
-        delete file;
+        qDebug() << this->filename << "failed";
+        emit errorMessage("Failed to save file: " + this->filename, this);
         emit saveImageFailed(this);
     }
 }
 
 void PxvRequest::logProgress(qint64 received, qint64 total) {
-    emit ((RequestMgr*)parent())->downloadProgress(this->filename, received, total);
-}
-
-void PxvRequest::emitFailed(QNetworkReply::NetworkError code) {
-    qDebug() << "Error Code:" << code;
-    emit saveImageFailed(this);
+    emit downloadProgress(this->filename, received, total);
 }
