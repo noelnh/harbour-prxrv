@@ -2,6 +2,7 @@ import QtQuick 2.2
 import Sailfish.Silica 1.0
 
 import "../js/feed.js" as Feed
+import "../js/page-state.js" as PageState
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
 
@@ -117,9 +118,7 @@ Page {
             MenuItem {
                 text: qsTr("Go Home")
                 onClicked: {
-                    while (currentModel.length) currentModel.pop()
-                    while (worksModelStack.length) worksModelStack.pop()
-                    pageStack.pop(firstPage)
+                    PageState.goHome(pageStack, firstPage, currentModel, worksModelStack)
                 }
             }
             MenuItem {
@@ -127,11 +126,11 @@ Page {
                 text: publicity == 'public' ? qsTr("Private following") : qsTr("Public following")
                 onClicked: {
                     if (loginCheck()) {
-                        followingWorksModel.clear()
-                        currentPage = 1
-                        hiddenWork = 0
+                        var state = PageState.resetCursorFeed(followingWorksModel)
+                        currentPage = state.currentPage
+                        hiddenWork = state.hiddenWork
                         publicity = ( publicity == 'public' ? 'private' : 'public' )
-                        next_url = ''
+                        next_url = state.nextUrl
                         getFollowingWorks()
                     }
                 }
@@ -140,10 +139,10 @@ Page {
                 text: qsTr("Refresh")
                 onClicked: {
                     if (loginCheck()) {
-                        followingWorksModel.clear()
-                        currentPage = 1
-                        hiddenWork = 0
-                        next_url = ''
+                        var state = PageState.resetCursorFeed(followingWorksModel)
+                        currentPage = state.currentPage
+                        hiddenWork = state.hiddenWork
+                        next_url = state.nextUrl
                         getFollowingWorks()
                     }
                 }
@@ -172,9 +171,8 @@ Page {
     onStatusChanged: {
         if (status == PageStatus.Deactivating) {
             if (_navigation == PageNavigation.Back) {
-                if (currentModel[currentModel.length-1] == 'followingWorksModel' && worksModelStack.length) {
-                    worksModelStack.pop()
-                    var _popModel = currentModel.pop()
+                var _popModel = PageState.popWorkModel(currentModel, worksModelStack, "followingWorksModel")
+                if (_popModel) {
                     if (debugOn) console.log('pop model' + _popModel)
                 }
             }
@@ -197,4 +195,3 @@ Page {
         }
     }
 }
-

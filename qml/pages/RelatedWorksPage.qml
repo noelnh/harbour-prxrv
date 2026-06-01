@@ -2,6 +2,7 @@ import QtQuick 2.2
 import Sailfish.Silica 1.0
 
 import "../js/feed.js" as Feed
+import "../js/page-state.js" as PageState
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
 
@@ -132,11 +133,11 @@ Page {
                 text: qsTr("Refresh")
                 onClicked: {
                     if (loginCheck()) {
-                        relatedWorksModel.clear()
-                        workIds = {}
-                        seedIds = []
-                        currentPage = 1
-                        isEmpty = false
+                        var state = PageState.resetRelatedFeed(relatedWorksModel)
+                        workIds = state.workIds
+                        seedIds = state.seedIds
+                        currentPage = state.currentPage
+                        isEmpty = state.isEmpty
                         getWork()
                     }
                 }
@@ -163,9 +164,8 @@ Page {
     onStatusChanged: {
         if (status == PageStatus.Deactivating) {
             if (_navigation == PageNavigation.Back) {
-                if (currentModel[currentModel.length-1] == "relatedWorksModel") {
-                    worksModelStack.pop()
-                    currentModel.pop()
+                var _popModel = PageState.popWorkModel(currentModel, worksModelStack, "relatedWorksModel")
+                if (_popModel) {
                     if (debugOn) console.log("pop model: relatedWorksModel")
                 }
             }

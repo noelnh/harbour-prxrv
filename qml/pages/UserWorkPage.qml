@@ -2,6 +2,7 @@ import QtQuick 2.2
 import Sailfish.Silica 1.0
 
 import "../js/feed.js" as Feed
+import "../js/page-state.js" as PageState
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
 
@@ -208,9 +209,7 @@ Page {
             MenuItem {
                 text: qsTr("Go Home")
                 onClicked: {
-                    while (currentModel.length) currentModel.pop()
-                    while (worksModelStack.length) worksModelStack.pop()
-                    pageStack.pop(firstPage)
+                    PageState.goHome(pageStack, firstPage, currentModel, worksModelStack)
                 }
             }
             MenuItem {
@@ -232,9 +231,9 @@ Page {
                 text: qsTr("Refresh")
                 onClicked: {
                     if (loginCheck()) {
-                        userWorkModel.clear()
-                        currentPage = 1
-                        hiddenWork = 0
+                        var state = PageState.resetPagedFeed(userWorkModel)
+                        currentPage = state.currentPage
+                        hiddenWork = state.hiddenWork
                         Pixiv.getUserWork(token, authorID, currentPage, addUserWork)
                     }
                 }
@@ -266,9 +265,8 @@ Page {
         if (status == PageStatus.Deactivating) {
             if (_navigation == PageNavigation.Back) {
                 if (debugOn) console.log("navigated back")
-                if (currentModel[currentModel.length-1] == "userWorkModel" && worksModelStack.length) {
-                    worksModelStack.pop()
-                    var _popModel = currentModel.pop()
+                var _popModel = PageState.popWorkModel(currentModel, worksModelStack, "userWorkModel")
+                if (_popModel) {
                     if (debugOn) console.log("pop model: " + _popModel)
                 }
             }

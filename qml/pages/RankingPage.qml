@@ -2,6 +2,7 @@ import QtQuick 2.2
 import Sailfish.Silica 1.0
 
 import "../js/feed.js" as Feed
+import "../js/page-state.js" as PageState
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
 
@@ -234,9 +235,10 @@ Page {
                 text: qsTr("Refresh")
                 onClicked: {
                     if (loginCheck()) {
-                        rankingWorkModel.clear()
-                        currentPage = 1
-                        hiddenWork = 0
+                        var state = PageState.resetRankingFeed(rankingWorkModel)
+                        currentPage = state.currentPage
+                        hiddenWork = state.hiddenWork
+                        currentRank = state.currentRank
                         Pixiv.getRankingWork(token, rankingType, rankingMode, currentPage, addRankingWork)
                     }
                 }
@@ -270,10 +272,10 @@ Page {
                 if (debugOn) console.log("refresh ranking page")
                 if (debugOn) console.log("type: " + rankingType)
                 if (debugOn) console.log("mode: " + rankingMode)
-                currentPage = 1
-                hiddenWork = 0
-                currentRank = 0
-                rankingWorkModel.clear()
+                var state = PageState.resetRankingFeed(rankingWorkModel)
+                currentPage = state.currentPage
+                hiddenWork = state.hiddenWork
+                currentRank = state.currentRank
                 Pixiv.getRankingWork(token, rankingType, rankingMode, currentPage, addRankingWork)
                 refreshRanking = false
             }
@@ -291,4 +293,3 @@ Page {
         }
     }
 }
-

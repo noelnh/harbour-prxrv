@@ -2,6 +2,7 @@ import QtQuick 2.2
 import Sailfish.Silica 1.0
 
 import "../js/feed.js" as Feed
+import "../js/page-state.js" as PageState
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
 
@@ -104,9 +105,7 @@ Page {
             MenuItem {
                 text: qsTr("Go Home")
                 onClicked: {
-                    while (currentModel.length) currentModel.pop()
-                    while (worksModelStack.length) worksModelStack.pop()
-                    pageStack.pop(firstPage)
+                    PageState.goHome(pageStack, firstPage, currentModel, worksModelStack)
                 }
             }
             MenuItem {
@@ -114,8 +113,7 @@ Page {
                 text: qsTr("More options")
                 onClicked: { // TODO show dialog instead of replacing
                     // Replace this search result page with trends page and remove this model
-                    currentModel.pop()
-                    worksModelStack.pop()
+                    PageState.popWorkModel(currentModel, worksModelStack, "worksSearchModel")
                     pageStack.replace("TrendsPage.qml", { searchParams: searchParams })
                 }
             }
@@ -130,11 +128,11 @@ Page {
                 text: getText()
                 onClicked: {
                     if (loginCheck()) {
-                        worksSearchModel.clear()
+                        var state = PageState.resetPagedFeed(worksSearchModel)
                         searchParams.sort = (searchParams.sort === 'date' ? 'popular' : 'date')
                         text = getText()
-                        currentPage = 1
-                        hiddenWork = 0
+                        currentPage = state.currentPage
+                        hiddenWork = state.hiddenWork
                         Pixiv.searchWorks(token, searchParams, currentPage, addUserWork)
                     }
                 }
@@ -143,9 +141,9 @@ Page {
                 text: qsTr("Refresh")
                 onClicked: {
                     if (loginCheck()) {
-                        worksSearchModel.clear()
-                        currentPage = 1
-                        hiddenWork = 0
+                        var state = PageState.resetPagedFeed(worksSearchModel)
+                        currentPage = state.currentPage
+                        hiddenWork = state.hiddenWork
                         Pixiv.searchWorks(token, searchParams, currentPage, addUserWork)
                     }
                 }
@@ -181,9 +179,8 @@ Page {
         }
         if (status == PageStatus.Deactivating) {
             if (_navigation == PageNavigation.Back) {
-                if (currentModel[currentModel.length-1] == "worksSearchModel") {
-                    worksModelStack.pop()
-                    currentModel.pop()
+                var _popModel = PageState.popWorkModel(currentModel, worksModelStack, "worksSearchModel")
+                if (_popModel) {
                     if (debugOn) console.log("pop model: worksSearchModel")
                 }
             }
@@ -205,4 +202,3 @@ Page {
         }
     }
 }
-

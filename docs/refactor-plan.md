@@ -104,3 +104,4 @@ Replace the implicit `cacheCount + prList + filename` protocol with explicit tas
 - Fixed the implicit parent coupling and incomplete failure cleanup in the download flow.
 - Added `qml/js/feed.js` as a shared feed helper for work filtering, item mapping, ranking headers, duplicate suppression, and author icon policy.
 - Moved the repeated feed append loops in following, favorites, recommendation, ranking, search, user works, and related works pages behind the shared feed module while preserving page-level state and behavior.
+- Added `qml/js/page-state.js` to concentrate repeated go-home actions, feed reset state, and work-model stack cleanup behind one explicit helper seam.

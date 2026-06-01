@@ -2,6 +2,7 @@ import QtQuick 2.2
 import Sailfish.Silica 1.0
 
 import "../js/feed.js" as Feed
+import "../js/page-state.js" as PageState
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
 
@@ -100,8 +101,8 @@ Page {
                 text: qsTr("Refresh")
                 onClicked: {
                     if (loginCheck()) {
-                        recommendationModel.clear()
-                        currentPage = 1
+                        var state = PageState.resetSimpleFeed(recommendationModel)
+                        currentPage = state.currentPage
                         getWork()
                     }
                 }
