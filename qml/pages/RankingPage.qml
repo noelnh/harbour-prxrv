@@ -1,6 +1,7 @@
 import QtQuick 2.2
 import Sailfish.Silica 1.0
 
+import "../js/feed.js" as Feed
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
 
@@ -47,28 +48,17 @@ Page {
         var works = resp_j['illusts'];
 
         if (debugOn) console.log('adding works to rankingWorkModel');
-        for (var i in works) {
-            currentRank += 1
-            if ((!showR18 && works[i]['x_restrict'] > 0) || works[i]['sanity_level'] > sanityLevel) {
-                hiddenWork += 1
-                continue
-            }
-            var imgUrls = Prxrv.getImgUrls(works[i])
-            rankingWorkModel.append({
-                workID: works[i]['id'],
-                title: works[i]['title'],
-                headerText: currentRank + '. ' + works[i]['title'],
-                square128: imgUrls.square,
-                master480: imgUrls.master,
-                large: imgUrls.large,
-                authorIcon: works[i]['user']['profile_image_urls']['medium'],
-                authorID: works[i]['user']['id'],
-                authorName: works[i]['user']['name'],
-                authorAccount: works[i]['user']['account'],
-                isBookmarked: works[i]['is_bookmarked'],
-                isManga: works[i]['page_count'] > 1
-            });
-        }
+        var result = Feed.appendWorks(works, rankingWorkModel, {
+            filterHidden: true,
+            showR18: showR18,
+            sanityLevel: sanityLevel,
+            mangaMode: "page_count",
+            authorIconMode: "medium",
+            rankHeader: true,
+            rankStart: currentRank
+        })
+        hiddenWork += result.hiddenCount
+        currentRank = result.currentRank
     }
 
 
@@ -301,5 +291,4 @@ Page {
         }
     }
 }
-
 

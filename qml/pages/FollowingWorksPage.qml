@@ -1,6 +1,7 @@
 import QtQuick 2.2
 import Sailfish.Silica 1.0
 
+import "../js/feed.js" as Feed
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
 
@@ -34,27 +35,14 @@ Page {
         next_url = resp_j['next_url'] || ''
 
         if (debugOn) console.log('adding works to followingWorksModel');
-        for (var i in followingWorks) {
-            if ((!showR18 && followingWorks[i]['x_restrict'] > 0) || followingWorks[i]['sanity_level'] > sanityLevel) {
-                hiddenWork += 1
-                continue
-            }
-            var imgUrls = Prxrv.getImgUrls(followingWorks[i])
-            followingWorksModel.append( {
-                workID: followingWorks[i]['id'],
-                title: followingWorks[i]['title'],
-                headerText: followingWorks[i]['title'],
-                square128: imgUrls.square,
-                master480: imgUrls.master,
-                large: imgUrls.large,
-                authorIcon: followingWorks[i]['user']['profile_image_urls']['medium'],
-                authorID: followingWorks[i]['user']['id'],
-                authorName: followingWorks[i]['user']['name'],
-                authorAccount: followingWorks[i]['user']['account'],
-                isManga: followingWorks[i]['page_count'] > 1,
-                isBookmarked: followingWorks[i]['is_bookmarked'],
-            } );
-        }
+        var result = Feed.appendWorks(followingWorks, followingWorksModel, {
+            filterHidden: true,
+            showR18: showR18,
+            sanityLevel: sanityLevel,
+            mangaMode: "page_count",
+            authorIconMode: "medium"
+        })
+        hiddenWork += result.hiddenCount
     }
 
     function getFollowingWorks() {
@@ -209,5 +197,4 @@ Page {
         }
     }
 }
-
 

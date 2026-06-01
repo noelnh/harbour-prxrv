@@ -1,6 +1,7 @@
 import QtQuick 2.2
 import Sailfish.Silica 1.0
 
+import "../js/feed.js" as Feed
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
 
@@ -22,30 +23,11 @@ Page {
         if (debugOn) console.log('found works:', works.length);
 
         if (debugOn) console.log('adding works to recommendationModel');
-        for (var i in works) {
-
-            var imgUrls = Prxrv.getImgUrls(works[i])
-
-            var authorIcon50 = works[i]['user']['profile_image_urls']['px_50x50'];
-            var authorIconM = works[i]['user']['profile_image_urls']['medium'];
-            if (!authorIcon50 && authorIconM)
-                authorIcon50 = authorIconM.replace('_170.', '_50.');
-
-            recommendationModel.append({
-                workID: works[i]['id'],
-                title: works[i]['title'],
-                headerText: works[i]['title'],
-                square128: imgUrls.square,
-                master480: imgUrls.master,
-                large: imgUrls.large,
-                authorIcon: authorIcon50,
-                authorID: works[i]['user']['id'],
-                authorName: works[i]['user']['name'],
-                authorAccount: works[i]['user']['account'],
-                isManga: works[i]['is_manga'] || false,
-                isBookmarked: works[i]['is_bookmarked'],
-            });
-        }
+        Feed.appendWorks(works, recommendationModel, {
+            filterHidden: false,
+            mangaMode: "is_manga",
+            authorIconMode: "small"
+        })
     }
 
     function getWork() {

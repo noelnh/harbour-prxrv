@@ -1,6 +1,7 @@
 import QtQuick 2.2
 import Sailfish.Silica 1.0
 
+import "../js/feed.js" as Feed
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
 
@@ -26,30 +27,17 @@ Page {
         if (!resp_j) return;
 
         var works = resp_j['illusts'];
-        allLoaded = works.length === 0;
+        var result = Feed.appendWorks(works, worksSearchModel, {
+            filterHidden: true,
+            showR18: showR18,
+            sanityLevel: sanityLevel,
+            mangaMode: "type",
+            authorIconMode: "medium"
+        })
+        allLoaded = result.isEmpty;
 
         if (debugOn) console.log('adding works to worksSearchModel');
-        for (var i in works) {
-            if ((!showR18 && works[i]['x_restrict'] > 0) || works[i]['sanity_level'] > sanityLevel) {
-                hiddenWork += 1
-                continue
-            }
-            var imgUrls = Prxrv.getImgUrls(works[i])
-            worksSearchModel.append( {
-                workID: works[i]['id'],
-                title:  works[i]['title'],
-                headerText: works[i]['title'],
-                square128: imgUrls.square,
-                master480: imgUrls.master,
-                large: imgUrls.large,
-                authorIcon: works[i]['user']['profile_image_urls']['medium'],
-                authorID: works[i]['user']['id'],
-                authorName: works[i]['user']['name'],
-                authorAccount: works[i]['user']['account'],
-                isManga: works[i]['type'] === 'manga',
-                isBookmarked: works[i]['is_bookmarked']
-            } );
-        }
+        hiddenWork += result.hiddenCount
     }
 
     Component {
@@ -217,5 +205,4 @@ Page {
         }
     }
 }
-
 

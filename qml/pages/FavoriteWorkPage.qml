@@ -1,6 +1,7 @@
 import QtQuick 2.2
 import Sailfish.Silica 1.0
 
+import "../js/feed.js" as Feed
 import "../js/pixiv.js" as Pixiv
 import "../js/prxrv.js" as Prxrv
 
@@ -42,27 +43,11 @@ Page {
         next_url = resp_j['next_url'] || ''
 
         if (debugOn) console.log('adding works to favoriteWorkModel');
-        for (var i in favWorks) {
-            // if (!showR18 && favWorks[i]['age_limit'].indexOf('r18') >= 0) {
-            //     hiddenWork += 1
-            //     continue
-            // }
-            var imgUrls = Prxrv.getImgUrls(favWorks[i])
-            favoriteWorkModel.append( {
-                workID: favWorks[i]['id'],
-                title:  favWorks[i]['title'],
-                headerText: favWorks[i]['title'],
-                square128: imgUrls.square,
-                master480: imgUrls.master,
-                large: imgUrls.large,
-                authorIcon: favWorks[i]['user']['profile_image_urls']['medium'],
-                authorID: favWorks[i]['user']['id'],
-                authorName: favWorks[i]['user']['name'],
-                authorAccount: favWorks[i]['user']['account'],
-                isManga: favWorks[i]['page_count'] > 1,
-                isBookmarked: favWorks[i]['is_bookmarked'],
-            } );
-        }
+        Feed.appendWorks(favWorks, favoriteWorkModel, {
+            filterHidden: false,
+            mangaMode: "page_count",
+            authorIconMode: "medium"
+        })
     }
 
     function getFavoriteWorks() {
@@ -219,5 +204,4 @@ Page {
         }
     }
 }
-
 
